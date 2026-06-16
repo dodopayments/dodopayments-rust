@@ -159,6 +159,65 @@ fn random_below(ceiling: Duration) -> Duration {
     Duration::from_nanos(rand::thread_rng().gen_range(0..nanos))
 }
 
+/// Carries the client and original request shape so a page can fetch its successor.
+#[derive(Clone, Debug)]
+pub(crate) struct PaginationContext {
+    client: Client,
+    method: reqwest::Method,
+    path: String,
+    query: serde_json::Value,
+}
+
+impl PaginationContext {
+    pub(crate) fn new(
+        client: Client,
+        method: reqwest::Method,
+        path: String,
+        query: serde_json::Value,
+    ) -> Self {
+        Self {
+            client,
+            method,
+            path,
+            query,
+        }
+    }
+
+    pub(crate) fn int_param(&self, name: &str) -> i64 {
+        self.query
+            .get(name)
+            .and_then(|value| {
+                value
+                    .as_i64()
+                    .or_else(|| value.as_str().and_then(|text| text.parse().ok()))
+            })
+            .unwrap_or(1)
+    }
+
+    pub(crate) fn with_param(&self, name: &str, value: serde_json::Value) -> Self {
+        let mut next = self.clone();
+        match next.query.as_object_mut() {
+            Some(map) => {
+                map.insert(name.to_string(), value);
+            }
+            None => {
+                let mut map = serde_json::Map::new();
+                map.insert(name.to_string(), value);
+                next.query = serde_json::Value::Object(map);
+            }
+        }
+        next
+    }
+
+    pub(crate) async fn fetch<T: serde::de::DeserializeOwned>(&self) -> Result<T> {
+        let request = self
+            .client
+            .request(self.method.clone(), &self.path)
+            .query(&self.query);
+        self.client.handle_response::<T>(request).await
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

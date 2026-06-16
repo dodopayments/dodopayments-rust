@@ -45,12 +45,30 @@ let client = Client::new(ClientConfig::new("https://test.dodopayments.com").with
 
 ### Pagination
 
-List endpoints return a typed page whose `items` field holds the current page of results:
+List endpoints return a typed page whose `items` field holds the current page of results. Fetch the next page with `get_next_page`, or stream every item across all pages with `into_stream`:
 
 ```rust
-let page = client.payments_list(None).await?;
-for item in page.items {
+use futures::StreamExt;
+
+let mut items = Box::pin(client.payments_list(None).await?.into_stream());
+while let Some(item) = items.next().await {
+    let item = item?;
     println!("{item:?}");
+}
+```
+
+Or advance one page at a time:
+
+```rust
+let mut page = client.payments_list(None).await?;
+loop {
+    for item in &page.items {
+        println!("{item:?}");
+    }
+    match page.get_next_page().await? {
+        Some(next) => page = next,
+        None => break,
+    }
 }
 ```
 

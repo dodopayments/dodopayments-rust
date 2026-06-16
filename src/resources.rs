@@ -56,7 +56,14 @@ impl crate::Client {
         if let Some(query) = query {
             request = request.query(query);
         }
-        self.handle_response(request).await
+        let mut page = self.handle_response::<crate::models::DefaultPageNumberPagination<crate::models::PaymentListResponse>>(request).await?;
+        page.set_pagination_context(crate::client::PaginationContext::new(
+            self.clone(),
+            reqwest::Method::GET,
+            "/payments".to_string(),
+            query.cloned().unwrap_or_else(|| serde_json::json!({})),
+        ));
+        Ok(page)
     }
 
     pub async fn payments_retrieve_line_items(
@@ -119,7 +126,14 @@ impl crate::Client {
         if let Some(query) = query {
             request = request.query(query);
         }
-        self.handle_response(request).await
+        let mut page = self.handle_response::<crate::models::DefaultPageNumberPagination<crate::models::SubscriptionListResponse>>(request).await?;
+        page.set_pagination_context(crate::client::PaginationContext::new(
+            self.clone(),
+            reqwest::Method::GET,
+            "/subscriptions".to_string(),
+            query.cloned().unwrap_or_else(|| serde_json::json!({})),
+        ));
+        Ok(page)
     }
 
     pub async fn subscriptions_cancel_change_plan(
@@ -205,7 +219,18 @@ impl crate::Client {
         if let Some(query) = query {
             request = request.query(query);
         }
-        self.handle_response(request).await
+        let mut page = self
+            .handle_response::<crate::models::DefaultPageNumberPagination<
+                crate::models::SubscriptionRetrieveUsageHistoryResponse,
+            >>(request)
+            .await?;
+        page.set_pagination_context(crate::client::PaginationContext::new(
+            self.clone(),
+            reqwest::Method::GET,
+            format!("/subscriptions/{}/usage-history", subscription_id),
+            query.cloned().unwrap_or_else(|| serde_json::json!({})),
+        ));
+        Ok(page)
     }
 
     pub async fn subscriptions_update_payment_method(
@@ -332,7 +357,14 @@ impl crate::Client {
         if let Some(query) = query {
             request = request.query(query);
         }
-        self.handle_response(request).await
+        let mut page = self.handle_response::<crate::models::DefaultPageNumberPagination<crate::models::LicenseKey>>(request).await?;
+        page.set_pagination_context(crate::client::PaginationContext::new(
+            self.clone(),
+            reqwest::Method::GET,
+            "/license_keys".to_string(),
+            query.cloned().unwrap_or_else(|| serde_json::json!({})),
+        ));
+        Ok(page)
     }
 }
 
@@ -373,7 +405,14 @@ impl crate::Client {
         if let Some(query) = query {
             request = request.query(query);
         }
-        self.handle_response(request).await
+        let mut page = self.handle_response::<crate::models::DefaultPageNumberPagination<crate::models::LicenseKeyInstance>>(request).await?;
+        page.set_pagination_context(crate::client::PaginationContext::new(
+            self.clone(),
+            reqwest::Method::GET,
+            "/license_key_instances".to_string(),
+            query.cloned().unwrap_or_else(|| serde_json::json!({})),
+        ));
+        Ok(page)
     }
 }
 
@@ -420,7 +459,18 @@ impl crate::Client {
         if let Some(query) = query {
             request = request.query(query);
         }
-        self.handle_response(request).await
+        let mut page = self
+            .handle_response::<crate::models::DefaultPageNumberPagination<crate::models::Customer>>(
+                request,
+            )
+            .await?;
+        page.set_pagination_context(crate::client::PaginationContext::new(
+            self.clone(),
+            reqwest::Method::GET,
+            "/customers".to_string(),
+            query.cloned().unwrap_or_else(|| serde_json::json!({})),
+        ));
+        Ok(page)
     }
 
     pub async fn customers_delete_payment_method(
@@ -532,7 +582,18 @@ impl crate::Client {
         if let Some(query) = query {
             request = request.query(query);
         }
-        self.handle_response(request).await
+        let mut page =
+            self.handle_response::<crate::models::DefaultPageNumberPagination<
+                crate::models::CustomerWalletTransaction,
+            >>(request)
+                .await?;
+        page.set_pagination_context(crate::client::PaginationContext::new(
+            self.clone(),
+            reqwest::Method::GET,
+            format!("/customers/{}/wallets/ledger-entries", customer_id),
+            query.cloned().unwrap_or_else(|| serde_json::json!({})),
+        ));
+        Ok(page)
     }
 }
 
@@ -563,7 +624,14 @@ impl crate::Client {
         if let Some(query) = query {
             request = request.query(query);
         }
-        self.handle_response(request).await
+        let mut page = self.handle_response::<crate::models::DefaultPageNumberPagination<crate::models::RefundListItem>>(request).await?;
+        page.set_pagination_context(crate::client::PaginationContext::new(
+            self.clone(),
+            reqwest::Method::GET,
+            "/refunds".to_string(),
+            query.cloned().unwrap_or_else(|| serde_json::json!({})),
+        ));
+        Ok(page)
     }
 }
 
@@ -588,7 +656,14 @@ impl crate::Client {
         if let Some(query) = query {
             request = request.query(query);
         }
-        self.handle_response(request).await
+        let mut page = self.handle_response::<crate::models::DefaultPageNumberPagination<crate::models::DisputeListResponse>>(request).await?;
+        page.set_pagination_context(crate::client::PaginationContext::new(
+            self.clone(),
+            reqwest::Method::GET,
+            "/disputes".to_string(),
+            query.cloned().unwrap_or_else(|| serde_json::json!({})),
+        ));
+        Ok(page)
     }
 }
 
@@ -603,7 +678,14 @@ impl crate::Client {
         if let Some(query) = query {
             request = request.query(query);
         }
-        self.handle_response(request).await
+        let mut page = self.handle_response::<crate::models::DefaultPageNumberPagination<crate::models::PayoutListResponse>>(request).await?;
+        page.set_pagination_context(crate::client::PaginationContext::new(
+            self.clone(),
+            reqwest::Method::GET,
+            "/payouts".to_string(),
+            query.cloned().unwrap_or_else(|| serde_json::json!({})),
+        ));
+        Ok(page)
     }
 }
 
@@ -635,7 +717,14 @@ impl crate::Client {
         if let Some(query) = query {
             request = request.query(query);
         }
-        self.handle_response(request).await
+        let mut page = self.handle_response::<crate::models::DefaultPageNumberPagination<crate::models::DetailListResponse>>(request).await?;
+        page.set_pagination_context(crate::client::PaginationContext::new(
+            self.clone(),
+            reqwest::Method::GET,
+            format!("/payouts/{}/breakup/details", payout_id),
+            query.cloned().unwrap_or_else(|| serde_json::json!({})),
+        ));
+        Ok(page)
     }
 
     pub async fn payouts_breakup_details_download_csv(
@@ -689,7 +778,14 @@ impl crate::Client {
         if let Some(query) = query {
             request = request.query(query);
         }
-        self.handle_response(request).await
+        let mut page = self.handle_response::<crate::models::DefaultPageNumberPagination<crate::models::ProductListResponse>>(request).await?;
+        page.set_pagination_context(crate::client::PaginationContext::new(
+            self.clone(),
+            reqwest::Method::GET,
+            "/products".to_string(),
+            query.cloned().unwrap_or_else(|| serde_json::json!({})),
+        ));
+        Ok(page)
     }
 
     pub async fn products_archive(&self, id: &str) -> crate::error::Result<()> {
@@ -758,7 +854,14 @@ impl crate::Client {
         if let Some(query) = query {
             request = request.query(query);
         }
-        self.handle_response(request).await
+        let mut page = self.handle_response::<crate::models::DefaultPageNumberPagination<crate::models::ShortLinkListResponse>>(request).await?;
+        page.set_pagination_context(crate::client::PaginationContext::new(
+            self.clone(),
+            reqwest::Method::GET,
+            "/products/short_links".to_string(),
+            query.cloned().unwrap_or_else(|| serde_json::json!({})),
+        ));
+        Ok(page)
     }
 }
 
@@ -814,7 +917,18 @@ impl crate::Client {
         if let Some(query) = query {
             request = request.query(query);
         }
-        self.handle_response(request).await
+        let mut page = self
+            .handle_response::<crate::models::DefaultPageNumberPagination<crate::models::Discount>>(
+                request,
+            )
+            .await?;
+        page.set_pagination_context(crate::client::PaginationContext::new(
+            self.clone(),
+            reqwest::Method::GET,
+            "/discounts".to_string(),
+            query.cloned().unwrap_or_else(|| serde_json::json!({})),
+        ));
+        Ok(page)
     }
 
     pub async fn discounts_delete(&self, discount_id: &str) -> crate::error::Result<()> {
@@ -875,7 +989,14 @@ impl crate::Client {
         if let Some(query) = query {
             request = request.query(query);
         }
-        self.handle_response(request).await
+        let mut page = self.handle_response::<crate::models::DefaultPageNumberPagination<crate::models::AddonResponse>>(request).await?;
+        page.set_pagination_context(crate::client::PaginationContext::new(
+            self.clone(),
+            reqwest::Method::GET,
+            "/addons".to_string(),
+            query.cloned().unwrap_or_else(|| serde_json::json!({})),
+        ));
+        Ok(page)
     }
 
     pub async fn addons_update_images(
@@ -967,7 +1088,18 @@ impl crate::Client {
         if let Some(query) = query {
             request = request.query(query);
         }
-        self.handle_response(request).await
+        let mut page = self
+            .handle_response::<crate::models::CursorPagePagination<crate::models::WebhookDetails>>(
+                request,
+            )
+            .await?;
+        page.set_pagination_context(crate::client::PaginationContext::new(
+            self.clone(),
+            reqwest::Method::GET,
+            "/webhooks".to_string(),
+            query.cloned().unwrap_or_else(|| serde_json::json!({})),
+        ));
+        Ok(page)
     }
 
     pub async fn webhooks_delete(&self, webhook_id: &str) -> crate::error::Result<()> {
@@ -1036,7 +1168,18 @@ impl crate::Client {
         if let Some(query) = query {
             request = request.query(query);
         }
-        self.handle_response(request).await
+        let mut page = self
+            .handle_response::<crate::models::DefaultPageNumberPagination<crate::models::Event>>(
+                request,
+            )
+            .await?;
+        page.set_pagination_context(crate::client::PaginationContext::new(
+            self.clone(),
+            reqwest::Method::GET,
+            "/events".to_string(),
+            query.cloned().unwrap_or_else(|| serde_json::json!({})),
+        ));
+        Ok(page)
     }
 
     pub async fn usage_events_ingest(
@@ -1074,7 +1217,18 @@ impl crate::Client {
         if let Some(query) = query {
             request = request.query(query);
         }
-        self.handle_response(request).await
+        let mut page = self
+            .handle_response::<crate::models::DefaultPageNumberPagination<crate::models::Meter>>(
+                request,
+            )
+            .await?;
+        page.set_pagination_context(crate::client::PaginationContext::new(
+            self.clone(),
+            reqwest::Method::GET,
+            "/meters".to_string(),
+            query.cloned().unwrap_or_else(|| serde_json::json!({})),
+        ));
+        Ok(page)
     }
 
     pub async fn meters_archive(&self, id: &str) -> crate::error::Result<()> {
@@ -1099,7 +1253,14 @@ impl crate::Client {
         if let Some(query) = query {
             request = request.query(query);
         }
-        self.handle_response(request).await
+        let mut page = self.handle_response::<crate::models::DefaultPageNumberPagination<crate::models::BalanceLedgerEntry>>(request).await?;
+        page.set_pagination_context(crate::client::PaginationContext::new(
+            self.clone(),
+            reqwest::Method::GET,
+            "/balances/ledger".to_string(),
+            query.cloned().unwrap_or_else(|| serde_json::json!({})),
+        ));
+        Ok(page)
     }
 }
 
@@ -1151,7 +1312,14 @@ impl crate::Client {
         if let Some(query) = query {
             request = request.query(query);
         }
-        self.handle_response(request).await
+        let mut page = self.handle_response::<crate::models::DefaultPageNumberPagination<crate::models::CreditEntitlement>>(request).await?;
+        page.set_pagination_context(crate::client::PaginationContext::new(
+            self.clone(),
+            reqwest::Method::GET,
+            "/credit-entitlements".to_string(),
+            query.cloned().unwrap_or_else(|| serde_json::json!({})),
+        ));
+        Ok(page)
     }
 
     pub async fn credit_entitlements_delete(&self, id: &str) -> crate::error::Result<()> {
@@ -1201,7 +1369,14 @@ impl crate::Client {
         if let Some(query) = query {
             request = request.query(query);
         }
-        self.handle_response(request).await
+        let mut page = self.handle_response::<crate::models::DefaultPageNumberPagination<crate::models::CustomerCreditBalance>>(request).await?;
+        page.set_pagination_context(crate::client::PaginationContext::new(
+            self.clone(),
+            reqwest::Method::GET,
+            format!("/credit-entitlements/{}/balances", credit_entitlement_id),
+            query.cloned().unwrap_or_else(|| serde_json::json!({})),
+        ));
+        Ok(page)
     }
 
     pub async fn credit_entitlements_balances_create_ledger_entry(
@@ -1241,7 +1416,21 @@ impl crate::Client {
         if let Some(query) = query {
             request = request.query(query);
         }
-        self.handle_response(request).await
+        let mut page =
+            self.handle_response::<crate::models::DefaultPageNumberPagination<
+                crate::models::BalanceListGrantsResponse,
+            >>(request)
+                .await?;
+        page.set_pagination_context(crate::client::PaginationContext::new(
+            self.clone(),
+            reqwest::Method::GET,
+            format!(
+                "/credit-entitlements/{}/balances/{}/grants",
+                credit_entitlement_id, customer_id
+            ),
+            query.cloned().unwrap_or_else(|| serde_json::json!({})),
+        ));
+        Ok(page)
     }
 
     pub async fn credit_entitlements_balances_list_ledger(
@@ -1262,7 +1451,17 @@ impl crate::Client {
         if let Some(query) = query {
             request = request.query(query);
         }
-        self.handle_response(request).await
+        let mut page = self.handle_response::<crate::models::DefaultPageNumberPagination<crate::models::CreditLedgerEntry>>(request).await?;
+        page.set_pagination_context(crate::client::PaginationContext::new(
+            self.clone(),
+            reqwest::Method::GET,
+            format!(
+                "/credit-entitlements/{}/balances/{}/ledger",
+                credit_entitlement_id, customer_id
+            ),
+            query.cloned().unwrap_or_else(|| serde_json::json!({})),
+        ));
+        Ok(page)
     }
 }
 
@@ -1307,7 +1506,14 @@ impl crate::Client {
         if let Some(query) = query {
             request = request.query(query);
         }
-        self.handle_response(request).await
+        let mut page = self.handle_response::<crate::models::DefaultPageNumberPagination<crate::models::Entitlement>>(request).await?;
+        page.set_pagination_context(crate::client::PaginationContext::new(
+            self.clone(),
+            reqwest::Method::GET,
+            "/entitlements".to_string(),
+            query.cloned().unwrap_or_else(|| serde_json::json!({})),
+        ));
+        Ok(page)
     }
 
     pub async fn entitlements_delete(&self, id: &str) -> crate::error::Result<()> {
@@ -1356,7 +1562,14 @@ impl crate::Client {
         if let Some(query) = query {
             request = request.query(query);
         }
-        self.handle_response(request).await
+        let mut page = self.handle_response::<crate::models::DefaultPageNumberPagination<crate::models::EntitlementGrant>>(request).await?;
+        page.set_pagination_context(crate::client::PaginationContext::new(
+            self.clone(),
+            reqwest::Method::GET,
+            format!("/entitlements/{}/grants", id),
+            query.cloned().unwrap_or_else(|| serde_json::json!({})),
+        ));
+        Ok(page)
     }
 
     pub async fn entitlements_grants_revoke(
@@ -1420,7 +1633,18 @@ impl crate::Client {
         if let Some(query) = query {
             request = request.query(query);
         }
-        self.handle_response(request).await
+        let mut page =
+            self.handle_response::<crate::models::DefaultPageNumberPagination<
+                crate::models::ProductCollectionListResponse,
+            >>(request)
+                .await?;
+        page.set_pagination_context(crate::client::PaginationContext::new(
+            self.clone(),
+            reqwest::Method::GET,
+            "/product-collections".to_string(),
+            query.cloned().unwrap_or_else(|| serde_json::json!({})),
+        ));
+        Ok(page)
     }
 
     pub async fn product_collections_delete(&self, id: &str) -> crate::error::Result<()> {

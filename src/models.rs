@@ -3139,6 +3139,50 @@ pub struct DefaultPageNumberPagination<T> {
     pub items: Vec<T>,
     #[serde(flatten)]
     pub extra: std::collections::HashMap<String, serde_json::Value>,
+    #[serde(skip)]
+    pagination_context: Option<crate::client::PaginationContext>,
+}
+
+impl<T> DefaultPageNumberPagination<T> {
+    pub(crate) fn set_pagination_context(&mut self, context: crate::client::PaginationContext) {
+        self.pagination_context = Some(context);
+    }
+}
+
+impl<T: serde::de::DeserializeOwned> DefaultPageNumberPagination<T> {
+    pub async fn get_next_page(&self) -> crate::error::Result<Option<Self>> {
+        if self.items.is_empty() {
+            return Ok(None);
+        }
+        let Some(context) = self.pagination_context.as_ref() else {
+            return Ok(None);
+        };
+        let current = context.int_param("page_number");
+        let next_context = context.with_param("page_number", serde_json::Value::from(current + 1));
+        let mut next: Self = next_context.fetch().await?;
+        next.pagination_context = Some(next_context);
+        Ok(Some(next))
+    }
+}
+
+impl<T: serde::de::DeserializeOwned + Clone> DefaultPageNumberPagination<T> {
+    pub fn into_stream(self) -> impl futures::Stream<Item = crate::error::Result<T>> {
+        futures::stream::unfold(Some((self, 0usize)), |state| async move {
+            let (page, index) = state?;
+            if index < page.items.len() {
+                let item = page.items[index].clone();
+                return Some((Ok(item), Some((page, index + 1))));
+            }
+            match page.get_next_page().await {
+                Ok(Some(next)) if !next.items.is_empty() => {
+                    let item = next.items[0].clone();
+                    Some((Ok(item), Some((next, 1))))
+                }
+                Ok(_) => None,
+                Err(error) => Some((Err(error), None)),
+            }
+        })
+    }
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
@@ -3146,4 +3190,58 @@ pub struct CursorPagePagination<T> {
     pub data: Vec<T>,
     #[serde(flatten)]
     pub extra: std::collections::HashMap<String, serde_json::Value>,
+    #[serde(skip)]
+    pagination_context: Option<crate::client::PaginationContext>,
+}
+
+impl<T> CursorPagePagination<T> {
+    pub(crate) fn set_pagination_context(&mut self, context: crate::client::PaginationContext) {
+        self.pagination_context = Some(context);
+    }
+}
+
+impl<T: serde::de::DeserializeOwned> CursorPagePagination<T> {
+    pub async fn get_next_page(&self) -> crate::error::Result<Option<Self>> {
+        if self.data.is_empty() {
+            return Ok(None);
+        }
+        if let Some(false) = self.extra.get("done").and_then(|value| value.as_bool()) {
+            return Ok(None);
+        }
+        let Some(cursor) = self
+            .extra
+            .get("iterator")
+            .and_then(|value| value.as_str())
+            .filter(|value| !value.is_empty())
+        else {
+            return Ok(None);
+        };
+        let Some(context) = self.pagination_context.as_ref() else {
+            return Ok(None);
+        };
+        let next_context = context.with_param("iterator", serde_json::Value::from(cursor));
+        let mut next: Self = next_context.fetch().await?;
+        next.pagination_context = Some(next_context);
+        Ok(Some(next))
+    }
+}
+
+impl<T: serde::de::DeserializeOwned + Clone> CursorPagePagination<T> {
+    pub fn into_stream(self) -> impl futures::Stream<Item = crate::error::Result<T>> {
+        futures::stream::unfold(Some((self, 0usize)), |state| async move {
+            let (page, index) = state?;
+            if index < page.data.len() {
+                let item = page.data[index].clone();
+                return Some((Ok(item), Some((page, index + 1))));
+            }
+            match page.get_next_page().await {
+                Ok(Some(next)) if !next.data.is_empty() => {
+                    let item = next.data[0].clone();
+                    Some((Ok(item), Some((next, 1))))
+                }
+                Ok(_) => None,
+                Err(error) => Some((Err(error), None)),
+            }
+        })
+    }
 }
