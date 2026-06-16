@@ -190,7 +190,12 @@ pub struct CustomerLimitedDetails {
     pub phone_number: Option<String>,
 }
 
-pub type CustomerRequest = serde_json::Value;
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+#[serde(untagged)]
+pub enum CustomerRequest {
+    AttachExistingCustomer(Box<crate::models::AttachExistingCustomer>),
+    NewCustomer(Box<crate::models::NewCustomer>),
+}
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub enum IntentStatus {
@@ -216,6 +221,8 @@ pub enum IntentStatus {
     PartiallyCaptured,
     #[serde(rename = "partially_captured_and_capturable")]
     PartiallyCapturedAndCapturable,
+    #[serde(other)]
+    Unknown,
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
@@ -487,6 +494,8 @@ pub enum PaymentMethodTypes {
     NaverPay,
     #[serde(rename = "payco")]
     Payco,
+    #[serde(other)]
+    Unknown,
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
@@ -495,6 +504,8 @@ pub enum PaymentRefundStatus {
     Partial,
     #[serde(rename = "full")]
     Full,
+    #[serde(other)]
+    Unknown,
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
@@ -584,6 +595,8 @@ pub enum CancellationFeedback {
     TooComplex,
     #[serde(rename = "other")]
     Other,
+    #[serde(other)]
+    Unknown,
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
@@ -703,6 +716,8 @@ pub enum SubscriptionStatus {
     Failed,
     #[serde(rename = "expired")]
     Expired,
+    #[serde(other)]
+    Unknown,
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
@@ -711,6 +726,8 @@ pub enum TimeInterval {
     Week,
     Month,
     Year,
+    #[serde(other)]
+    Unknown,
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
@@ -850,6 +867,8 @@ pub enum LicenseKeyStatus {
     Expired,
     #[serde(rename = "disabled")]
     Disabled,
+    #[serde(other)]
+    Unknown,
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
@@ -949,6 +968,8 @@ pub enum RefundStatus {
     Pending,
     #[serde(rename = "review")]
     Review,
+    #[serde(other)]
+    Unknown,
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
@@ -973,6 +994,8 @@ pub enum DisputeStage {
     Dispute,
     #[serde(rename = "pre_arbitration")]
     PreArbitration,
+    #[serde(other)]
+    Unknown,
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
@@ -991,6 +1014,8 @@ pub enum DisputeStatus {
     DisputeWon,
     #[serde(rename = "dispute_lost")]
     DisputeLost,
+    #[serde(other)]
+    Unknown,
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
@@ -1103,6 +1128,8 @@ pub enum CbbProrationBehavior {
     Prorate,
     #[serde(rename = "no_prorate")]
     NoProrate,
+    #[serde(other)]
+    Unknown,
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
@@ -1152,7 +1179,13 @@ pub struct LicenseKeyDuration {
     pub interval: Box<crate::models::TimeInterval>,
 }
 
-pub type Price = serde_json::Value;
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+#[serde(untagged)]
+pub enum Price {
+    Variant0(serde_json::Value),
+    Variant1(serde_json::Value),
+    Variant2(serde_json::Value),
+}
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct Product {
@@ -1731,6 +1764,8 @@ pub enum CountryCode {
     Zm,
     #[serde(rename = "ZW")]
     Zw,
+    #[serde(other)]
+    Unknown,
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
@@ -2025,6 +2060,8 @@ pub enum Currency {
     Zar,
     #[serde(rename = "ZMW")]
     Zmw,
+    #[serde(other)]
+    Unknown,
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
@@ -2037,6 +2074,8 @@ pub enum TaxCategory {
     EBook,
     #[serde(rename = "edtech")]
     Edtech,
+    #[serde(other)]
+    Unknown,
 }
 
 pub type MiscListSupportedCountriesResponse = Vec<crate::models::CountryCode>;
@@ -2083,6 +2122,8 @@ pub struct DiscountDetail {
 pub enum DiscountType {
     #[serde(rename = "percentage")]
     Percentage,
+    #[serde(other)]
+    Unknown,
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
@@ -2462,9 +2503,105 @@ pub struct SubscriptionUpdatedWebhookEvent {
     pub r#type: String,
 }
 
-pub type UnsafeUnwrapWebhookEvent = serde_json::Value;
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+#[serde(untagged)]
+pub enum UnsafeUnwrapWebhookEvent {
+    AbandonedCheckoutDetectedWebhookEvent(
+        Box<crate::models::AbandonedCheckoutDetectedWebhookEvent>,
+    ),
+    AbandonedCheckoutRecoveredWebhookEvent(
+        Box<crate::models::AbandonedCheckoutRecoveredWebhookEvent>,
+    ),
+    CreditAddedWebhookEvent(Box<crate::models::CreditAddedWebhookEvent>),
+    CreditBalanceLowWebhookEvent(Box<crate::models::CreditBalanceLowWebhookEvent>),
+    CreditDeductedWebhookEvent(Box<crate::models::CreditDeductedWebhookEvent>),
+    CreditExpiredWebhookEvent(Box<crate::models::CreditExpiredWebhookEvent>),
+    CreditManualAdjustmentWebhookEvent(Box<crate::models::CreditManualAdjustmentWebhookEvent>),
+    CreditOverageChargedWebhookEvent(Box<crate::models::CreditOverageChargedWebhookEvent>),
+    CreditOverageResetWebhookEvent(Box<crate::models::CreditOverageResetWebhookEvent>),
+    CreditRolledOverWebhookEvent(Box<crate::models::CreditRolledOverWebhookEvent>),
+    CreditRolloverForfeitedWebhookEvent(Box<crate::models::CreditRolloverForfeitedWebhookEvent>),
+    DisputeAcceptedWebhookEvent(Box<crate::models::DisputeAcceptedWebhookEvent>),
+    DisputeCancelledWebhookEvent(Box<crate::models::DisputeCancelledWebhookEvent>),
+    DisputeChallengedWebhookEvent(Box<crate::models::DisputeChallengedWebhookEvent>),
+    DisputeExpiredWebhookEvent(Box<crate::models::DisputeExpiredWebhookEvent>),
+    DisputeLostWebhookEvent(Box<crate::models::DisputeLostWebhookEvent>),
+    DisputeOpenedWebhookEvent(Box<crate::models::DisputeOpenedWebhookEvent>),
+    DisputeWonWebhookEvent(Box<crate::models::DisputeWonWebhookEvent>),
+    DunningRecoveredWebhookEvent(Box<crate::models::DunningRecoveredWebhookEvent>),
+    DunningStartedWebhookEvent(Box<crate::models::DunningStartedWebhookEvent>),
+    EntitlementGrantCreatedWebhookEvent(Box<crate::models::EntitlementGrantCreatedWebhookEvent>),
+    EntitlementGrantDeliveredWebhookEvent(
+        Box<crate::models::EntitlementGrantDeliveredWebhookEvent>,
+    ),
+    EntitlementGrantFailedWebhookEvent(Box<crate::models::EntitlementGrantFailedWebhookEvent>),
+    EntitlementGrantRevokedWebhookEvent(Box<crate::models::EntitlementGrantRevokedWebhookEvent>),
+    LicenseKeyCreatedWebhookEvent(Box<crate::models::LicenseKeyCreatedWebhookEvent>),
+    PaymentCancelledWebhookEvent(Box<crate::models::PaymentCancelledWebhookEvent>),
+    PaymentFailedWebhookEvent(Box<crate::models::PaymentFailedWebhookEvent>),
+    PaymentProcessingWebhookEvent(Box<crate::models::PaymentProcessingWebhookEvent>),
+    PaymentSucceededWebhookEvent(Box<crate::models::PaymentSucceededWebhookEvent>),
+    RefundFailedWebhookEvent(Box<crate::models::RefundFailedWebhookEvent>),
+    RefundSucceededWebhookEvent(Box<crate::models::RefundSucceededWebhookEvent>),
+    SubscriptionActiveWebhookEvent(Box<crate::models::SubscriptionActiveWebhookEvent>),
+    SubscriptionCancelledWebhookEvent(Box<crate::models::SubscriptionCancelledWebhookEvent>),
+    SubscriptionExpiredWebhookEvent(Box<crate::models::SubscriptionExpiredWebhookEvent>),
+    SubscriptionFailedWebhookEvent(Box<crate::models::SubscriptionFailedWebhookEvent>),
+    SubscriptionOnHoldWebhookEvent(Box<crate::models::SubscriptionOnHoldWebhookEvent>),
+    SubscriptionPlanChangedWebhookEvent(Box<crate::models::SubscriptionPlanChangedWebhookEvent>),
+    SubscriptionRenewedWebhookEvent(Box<crate::models::SubscriptionRenewedWebhookEvent>),
+    SubscriptionUpdatedWebhookEvent(Box<crate::models::SubscriptionUpdatedWebhookEvent>),
+}
 
-pub type UnwrapWebhookEvent = serde_json::Value;
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+#[serde(untagged)]
+pub enum UnwrapWebhookEvent {
+    AbandonedCheckoutDetectedWebhookEvent(
+        Box<crate::models::AbandonedCheckoutDetectedWebhookEvent>,
+    ),
+    AbandonedCheckoutRecoveredWebhookEvent(
+        Box<crate::models::AbandonedCheckoutRecoveredWebhookEvent>,
+    ),
+    CreditAddedWebhookEvent(Box<crate::models::CreditAddedWebhookEvent>),
+    CreditBalanceLowWebhookEvent(Box<crate::models::CreditBalanceLowWebhookEvent>),
+    CreditDeductedWebhookEvent(Box<crate::models::CreditDeductedWebhookEvent>),
+    CreditExpiredWebhookEvent(Box<crate::models::CreditExpiredWebhookEvent>),
+    CreditManualAdjustmentWebhookEvent(Box<crate::models::CreditManualAdjustmentWebhookEvent>),
+    CreditOverageChargedWebhookEvent(Box<crate::models::CreditOverageChargedWebhookEvent>),
+    CreditOverageResetWebhookEvent(Box<crate::models::CreditOverageResetWebhookEvent>),
+    CreditRolledOverWebhookEvent(Box<crate::models::CreditRolledOverWebhookEvent>),
+    CreditRolloverForfeitedWebhookEvent(Box<crate::models::CreditRolloverForfeitedWebhookEvent>),
+    DisputeAcceptedWebhookEvent(Box<crate::models::DisputeAcceptedWebhookEvent>),
+    DisputeCancelledWebhookEvent(Box<crate::models::DisputeCancelledWebhookEvent>),
+    DisputeChallengedWebhookEvent(Box<crate::models::DisputeChallengedWebhookEvent>),
+    DisputeExpiredWebhookEvent(Box<crate::models::DisputeExpiredWebhookEvent>),
+    DisputeLostWebhookEvent(Box<crate::models::DisputeLostWebhookEvent>),
+    DisputeOpenedWebhookEvent(Box<crate::models::DisputeOpenedWebhookEvent>),
+    DisputeWonWebhookEvent(Box<crate::models::DisputeWonWebhookEvent>),
+    DunningRecoveredWebhookEvent(Box<crate::models::DunningRecoveredWebhookEvent>),
+    DunningStartedWebhookEvent(Box<crate::models::DunningStartedWebhookEvent>),
+    EntitlementGrantCreatedWebhookEvent(Box<crate::models::EntitlementGrantCreatedWebhookEvent>),
+    EntitlementGrantDeliveredWebhookEvent(
+        Box<crate::models::EntitlementGrantDeliveredWebhookEvent>,
+    ),
+    EntitlementGrantFailedWebhookEvent(Box<crate::models::EntitlementGrantFailedWebhookEvent>),
+    EntitlementGrantRevokedWebhookEvent(Box<crate::models::EntitlementGrantRevokedWebhookEvent>),
+    LicenseKeyCreatedWebhookEvent(Box<crate::models::LicenseKeyCreatedWebhookEvent>),
+    PaymentCancelledWebhookEvent(Box<crate::models::PaymentCancelledWebhookEvent>),
+    PaymentFailedWebhookEvent(Box<crate::models::PaymentFailedWebhookEvent>),
+    PaymentProcessingWebhookEvent(Box<crate::models::PaymentProcessingWebhookEvent>),
+    PaymentSucceededWebhookEvent(Box<crate::models::PaymentSucceededWebhookEvent>),
+    RefundFailedWebhookEvent(Box<crate::models::RefundFailedWebhookEvent>),
+    RefundSucceededWebhookEvent(Box<crate::models::RefundSucceededWebhookEvent>),
+    SubscriptionActiveWebhookEvent(Box<crate::models::SubscriptionActiveWebhookEvent>),
+    SubscriptionCancelledWebhookEvent(Box<crate::models::SubscriptionCancelledWebhookEvent>),
+    SubscriptionExpiredWebhookEvent(Box<crate::models::SubscriptionExpiredWebhookEvent>),
+    SubscriptionFailedWebhookEvent(Box<crate::models::SubscriptionFailedWebhookEvent>),
+    SubscriptionOnHoldWebhookEvent(Box<crate::models::SubscriptionOnHoldWebhookEvent>),
+    SubscriptionPlanChangedWebhookEvent(Box<crate::models::SubscriptionPlanChangedWebhookEvent>),
+    SubscriptionRenewedWebhookEvent(Box<crate::models::SubscriptionRenewedWebhookEvent>),
+    SubscriptionUpdatedWebhookEvent(Box<crate::models::SubscriptionUpdatedWebhookEvent>),
+}
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct HeaderRetrieveResponse {
@@ -2564,6 +2701,8 @@ pub enum WebhookEventType {
     EntitlementGrantFailed,
     #[serde(rename = "entitlement_grant.revoked")]
     EntitlementGrantRevoked,
+    #[serde(other)]
+    Unknown,
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
@@ -2604,6 +2743,8 @@ pub enum Conjunction {
     And,
     #[serde(rename = "or")]
     Or,
+    #[serde(other)]
+    Unknown,
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
@@ -2624,9 +2765,16 @@ pub enum FilterOperator {
     Contains,
     #[serde(rename = "does_not_contain")]
     DoesNotContain,
+    #[serde(other)]
+    Unknown,
 }
 
-pub type FilterType = serde_json::Value;
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+#[serde(untagged)]
+pub enum FilterType {
+    List(Vec<serde_json::Value>),
+    List2(Vec<crate::models::MeterFilter>),
+}
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct Meter {
@@ -2680,6 +2828,8 @@ pub enum CbbOverageBehavior {
     CarryDeficit,
     #[serde(rename = "carry_deficit_auto_repay")]
     CarryDeficitAutoRepay,
+    #[serde(other)]
+    Unknown,
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
@@ -2744,6 +2894,8 @@ pub enum LedgerEntryType {
     Credit,
     #[serde(rename = "debit")]
     Debit,
+    #[serde(other)]
+    Unknown,
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
@@ -2814,6 +2966,8 @@ pub enum EntitlementIntegrationType {
     DigitalFiles,
     #[serde(rename = "license_key")]
     LicenseKey,
+    #[serde(other)]
+    Unknown,
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
@@ -2828,11 +2982,35 @@ pub enum GitHubPermission {
     Maintain,
     #[serde(rename = "triage")]
     Triage,
+    #[serde(other)]
+    Unknown,
 }
 
-pub type IntegrationConfig = serde_json::Value;
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+#[serde(untagged)]
+pub enum IntegrationConfig {
+    Variant0(serde_json::Value),
+    Variant1(serde_json::Value),
+    Variant2(serde_json::Value),
+    Variant3(serde_json::Value),
+    Variant4(serde_json::Value),
+    Variant5(serde_json::Value),
+    Variant6(serde_json::Value),
+    Variant7(serde_json::Value),
+}
 
-pub type IntegrationConfigResponse = serde_json::Value;
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+#[serde(untagged)]
+pub enum IntegrationConfigResponse {
+    Variant0(serde_json::Value),
+    Variant1(serde_json::Value),
+    Variant2(serde_json::Value),
+    Variant3(serde_json::Value),
+    Variant4(serde_json::Value),
+    Variant5(serde_json::Value),
+    Variant6(serde_json::Value),
+    Variant7(serde_json::Value),
+}
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct FileUploadResponse {
