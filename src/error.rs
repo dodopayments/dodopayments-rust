@@ -14,4 +14,7 @@ pub enum Error {
 
     #[error("API returned status {status}: {message}")]
     Api { status: u16, message: String },
+
+    #[error("configuration error: {0}")]
+    Config(String),
 }

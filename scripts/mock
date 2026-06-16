@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+cd "$(dirname "$0")/.."
+
+SPEC="${1:-./openapi.json}"
+
+if [ "${1:-}" = "--help" ] || [ "${1:-}" = "-h" ]; then
+  echo "Usage: $0 [path-or-url-to-openapi-spec]"
+  echo "Starts a Prism mock server on http://localhost:4010"
+  exit 0
+fi
+
+npx --yes @stoplight/prism-cli@~5.8 mock "$SPEC"

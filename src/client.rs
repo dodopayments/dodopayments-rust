@@ -14,6 +14,10 @@ impl Client {
         Ok(Self { config, http })
     }
 
+    pub fn from_env() -> Result<Self> {
+        Self::new(ClientConfig::from_env()?)
+    }
+
     pub fn base_url(&self) -> &str {
         &self.config.base_url
     }

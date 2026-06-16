@@ -17,6 +17,16 @@ impl ClientConfig {
         }
     }
 
+    pub fn from_env() -> crate::error::Result<Self> {
+        let api_key = std::env::var(crate::API_KEY_ENV).map_err(|_| {
+            crate::error::Error::Config(format!(
+                "missing {} environment variable",
+                crate::API_KEY_ENV
+            ))
+        })?;
+        Ok(Self::new(crate::DEFAULT_BASE_URL).with_api_key(api_key))
+    }
+
     pub fn with_api_key(mut self, api_key: impl Into<String>) -> Self {
         self.api_key = Some(api_key.into());
         self

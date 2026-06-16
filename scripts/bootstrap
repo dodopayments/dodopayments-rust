@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+cd "$(dirname "$0")/.."
+
+if [ -f "Brewfile" ] && [ "${SKIP_BREW:-}" != "1" ] && command -v brew >/dev/null 2>&1; then
+  brew bundle check >/dev/null 2>&1 || brew bundle
+fi
+
+if ! command -v cargo >/dev/null 2>&1; then
+  echo "cargo not found. Install Rust from https://rustup.rs" >&2
+  exit 1
+fi
+
+cargo fetch

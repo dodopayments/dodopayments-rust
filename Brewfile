@@ -1,0 +1,2 @@
+brew "rust"
+brew "node"

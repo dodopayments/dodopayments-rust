@@ -1,2 +1,8 @@
 /target
-Cargo.lock
+
+.prism.log
+.stdy.log
+codegen.log
+Brewfile.lock.json
+.idea/
+.DS_Store
