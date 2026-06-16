@@ -44,7 +44,7 @@ You can also configure the client explicitly:
 ```rust
 use dodopayments::{Client, ClientConfig};
 
-let client = Client::new(ClientConfig::new("https://test.dodopayments.com").with_api_key("My API Key"))?;
+let client = Client::new(ClientConfig::new("https://live.dodopayments.com").with_api_key("My API Key"))?;
 ```
 
 ### Pagination
@@ -99,7 +99,7 @@ use std::time::Duration;
 use dodopayments::{Client, ClientConfig};
 
 let client = Client::new(
-    ClientConfig::new("https://test.dodopayments.com")
+    ClientConfig::new("https://live.dodopayments.com")
         .with_api_key("My API Key")
         .with_timeout(Duration::from_secs(60)),
 )?;
@@ -107,10 +107,10 @@ let client = Client::new(
 
 ### Environments
 
-| Name | Base URL |
-| --- | --- |
-| `test_mode` | https://test.dodopayments.com |
+| Name        | Base URL                      |
+| ----------- | ----------------------------- |
 | `live_mode` | https://live.dodopayments.com |
+| `test_mode` | https://test.dodopayments.com |
 
 Pass the desired base URL to `ClientConfig::new`.
 
