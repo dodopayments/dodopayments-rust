@@ -48,7 +48,11 @@ impl crate::Client {
         .await
     }
 
-    pub async fn payments_list(&self) -> crate::error::Result<serde_json::Value> {
+    pub async fn payments_list(
+        &self,
+    ) -> crate::error::Result<
+        crate::models::DefaultPageNumberPagination<crate::models::PaymentListResponse>,
+    > {
         crate::client::handle_response(self.request(reqwest::Method::GET, "/payments")).await
     }
 
@@ -102,7 +106,11 @@ impl crate::Client {
         .await
     }
 
-    pub async fn subscriptions_list(&self) -> crate::error::Result<serde_json::Value> {
+    pub async fn subscriptions_list(
+        &self,
+    ) -> crate::error::Result<
+        crate::models::DefaultPageNumberPagination<crate::models::SubscriptionListResponse>,
+    > {
         crate::client::handle_response(self.request(reqwest::Method::GET, "/subscriptions")).await
     }
 
@@ -176,7 +184,11 @@ impl crate::Client {
     pub async fn subscriptions_retrieve_usage_history(
         &self,
         subscription_id: &str,
-    ) -> crate::error::Result<serde_json::Value> {
+    ) -> crate::error::Result<
+        crate::models::DefaultPageNumberPagination<
+            crate::models::SubscriptionRetrieveUsageHistoryResponse,
+        >,
+    > {
         crate::client::handle_response(self.request(
             reqwest::Method::GET,
             &format!("/subscriptions/{}/usage-history", subscription_id),
@@ -301,7 +313,10 @@ impl crate::Client {
         .await
     }
 
-    pub async fn license_keys_list(&self) -> crate::error::Result<serde_json::Value> {
+    pub async fn license_keys_list(
+        &self,
+    ) -> crate::error::Result<crate::models::DefaultPageNumberPagination<crate::models::LicenseKey>>
+    {
         crate::client::handle_response(self.request(reqwest::Method::GET, "/license_keys")).await
     }
 }
@@ -333,7 +348,11 @@ impl crate::Client {
         .await
     }
 
-    pub async fn license_key_instances_list(&self) -> crate::error::Result<serde_json::Value> {
+    pub async fn license_key_instances_list(
+        &self,
+    ) -> crate::error::Result<
+        crate::models::DefaultPageNumberPagination<crate::models::LicenseKeyInstance>,
+    > {
         crate::client::handle_response(self.request(reqwest::Method::GET, "/license_key_instances"))
             .await
     }
@@ -373,7 +392,10 @@ impl crate::Client {
         .await
     }
 
-    pub async fn customers_list(&self) -> crate::error::Result<serde_json::Value> {
+    pub async fn customers_list(
+        &self,
+    ) -> crate::error::Result<crate::models::DefaultPageNumberPagination<crate::models::Customer>>
+    {
         crate::client::handle_response(self.request(reqwest::Method::GET, "/customers")).await
     }
 
@@ -471,7 +493,9 @@ impl crate::Client {
     pub async fn customers_wallets_ledger_entries_list(
         &self,
         customer_id: &str,
-    ) -> crate::error::Result<serde_json::Value> {
+    ) -> crate::error::Result<
+        crate::models::DefaultPageNumberPagination<crate::models::CustomerWalletTransaction>,
+    > {
         crate::client::handle_response(self.request(
             reqwest::Method::GET,
             &format!("/customers/{}/wallets/ledger-entries", customer_id),
@@ -499,7 +523,11 @@ impl crate::Client {
         .await
     }
 
-    pub async fn refunds_list(&self) -> crate::error::Result<serde_json::Value> {
+    pub async fn refunds_list(
+        &self,
+    ) -> crate::error::Result<
+        crate::models::DefaultPageNumberPagination<crate::models::RefundListItem>,
+    > {
         crate::client::handle_response(self.request(reqwest::Method::GET, "/refunds")).await
     }
 }
@@ -515,13 +543,21 @@ impl crate::Client {
         .await
     }
 
-    pub async fn disputes_list(&self) -> crate::error::Result<serde_json::Value> {
+    pub async fn disputes_list(
+        &self,
+    ) -> crate::error::Result<
+        crate::models::DefaultPageNumberPagination<crate::models::DisputeListResponse>,
+    > {
         crate::client::handle_response(self.request(reqwest::Method::GET, "/disputes")).await
     }
 }
 
 impl crate::Client {
-    pub async fn payouts_list(&self) -> crate::error::Result<serde_json::Value> {
+    pub async fn payouts_list(
+        &self,
+    ) -> crate::error::Result<
+        crate::models::DefaultPageNumberPagination<crate::models::PayoutListResponse>,
+    > {
         crate::client::handle_response(self.request(reqwest::Method::GET, "/payouts")).await
     }
 }
@@ -543,7 +579,9 @@ impl crate::Client {
     pub async fn payouts_breakup_details_list(
         &self,
         payout_id: &str,
-    ) -> crate::error::Result<serde_json::Value> {
+    ) -> crate::error::Result<
+        crate::models::DefaultPageNumberPagination<crate::models::DetailListResponse>,
+    > {
         crate::client::handle_response(self.request(
             reqwest::Method::GET,
             &format!("/payouts/{}/breakup/details", payout_id),
@@ -594,7 +632,11 @@ impl crate::Client {
         .await
     }
 
-    pub async fn products_list(&self) -> crate::error::Result<serde_json::Value> {
+    pub async fn products_list(
+        &self,
+    ) -> crate::error::Result<
+        crate::models::DefaultPageNumberPagination<crate::models::ProductListResponse>,
+    > {
         crate::client::handle_response(self.request(reqwest::Method::GET, "/products")).await
     }
 
@@ -654,7 +696,11 @@ impl crate::Client {
         .await
     }
 
-    pub async fn products_short_links_list(&self) -> crate::error::Result<serde_json::Value> {
+    pub async fn products_short_links_list(
+        &self,
+    ) -> crate::error::Result<
+        crate::models::DefaultPageNumberPagination<crate::models::ShortLinkListResponse>,
+    > {
         crate::client::handle_response(self.request(reqwest::Method::GET, "/products/short_links"))
             .await
     }
@@ -705,7 +751,10 @@ impl crate::Client {
         .await
     }
 
-    pub async fn discounts_list(&self) -> crate::error::Result<serde_json::Value> {
+    pub async fn discounts_list(
+        &self,
+    ) -> crate::error::Result<crate::models::DefaultPageNumberPagination<crate::models::Discount>>
+    {
         crate::client::handle_response(self.request(reqwest::Method::GET, "/discounts")).await
     }
 
@@ -759,7 +808,11 @@ impl crate::Client {
         .await
     }
 
-    pub async fn addons_list(&self) -> crate::error::Result<serde_json::Value> {
+    pub async fn addons_list(
+        &self,
+    ) -> crate::error::Result<
+        crate::models::DefaultPageNumberPagination<crate::models::AddonResponse>,
+    > {
         crate::client::handle_response(self.request(reqwest::Method::GET, "/addons")).await
     }
 
@@ -848,7 +901,10 @@ impl crate::Client {
         .await
     }
 
-    pub async fn webhooks_list(&self) -> crate::error::Result<serde_json::Value> {
+    pub async fn webhooks_list(
+        &self,
+    ) -> crate::error::Result<crate::models::CursorPagePagination<crate::models::WebhookDetails>>
+    {
         crate::client::handle_response(self.request(reqwest::Method::GET, "/webhooks")).await
     }
 
@@ -911,7 +967,10 @@ impl crate::Client {
         .await
     }
 
-    pub async fn usage_events_list(&self) -> crate::error::Result<serde_json::Value> {
+    pub async fn usage_events_list(
+        &self,
+    ) -> crate::error::Result<crate::models::DefaultPageNumberPagination<crate::models::Event>>
+    {
         crate::client::handle_response(self.request(reqwest::Method::GET, "/events")).await
     }
 
@@ -943,7 +1002,10 @@ impl crate::Client {
         .await
     }
 
-    pub async fn meters_list(&self) -> crate::error::Result<serde_json::Value> {
+    pub async fn meters_list(
+        &self,
+    ) -> crate::error::Result<crate::models::DefaultPageNumberPagination<crate::models::Meter>>
+    {
         crate::client::handle_response(self.request(reqwest::Method::GET, "/meters")).await
     }
 
@@ -963,7 +1025,11 @@ impl crate::Client {
 }
 
 impl crate::Client {
-    pub async fn balances_retrieve_ledger(&self) -> crate::error::Result<serde_json::Value> {
+    pub async fn balances_retrieve_ledger(
+        &self,
+    ) -> crate::error::Result<
+        crate::models::DefaultPageNumberPagination<crate::models::BalanceLedgerEntry>,
+    > {
         crate::client::handle_response(self.request(reqwest::Method::GET, "/balances/ledger")).await
     }
 }
@@ -1006,7 +1072,11 @@ impl crate::Client {
         .await
     }
 
-    pub async fn credit_entitlements_list(&self) -> crate::error::Result<serde_json::Value> {
+    pub async fn credit_entitlements_list(
+        &self,
+    ) -> crate::error::Result<
+        crate::models::DefaultPageNumberPagination<crate::models::CreditEntitlement>,
+    > {
         crate::client::handle_response(self.request(reqwest::Method::GET, "/credit-entitlements"))
             .await
     }
@@ -1047,7 +1117,9 @@ impl crate::Client {
     pub async fn credit_entitlements_balances_list(
         &self,
         credit_entitlement_id: &str,
-    ) -> crate::error::Result<serde_json::Value> {
+    ) -> crate::error::Result<
+        crate::models::DefaultPageNumberPagination<crate::models::CustomerCreditBalance>,
+    > {
         crate::client::handle_response(self.request(
             reqwest::Method::GET,
             &format!("/credit-entitlements/{}/balances", credit_entitlement_id),
@@ -1078,7 +1150,9 @@ impl crate::Client {
         &self,
         credit_entitlement_id: &str,
         customer_id: &str,
-    ) -> crate::error::Result<serde_json::Value> {
+    ) -> crate::error::Result<
+        crate::models::DefaultPageNumberPagination<crate::models::BalanceListGrantsResponse>,
+    > {
         crate::client::handle_response(self.request(
             reqwest::Method::GET,
             &format!(
@@ -1093,7 +1167,9 @@ impl crate::Client {
         &self,
         credit_entitlement_id: &str,
         customer_id: &str,
-    ) -> crate::error::Result<serde_json::Value> {
+    ) -> crate::error::Result<
+        crate::models::DefaultPageNumberPagination<crate::models::CreditLedgerEntry>,
+    > {
         crate::client::handle_response(self.request(
             reqwest::Method::GET,
             &format!(
@@ -1139,7 +1215,10 @@ impl crate::Client {
         .await
     }
 
-    pub async fn entitlements_list(&self) -> crate::error::Result<serde_json::Value> {
+    pub async fn entitlements_list(
+        &self,
+    ) -> crate::error::Result<crate::models::DefaultPageNumberPagination<crate::models::Entitlement>>
+    {
         crate::client::handle_response(self.request(reqwest::Method::GET, "/entitlements")).await
     }
 
@@ -1180,7 +1259,9 @@ impl crate::Client {
     pub async fn entitlements_grants_list(
         &self,
         id: &str,
-    ) -> crate::error::Result<serde_json::Value> {
+    ) -> crate::error::Result<
+        crate::models::DefaultPageNumberPagination<crate::models::EntitlementGrant>,
+    > {
         crate::client::handle_response(self.request(
             reqwest::Method::GET,
             &format!("/entitlements/{}/grants", id),
@@ -1239,7 +1320,11 @@ impl crate::Client {
         .await
     }
 
-    pub async fn product_collections_list(&self) -> crate::error::Result<serde_json::Value> {
+    pub async fn product_collections_list(
+        &self,
+    ) -> crate::error::Result<
+        crate::models::DefaultPageNumberPagination<crate::models::ProductCollectionListResponse>,
+    > {
         crate::client::handle_response(self.request(reqwest::Method::GET, "/product-collections"))
             .await
     }

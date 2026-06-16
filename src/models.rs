@@ -3133,3 +3133,17 @@ pub struct ProductCollectionProduct {
 }
 
 pub type ItemCreateResponse = Vec<crate::models::ProductCollectionProduct>;
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub struct DefaultPageNumberPagination<T> {
+    pub items: Vec<T>,
+    #[serde(flatten)]
+    pub extra: std::collections::HashMap<String, serde_json::Value>,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub struct CursorPagePagination<T> {
+    pub data: Vec<T>,
+    #[serde(flatten)]
+    pub extra: std::collections::HashMap<String, serde_json::Value>,
+}
