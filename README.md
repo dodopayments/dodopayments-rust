@@ -6,11 +6,15 @@ The REST API documentation can be found on [docs.dodopayments.com](https://docs.
 
 ## Installation
 
-This crate is published from [dodopayments/dodopayments-rust](https://github.com/dodopayments/dodopayments-rust). Add it to your `Cargo.toml`:
+```sh
+cargo add dodopayments
+```
+
+Or add it to your `Cargo.toml` manually:
 
 ```toml
 [dependencies]
-dodopayments = { git = "https://github.com/dodopayments/dodopayments-rust" }
+dodopayments = "0.0.1"
 tokio = { version = "1", features = ["full"] }
 serde_json = "1"
 ```
