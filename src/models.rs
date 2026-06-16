@@ -149,7 +149,9 @@ pub struct CheckoutSessionPreviewResponse {
     pub product_cart: Vec<serde_json::Value>,
     pub total_price: i64,
     pub recurring_breakup: Option<serde_json::Value>,
+    pub tax_id_business_name: Option<String>,
     pub tax_id_err_msg: Option<String>,
+    pub tax_id_format_name: Option<String>,
     pub total_tax: Option<i64>,
 }
 
