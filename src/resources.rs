@@ -50,10 +50,15 @@ impl crate::Client {
 
     pub async fn payments_list(
         &self,
+        query: Option<&serde_json::Value>,
     ) -> crate::error::Result<
         crate::models::DefaultPageNumberPagination<crate::models::PaymentListResponse>,
     > {
-        crate::client::handle_response(self.request(reqwest::Method::GET, "/payments")).await
+        let mut request = self.request(reqwest::Method::GET, "/payments");
+        if let Some(query) = query {
+            request = request.query(query);
+        }
+        crate::client::handle_response(request).await
     }
 
     pub async fn payments_retrieve_line_items(
@@ -108,10 +113,15 @@ impl crate::Client {
 
     pub async fn subscriptions_list(
         &self,
+        query: Option<&serde_json::Value>,
     ) -> crate::error::Result<
         crate::models::DefaultPageNumberPagination<crate::models::SubscriptionListResponse>,
     > {
-        crate::client::handle_response(self.request(reqwest::Method::GET, "/subscriptions")).await
+        let mut request = self.request(reqwest::Method::GET, "/subscriptions");
+        if let Some(query) = query {
+            request = request.query(query);
+        }
+        crate::client::handle_response(request).await
     }
 
     pub async fn subscriptions_cancel_change_plan(
@@ -184,16 +194,20 @@ impl crate::Client {
     pub async fn subscriptions_retrieve_usage_history(
         &self,
         subscription_id: &str,
+        query: Option<&serde_json::Value>,
     ) -> crate::error::Result<
         crate::models::DefaultPageNumberPagination<
             crate::models::SubscriptionRetrieveUsageHistoryResponse,
         >,
     > {
-        crate::client::handle_response(self.request(
+        let mut request = self.request(
             reqwest::Method::GET,
             &format!("/subscriptions/{}/usage-history", subscription_id),
-        ))
-        .await
+        );
+        if let Some(query) = query {
+            request = request.query(query);
+        }
+        crate::client::handle_response(request).await
     }
 
     pub async fn subscriptions_update_payment_method(
@@ -315,9 +329,14 @@ impl crate::Client {
 
     pub async fn license_keys_list(
         &self,
+        query: Option<&serde_json::Value>,
     ) -> crate::error::Result<crate::models::DefaultPageNumberPagination<crate::models::LicenseKey>>
     {
-        crate::client::handle_response(self.request(reqwest::Method::GET, "/license_keys")).await
+        let mut request = self.request(reqwest::Method::GET, "/license_keys");
+        if let Some(query) = query {
+            request = request.query(query);
+        }
+        crate::client::handle_response(request).await
     }
 }
 
@@ -350,11 +369,15 @@ impl crate::Client {
 
     pub async fn license_key_instances_list(
         &self,
+        query: Option<&serde_json::Value>,
     ) -> crate::error::Result<
         crate::models::DefaultPageNumberPagination<crate::models::LicenseKeyInstance>,
     > {
-        crate::client::handle_response(self.request(reqwest::Method::GET, "/license_key_instances"))
-            .await
+        let mut request = self.request(reqwest::Method::GET, "/license_key_instances");
+        if let Some(query) = query {
+            request = request.query(query);
+        }
+        crate::client::handle_response(request).await
     }
 }
 
@@ -394,9 +417,14 @@ impl crate::Client {
 
     pub async fn customers_list(
         &self,
+        query: Option<&serde_json::Value>,
     ) -> crate::error::Result<crate::models::DefaultPageNumberPagination<crate::models::Customer>>
     {
-        crate::client::handle_response(self.request(reqwest::Method::GET, "/customers")).await
+        let mut request = self.request(reqwest::Method::GET, "/customers");
+        if let Some(query) = query {
+            request = request.query(query);
+        }
+        crate::client::handle_response(request).await
     }
 
     pub async fn customers_delete_payment_method(
@@ -452,12 +480,16 @@ impl crate::Client {
     pub async fn customers_customer_portal_create(
         &self,
         customer_id: &str,
+        query: Option<&serde_json::Value>,
     ) -> crate::error::Result<crate::models::CustomerPortalSession> {
-        crate::client::handle_response(self.request(
+        let mut request = self.request(
             reqwest::Method::POST,
             &format!("/customers/{}/customer-portal/session", customer_id),
-        ))
-        .await
+        );
+        if let Some(query) = query {
+            request = request.query(query);
+        }
+        crate::client::handle_response(request).await
     }
 }
 
@@ -493,14 +525,18 @@ impl crate::Client {
     pub async fn customers_wallets_ledger_entries_list(
         &self,
         customer_id: &str,
+        query: Option<&serde_json::Value>,
     ) -> crate::error::Result<
         crate::models::DefaultPageNumberPagination<crate::models::CustomerWalletTransaction>,
     > {
-        crate::client::handle_response(self.request(
+        let mut request = self.request(
             reqwest::Method::GET,
             &format!("/customers/{}/wallets/ledger-entries", customer_id),
-        ))
-        .await
+        );
+        if let Some(query) = query {
+            request = request.query(query);
+        }
+        crate::client::handle_response(request).await
     }
 }
 
@@ -525,10 +561,15 @@ impl crate::Client {
 
     pub async fn refunds_list(
         &self,
+        query: Option<&serde_json::Value>,
     ) -> crate::error::Result<
         crate::models::DefaultPageNumberPagination<crate::models::RefundListItem>,
     > {
-        crate::client::handle_response(self.request(reqwest::Method::GET, "/refunds")).await
+        let mut request = self.request(reqwest::Method::GET, "/refunds");
+        if let Some(query) = query {
+            request = request.query(query);
+        }
+        crate::client::handle_response(request).await
     }
 }
 
@@ -545,20 +586,30 @@ impl crate::Client {
 
     pub async fn disputes_list(
         &self,
+        query: Option<&serde_json::Value>,
     ) -> crate::error::Result<
         crate::models::DefaultPageNumberPagination<crate::models::DisputeListResponse>,
     > {
-        crate::client::handle_response(self.request(reqwest::Method::GET, "/disputes")).await
+        let mut request = self.request(reqwest::Method::GET, "/disputes");
+        if let Some(query) = query {
+            request = request.query(query);
+        }
+        crate::client::handle_response(request).await
     }
 }
 
 impl crate::Client {
     pub async fn payouts_list(
         &self,
+        query: Option<&serde_json::Value>,
     ) -> crate::error::Result<
         crate::models::DefaultPageNumberPagination<crate::models::PayoutListResponse>,
     > {
-        crate::client::handle_response(self.request(reqwest::Method::GET, "/payouts")).await
+        let mut request = self.request(reqwest::Method::GET, "/payouts");
+        if let Some(query) = query {
+            request = request.query(query);
+        }
+        crate::client::handle_response(request).await
     }
 }
 
@@ -579,14 +630,18 @@ impl crate::Client {
     pub async fn payouts_breakup_details_list(
         &self,
         payout_id: &str,
+        query: Option<&serde_json::Value>,
     ) -> crate::error::Result<
         crate::models::DefaultPageNumberPagination<crate::models::DetailListResponse>,
     > {
-        crate::client::handle_response(self.request(
+        let mut request = self.request(
             reqwest::Method::GET,
             &format!("/payouts/{}/breakup/details", payout_id),
-        ))
-        .await
+        );
+        if let Some(query) = query {
+            request = request.query(query);
+        }
+        crate::client::handle_response(request).await
     }
 
     pub async fn payouts_breakup_details_download_csv(
@@ -634,10 +689,15 @@ impl crate::Client {
 
     pub async fn products_list(
         &self,
+        query: Option<&serde_json::Value>,
     ) -> crate::error::Result<
         crate::models::DefaultPageNumberPagination<crate::models::ProductListResponse>,
     > {
-        crate::client::handle_response(self.request(reqwest::Method::GET, "/products")).await
+        let mut request = self.request(reqwest::Method::GET, "/products");
+        if let Some(query) = query {
+            request = request.query(query);
+        }
+        crate::client::handle_response(request).await
     }
 
     pub async fn products_archive(&self, id: &str) -> crate::error::Result<()> {
@@ -672,11 +732,13 @@ impl crate::Client {
     pub async fn products_images_update(
         &self,
         id: &str,
+        query: Option<&serde_json::Value>,
     ) -> crate::error::Result<crate::models::ImageUpdateResponse> {
-        crate::client::handle_response(
-            self.request(reqwest::Method::PUT, &format!("/products/{}/images", id)),
-        )
-        .await
+        let mut request = self.request(reqwest::Method::PUT, &format!("/products/{}/images", id));
+        if let Some(query) = query {
+            request = request.query(query);
+        }
+        crate::client::handle_response(request).await
     }
 }
 
@@ -698,11 +760,15 @@ impl crate::Client {
 
     pub async fn products_short_links_list(
         &self,
+        query: Option<&serde_json::Value>,
     ) -> crate::error::Result<
         crate::models::DefaultPageNumberPagination<crate::models::ShortLinkListResponse>,
     > {
-        crate::client::handle_response(self.request(reqwest::Method::GET, "/products/short_links"))
-            .await
+        let mut request = self.request(reqwest::Method::GET, "/products/short_links");
+        if let Some(query) = query {
+            request = request.query(query);
+        }
+        crate::client::handle_response(request).await
     }
 }
 
@@ -753,9 +819,14 @@ impl crate::Client {
 
     pub async fn discounts_list(
         &self,
+        query: Option<&serde_json::Value>,
     ) -> crate::error::Result<crate::models::DefaultPageNumberPagination<crate::models::Discount>>
     {
-        crate::client::handle_response(self.request(reqwest::Method::GET, "/discounts")).await
+        let mut request = self.request(reqwest::Method::GET, "/discounts");
+        if let Some(query) = query {
+            request = request.query(query);
+        }
+        crate::client::handle_response(request).await
     }
 
     pub async fn discounts_delete(&self, discount_id: &str) -> crate::error::Result<()> {
@@ -810,10 +881,15 @@ impl crate::Client {
 
     pub async fn addons_list(
         &self,
+        query: Option<&serde_json::Value>,
     ) -> crate::error::Result<
         crate::models::DefaultPageNumberPagination<crate::models::AddonResponse>,
     > {
-        crate::client::handle_response(self.request(reqwest::Method::GET, "/addons")).await
+        let mut request = self.request(reqwest::Method::GET, "/addons");
+        if let Some(query) = query {
+            request = request.query(query);
+        }
+        crate::client::handle_response(request).await
     }
 
     pub async fn addons_update_images(
@@ -903,9 +979,14 @@ impl crate::Client {
 
     pub async fn webhooks_list(
         &self,
+        query: Option<&serde_json::Value>,
     ) -> crate::error::Result<crate::models::CursorPagePagination<crate::models::WebhookDetails>>
     {
-        crate::client::handle_response(self.request(reqwest::Method::GET, "/webhooks")).await
+        let mut request = self.request(reqwest::Method::GET, "/webhooks");
+        if let Some(query) = query {
+            request = request.query(query);
+        }
+        crate::client::handle_response(request).await
     }
 
     pub async fn webhooks_delete(&self, webhook_id: &str) -> crate::error::Result<()> {
@@ -969,9 +1050,14 @@ impl crate::Client {
 
     pub async fn usage_events_list(
         &self,
+        query: Option<&serde_json::Value>,
     ) -> crate::error::Result<crate::models::DefaultPageNumberPagination<crate::models::Event>>
     {
-        crate::client::handle_response(self.request(reqwest::Method::GET, "/events")).await
+        let mut request = self.request(reqwest::Method::GET, "/events");
+        if let Some(query) = query {
+            request = request.query(query);
+        }
+        crate::client::handle_response(request).await
     }
 
     pub async fn usage_events_ingest(
@@ -1004,9 +1090,14 @@ impl crate::Client {
 
     pub async fn meters_list(
         &self,
+        query: Option<&serde_json::Value>,
     ) -> crate::error::Result<crate::models::DefaultPageNumberPagination<crate::models::Meter>>
     {
-        crate::client::handle_response(self.request(reqwest::Method::GET, "/meters")).await
+        let mut request = self.request(reqwest::Method::GET, "/meters");
+        if let Some(query) = query {
+            request = request.query(query);
+        }
+        crate::client::handle_response(request).await
     }
 
     pub async fn meters_archive(&self, id: &str) -> crate::error::Result<()> {
@@ -1027,10 +1118,15 @@ impl crate::Client {
 impl crate::Client {
     pub async fn balances_retrieve_ledger(
         &self,
+        query: Option<&serde_json::Value>,
     ) -> crate::error::Result<
         crate::models::DefaultPageNumberPagination<crate::models::BalanceLedgerEntry>,
     > {
-        crate::client::handle_response(self.request(reqwest::Method::GET, "/balances/ledger")).await
+        let mut request = self.request(reqwest::Method::GET, "/balances/ledger");
+        if let Some(query) = query {
+            request = request.query(query);
+        }
+        crate::client::handle_response(request).await
     }
 }
 
@@ -1074,11 +1170,15 @@ impl crate::Client {
 
     pub async fn credit_entitlements_list(
         &self,
+        query: Option<&serde_json::Value>,
     ) -> crate::error::Result<
         crate::models::DefaultPageNumberPagination<crate::models::CreditEntitlement>,
     > {
-        crate::client::handle_response(self.request(reqwest::Method::GET, "/credit-entitlements"))
-            .await
+        let mut request = self.request(reqwest::Method::GET, "/credit-entitlements");
+        if let Some(query) = query {
+            request = request.query(query);
+        }
+        crate::client::handle_response(request).await
     }
 
     pub async fn credit_entitlements_delete(&self, id: &str) -> crate::error::Result<()> {
@@ -1117,14 +1217,18 @@ impl crate::Client {
     pub async fn credit_entitlements_balances_list(
         &self,
         credit_entitlement_id: &str,
+        query: Option<&serde_json::Value>,
     ) -> crate::error::Result<
         crate::models::DefaultPageNumberPagination<crate::models::CustomerCreditBalance>,
     > {
-        crate::client::handle_response(self.request(
+        let mut request = self.request(
             reqwest::Method::GET,
             &format!("/credit-entitlements/{}/balances", credit_entitlement_id),
-        ))
-        .await
+        );
+        if let Some(query) = query {
+            request = request.query(query);
+        }
+        crate::client::handle_response(request).await
     }
 
     pub async fn credit_entitlements_balances_create_ledger_entry(
@@ -1150,34 +1254,42 @@ impl crate::Client {
         &self,
         credit_entitlement_id: &str,
         customer_id: &str,
+        query: Option<&serde_json::Value>,
     ) -> crate::error::Result<
         crate::models::DefaultPageNumberPagination<crate::models::BalanceListGrantsResponse>,
     > {
-        crate::client::handle_response(self.request(
+        let mut request = self.request(
             reqwest::Method::GET,
             &format!(
                 "/credit-entitlements/{}/balances/{}/grants",
                 credit_entitlement_id, customer_id
             ),
-        ))
-        .await
+        );
+        if let Some(query) = query {
+            request = request.query(query);
+        }
+        crate::client::handle_response(request).await
     }
 
     pub async fn credit_entitlements_balances_list_ledger(
         &self,
         credit_entitlement_id: &str,
         customer_id: &str,
+        query: Option<&serde_json::Value>,
     ) -> crate::error::Result<
         crate::models::DefaultPageNumberPagination<crate::models::CreditLedgerEntry>,
     > {
-        crate::client::handle_response(self.request(
+        let mut request = self.request(
             reqwest::Method::GET,
             &format!(
                 "/credit-entitlements/{}/balances/{}/ledger",
                 credit_entitlement_id, customer_id
             ),
-        ))
-        .await
+        );
+        if let Some(query) = query {
+            request = request.query(query);
+        }
+        crate::client::handle_response(request).await
     }
 }
 
@@ -1217,9 +1329,14 @@ impl crate::Client {
 
     pub async fn entitlements_list(
         &self,
+        query: Option<&serde_json::Value>,
     ) -> crate::error::Result<crate::models::DefaultPageNumberPagination<crate::models::Entitlement>>
     {
-        crate::client::handle_response(self.request(reqwest::Method::GET, "/entitlements")).await
+        let mut request = self.request(reqwest::Method::GET, "/entitlements");
+        if let Some(query) = query {
+            request = request.query(query);
+        }
+        crate::client::handle_response(request).await
     }
 
     pub async fn entitlements_delete(&self, id: &str) -> crate::error::Result<()> {
@@ -1259,14 +1376,18 @@ impl crate::Client {
     pub async fn entitlements_grants_list(
         &self,
         id: &str,
+        query: Option<&serde_json::Value>,
     ) -> crate::error::Result<
         crate::models::DefaultPageNumberPagination<crate::models::EntitlementGrant>,
     > {
-        crate::client::handle_response(self.request(
+        let mut request = self.request(
             reqwest::Method::GET,
             &format!("/entitlements/{}/grants", id),
-        ))
-        .await
+        );
+        if let Some(query) = query {
+            request = request.query(query);
+        }
+        crate::client::handle_response(request).await
     }
 
     pub async fn entitlements_grants_revoke(
@@ -1322,11 +1443,15 @@ impl crate::Client {
 
     pub async fn product_collections_list(
         &self,
+        query: Option<&serde_json::Value>,
     ) -> crate::error::Result<
         crate::models::DefaultPageNumberPagination<crate::models::ProductCollectionListResponse>,
     > {
-        crate::client::handle_response(self.request(reqwest::Method::GET, "/product-collections"))
-            .await
+        let mut request = self.request(reqwest::Method::GET, "/product-collections");
+        if let Some(query) = query {
+            request = request.query(query);
+        }
+        crate::client::handle_response(request).await
     }
 
     pub async fn product_collections_delete(&self, id: &str) -> crate::error::Result<()> {
@@ -1351,12 +1476,16 @@ impl crate::Client {
     pub async fn product_collections_update_images(
         &self,
         id: &str,
+        query: Option<&serde_json::Value>,
     ) -> crate::error::Result<crate::models::ProductCollectionUpdateImagesResponse> {
-        crate::client::handle_response(self.request(
+        let mut request = self.request(
             reqwest::Method::PUT,
             &format!("/product-collections/{}/images", id),
-        ))
-        .await
+        );
+        if let Some(query) = query {
+            request = request.query(query);
+        }
+        crate::client::handle_response(request).await
     }
 }
 

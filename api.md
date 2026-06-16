@@ -14,7 +14,7 @@ Methods:
 
 - <code title="post /payments">client.payments_create(body: &amp;serde_json::Value) -&gt; Result&lt;PaymentCreateResponse&gt;</code>
 - <code title="get /payments/{payment_id}">client.payments_retrieve(payment_id: &amp;str) -&gt; Result&lt;Payment&gt;</code>
-- <code title="get /payments">client.payments_list() -&gt; Result&lt;DefaultPageNumberPagination&lt;PaymentListResponse&gt;&gt;</code>
+- <code title="get /payments">client.payments_list(query: Option&lt;&amp;serde_json::Value&gt;) -&gt; Result&lt;DefaultPageNumberPagination&lt;PaymentListResponse&gt;&gt;</code>
 - <code title="get /payments/{payment_id}/line-items">client.payments_retrieve_line_items(payment_id: &amp;str) -&gt; Result&lt;PaymentRetrieveLineItemsResponse&gt;</code>
 
 # Subscriptions
@@ -24,13 +24,13 @@ Methods:
 - <code title="post /subscriptions">client.subscriptions_create(body: &amp;serde_json::Value) -&gt; Result&lt;SubscriptionCreateResponse&gt;</code>
 - <code title="get /subscriptions/{subscription_id}">client.subscriptions_retrieve(subscription_id: &amp;str) -&gt; Result&lt;Subscription&gt;</code>
 - <code title="patch /subscriptions/{subscription_id}">client.subscriptions_update(subscription_id: &amp;str, body: &amp;serde_json::Value) -&gt; Result&lt;Subscription&gt;</code>
-- <code title="get /subscriptions">client.subscriptions_list() -&gt; Result&lt;DefaultPageNumberPagination&lt;SubscriptionListResponse&gt;&gt;</code>
+- <code title="get /subscriptions">client.subscriptions_list(query: Option&lt;&amp;serde_json::Value&gt;) -&gt; Result&lt;DefaultPageNumberPagination&lt;SubscriptionListResponse&gt;&gt;</code>
 - <code title="delete /subscriptions/{subscription_id}/change-plan/scheduled">client.subscriptions_cancel_change_plan(subscription_id: &amp;str) -&gt; Result&lt;()&gt;</code>
 - <code title="post /subscriptions/{subscription_id}/change-plan">client.subscriptions_change_plan(subscription_id: &amp;str, body: &amp;serde_json::Value) -&gt; Result&lt;()&gt;</code>
 - <code title="post /subscriptions/{subscription_id}/charge">client.subscriptions_charge(subscription_id: &amp;str, body: &amp;serde_json::Value) -&gt; Result&lt;SubscriptionChargeResponse&gt;</code>
 - <code title="post /subscriptions/{subscription_id}/change-plan/preview">client.subscriptions_preview_change_plan(subscription_id: &amp;str, body: &amp;serde_json::Value) -&gt; Result&lt;SubscriptionPreviewChangePlanResponse&gt;</code>
 - <code title="get /subscriptions/{subscription_id}/credit-usage">client.subscriptions_retrieve_credit_usage(subscription_id: &amp;str) -&gt; Result&lt;SubscriptionRetrieveCreditUsageResponse&gt;</code>
-- <code title="get /subscriptions/{subscription_id}/usage-history">client.subscriptions_retrieve_usage_history(subscription_id: &amp;str) -&gt; Result&lt;DefaultPageNumberPagination&lt;SubscriptionRetrieveUsageHistoryResponse&gt;&gt;</code>
+- <code title="get /subscriptions/{subscription_id}/usage-history">client.subscriptions_retrieve_usage_history(subscription_id: &amp;str, query: Option&lt;&amp;serde_json::Value&gt;) -&gt; Result&lt;DefaultPageNumberPagination&lt;SubscriptionRetrieveUsageHistoryResponse&gt;&gt;</code>
 - <code title="post /subscriptions/{subscription_id}/update-payment-method">client.subscriptions_update_payment_method(subscription_id: &amp;str, body: &amp;serde_json::Value) -&gt; Result&lt;SubscriptionUpdatePaymentMethodResponse&gt;</code>
 
 # Invoices
@@ -58,7 +58,7 @@ Methods:
 - <code title="post /license_keys">client.license_keys_create(body: &amp;serde_json::Value) -&gt; Result&lt;LicenseKey&gt;</code>
 - <code title="get /license_keys/{id}">client.license_keys_retrieve(id: &amp;str) -&gt; Result&lt;LicenseKey&gt;</code>
 - <code title="patch /license_keys/{id}">client.license_keys_update(id: &amp;str, body: &amp;serde_json::Value) -&gt; Result&lt;LicenseKey&gt;</code>
-- <code title="get /license_keys">client.license_keys_list() -&gt; Result&lt;DefaultPageNumberPagination&lt;LicenseKey&gt;&gt;</code>
+- <code title="get /license_keys">client.license_keys_list(query: Option&lt;&amp;serde_json::Value&gt;) -&gt; Result&lt;DefaultPageNumberPagination&lt;LicenseKey&gt;&gt;</code>
 
 # LicenseKeyInstances
 
@@ -66,7 +66,7 @@ Methods:
 
 - <code title="get /license_key_instances/{id}">client.license_key_instances_retrieve(id: &amp;str) -&gt; Result&lt;LicenseKeyInstance&gt;</code>
 - <code title="patch /license_key_instances/{id}">client.license_key_instances_update(id: &amp;str, body: &amp;serde_json::Value) -&gt; Result&lt;LicenseKeyInstance&gt;</code>
-- <code title="get /license_key_instances">client.license_key_instances_list() -&gt; Result&lt;DefaultPageNumberPagination&lt;LicenseKeyInstance&gt;&gt;</code>
+- <code title="get /license_key_instances">client.license_key_instances_list(query: Option&lt;&amp;serde_json::Value&gt;) -&gt; Result&lt;DefaultPageNumberPagination&lt;LicenseKeyInstance&gt;&gt;</code>
 
 # Customers
 
@@ -75,7 +75,7 @@ Methods:
 - <code title="post /customers">client.customers_create(body: &amp;serde_json::Value) -&gt; Result&lt;Customer&gt;</code>
 - <code title="get /customers/{customer_id}">client.customers_retrieve(customer_id: &amp;str) -&gt; Result&lt;Customer&gt;</code>
 - <code title="patch /customers/{customer_id}">client.customers_update(customer_id: &amp;str, body: &amp;serde_json::Value) -&gt; Result&lt;Customer&gt;</code>
-- <code title="get /customers">client.customers_list() -&gt; Result&lt;DefaultPageNumberPagination&lt;Customer&gt;&gt;</code>
+- <code title="get /customers">client.customers_list(query: Option&lt;&amp;serde_json::Value&gt;) -&gt; Result&lt;DefaultPageNumberPagination&lt;Customer&gt;&gt;</code>
 - <code title="delete /customers/{customer_id}/payment-methods/{payment_method_id}">client.customers_delete_payment_method(customer_id: &amp;str, payment_method_id: &amp;str) -&gt; Result&lt;()&gt;</code>
 - <code title="get /customers/{customer_id}/credit-entitlements">client.customers_list_credit_entitlements(customer_id: &amp;str) -&gt; Result&lt;CustomerListCreditEntitlementsResponse&gt;</code>
 - <code title="get /customers/{customer_id}/entitlements">client.customers_list_entitlements(customer_id: &amp;str) -&gt; Result&lt;CustomerListEntitlementsResponse&gt;</code>
@@ -85,7 +85,7 @@ Methods:
 
 Methods:
 
-- <code title="post /customers/{customer_id}/customer-portal/session">client.customers_customer_portal_create(customer_id: &amp;str) -&gt; Result&lt;CustomerPortalSession&gt;</code>
+- <code title="post /customers/{customer_id}/customer-portal/session">client.customers_customer_portal_create(customer_id: &amp;str, query: Option&lt;&amp;serde_json::Value&gt;) -&gt; Result&lt;CustomerPortalSession&gt;</code>
 
 ## Wallets
 
@@ -98,7 +98,7 @@ Methods:
 Methods:
 
 - <code title="post /customers/{customer_id}/wallets/ledger-entries">client.customers_wallets_ledger_entries_create(customer_id: &amp;str, body: &amp;serde_json::Value) -&gt; Result&lt;CustomerWallet&gt;</code>
-- <code title="get /customers/{customer_id}/wallets/ledger-entries">client.customers_wallets_ledger_entries_list(customer_id: &amp;str) -&gt; Result&lt;DefaultPageNumberPagination&lt;CustomerWalletTransaction&gt;&gt;</code>
+- <code title="get /customers/{customer_id}/wallets/ledger-entries">client.customers_wallets_ledger_entries_list(customer_id: &amp;str, query: Option&lt;&amp;serde_json::Value&gt;) -&gt; Result&lt;DefaultPageNumberPagination&lt;CustomerWalletTransaction&gt;&gt;</code>
 
 # Refunds
 
@@ -106,20 +106,20 @@ Methods:
 
 - <code title="post /refunds">client.refunds_create(body: &amp;serde_json::Value) -&gt; Result&lt;Refund&gt;</code>
 - <code title="get /refunds/{refund_id}">client.refunds_retrieve(refund_id: &amp;str) -&gt; Result&lt;Refund&gt;</code>
-- <code title="get /refunds">client.refunds_list() -&gt; Result&lt;DefaultPageNumberPagination&lt;RefundListItem&gt;&gt;</code>
+- <code title="get /refunds">client.refunds_list(query: Option&lt;&amp;serde_json::Value&gt;) -&gt; Result&lt;DefaultPageNumberPagination&lt;RefundListItem&gt;&gt;</code>
 
 # Disputes
 
 Methods:
 
 - <code title="get /disputes/{dispute_id}">client.disputes_retrieve(dispute_id: &amp;str) -&gt; Result&lt;GetDispute&gt;</code>
-- <code title="get /disputes">client.disputes_list() -&gt; Result&lt;DefaultPageNumberPagination&lt;DisputeListResponse&gt;&gt;</code>
+- <code title="get /disputes">client.disputes_list(query: Option&lt;&amp;serde_json::Value&gt;) -&gt; Result&lt;DefaultPageNumberPagination&lt;DisputeListResponse&gt;&gt;</code>
 
 # Payouts
 
 Methods:
 
-- <code title="get /payouts">client.payouts_list() -&gt; Result&lt;DefaultPageNumberPagination&lt;PayoutListResponse&gt;&gt;</code>
+- <code title="get /payouts">client.payouts_list(query: Option&lt;&amp;serde_json::Value&gt;) -&gt; Result&lt;DefaultPageNumberPagination&lt;PayoutListResponse&gt;&gt;</code>
 
 ## Breakup
 
@@ -131,7 +131,7 @@ Methods:
 
 Methods:
 
-- <code title="get /payouts/{payout_id}/breakup/details">client.payouts_breakup_details_list(payout_id: &amp;str) -&gt; Result&lt;DefaultPageNumberPagination&lt;DetailListResponse&gt;&gt;</code>
+- <code title="get /payouts/{payout_id}/breakup/details">client.payouts_breakup_details_list(payout_id: &amp;str, query: Option&lt;&amp;serde_json::Value&gt;) -&gt; Result&lt;DefaultPageNumberPagination&lt;DetailListResponse&gt;&gt;</code>
 - <code title="get /payouts/{payout_id}/breakup/details/csv">client.payouts_breakup_details_download_csv(payout_id: &amp;str) -&gt; Result&lt;()&gt;</code>
 
 # Products
@@ -141,7 +141,7 @@ Methods:
 - <code title="post /products">client.products_create(body: &amp;serde_json::Value) -&gt; Result&lt;Product&gt;</code>
 - <code title="get /products/{id}">client.products_retrieve(id: &amp;str) -&gt; Result&lt;Product&gt;</code>
 - <code title="patch /products/{id}">client.products_update(id: &amp;str, body: &amp;serde_json::Value) -&gt; Result&lt;()&gt;</code>
-- <code title="get /products">client.products_list() -&gt; Result&lt;DefaultPageNumberPagination&lt;ProductListResponse&gt;&gt;</code>
+- <code title="get /products">client.products_list(query: Option&lt;&amp;serde_json::Value&gt;) -&gt; Result&lt;DefaultPageNumberPagination&lt;ProductListResponse&gt;&gt;</code>
 - <code title="delete /products/{id}">client.products_archive(id: &amp;str) -&gt; Result&lt;()&gt;</code>
 - <code title="post /products/{id}/unarchive">client.products_unarchive(id: &amp;str) -&gt; Result&lt;()&gt;</code>
 - <code title="put /products/{id}/files">client.products_update_files(id: &amp;str, body: &amp;serde_json::Value) -&gt; Result&lt;ProductUpdateFilesResponse&gt;</code>
@@ -150,14 +150,14 @@ Methods:
 
 Methods:
 
-- <code title="put /products/{id}/images">client.products_images_update(id: &amp;str) -&gt; Result&lt;ImageUpdateResponse&gt;</code>
+- <code title="put /products/{id}/images">client.products_images_update(id: &amp;str, query: Option&lt;&amp;serde_json::Value&gt;) -&gt; Result&lt;ImageUpdateResponse&gt;</code>
 
 ## ShortLinks
 
 Methods:
 
 - <code title="post /products/{id}/short_links">client.products_short_links_create(id: &amp;str, body: &amp;serde_json::Value) -&gt; Result&lt;ShortLinkCreateResponse&gt;</code>
-- <code title="get /products/short_links">client.products_short_links_list() -&gt; Result&lt;DefaultPageNumberPagination&lt;ShortLinkListResponse&gt;&gt;</code>
+- <code title="get /products/short_links">client.products_short_links_list(query: Option&lt;&amp;serde_json::Value&gt;) -&gt; Result&lt;DefaultPageNumberPagination&lt;ShortLinkListResponse&gt;&gt;</code>
 
 # Misc
 
@@ -172,7 +172,7 @@ Methods:
 - <code title="post /discounts">client.discounts_create(body: &amp;serde_json::Value) -&gt; Result&lt;Discount&gt;</code>
 - <code title="get /discounts/{discount_id}">client.discounts_retrieve(discount_id: &amp;str) -&gt; Result&lt;Discount&gt;</code>
 - <code title="patch /discounts/{discount_id}">client.discounts_update(discount_id: &amp;str, body: &amp;serde_json::Value) -&gt; Result&lt;Discount&gt;</code>
-- <code title="get /discounts">client.discounts_list() -&gt; Result&lt;DefaultPageNumberPagination&lt;Discount&gt;&gt;</code>
+- <code title="get /discounts">client.discounts_list(query: Option&lt;&amp;serde_json::Value&gt;) -&gt; Result&lt;DefaultPageNumberPagination&lt;Discount&gt;&gt;</code>
 - <code title="delete /discounts/{discount_id}">client.discounts_delete(discount_id: &amp;str) -&gt; Result&lt;()&gt;</code>
 - <code title="get /discounts/code/{code}">client.discounts_retrieve_by_code(code: &amp;str) -&gt; Result&lt;Discount&gt;</code>
 
@@ -183,7 +183,7 @@ Methods:
 - <code title="post /addons">client.addons_create(body: &amp;serde_json::Value) -&gt; Result&lt;AddonResponse&gt;</code>
 - <code title="get /addons/{id}">client.addons_retrieve(id: &amp;str) -&gt; Result&lt;AddonResponse&gt;</code>
 - <code title="patch /addons/{id}">client.addons_update(id: &amp;str, body: &amp;serde_json::Value) -&gt; Result&lt;AddonResponse&gt;</code>
-- <code title="get /addons">client.addons_list() -&gt; Result&lt;DefaultPageNumberPagination&lt;AddonResponse&gt;&gt;</code>
+- <code title="get /addons">client.addons_list(query: Option&lt;&amp;serde_json::Value&gt;) -&gt; Result&lt;DefaultPageNumberPagination&lt;AddonResponse&gt;&gt;</code>
 - <code title="put /addons/{id}/images">client.addons_update_images(id: &amp;str) -&gt; Result&lt;AddonUpdateImagesResponse&gt;</code>
 
 # Brands
@@ -203,7 +203,7 @@ Methods:
 - <code title="post /webhooks">client.webhooks_create(body: &amp;serde_json::Value) -&gt; Result&lt;WebhookDetails&gt;</code>
 - <code title="get /webhooks/{webhook_id}">client.webhooks_retrieve(webhook_id: &amp;str) -&gt; Result&lt;WebhookDetails&gt;</code>
 - <code title="patch /webhooks/{webhook_id}">client.webhooks_update(webhook_id: &amp;str, body: &amp;serde_json::Value) -&gt; Result&lt;WebhookDetails&gt;</code>
-- <code title="get /webhooks">client.webhooks_list() -&gt; Result&lt;CursorPagePagination&lt;WebhookDetails&gt;&gt;</code>
+- <code title="get /webhooks">client.webhooks_list(query: Option&lt;&amp;serde_json::Value&gt;) -&gt; Result&lt;CursorPagePagination&lt;WebhookDetails&gt;&gt;</code>
 - <code title="delete /webhooks/{webhook_id}">client.webhooks_delete(webhook_id: &amp;str) -&gt; Result&lt;()&gt;</code>
 - <code title="get /webhooks/{webhook_id}/secret">client.webhooks_retrieve_secret(webhook_id: &amp;str) -&gt; Result&lt;WebhookRetrieveSecretResponse&gt;</code>
 
@@ -219,7 +219,7 @@ Methods:
 Methods:
 
 - <code title="get /events/{event_id}">client.usage_events_retrieve(event_id: &amp;str) -&gt; Result&lt;Event&gt;</code>
-- <code title="get /events">client.usage_events_list() -&gt; Result&lt;DefaultPageNumberPagination&lt;Event&gt;&gt;</code>
+- <code title="get /events">client.usage_events_list(query: Option&lt;&amp;serde_json::Value&gt;) -&gt; Result&lt;DefaultPageNumberPagination&lt;Event&gt;&gt;</code>
 - <code title="post /events/ingest">client.usage_events_ingest(body: &amp;serde_json::Value) -&gt; Result&lt;UsageEventIngestResponse&gt;</code>
 
 # Meters
@@ -228,7 +228,7 @@ Methods:
 
 - <code title="post /meters">client.meters_create(body: &amp;serde_json::Value) -&gt; Result&lt;Meter&gt;</code>
 - <code title="get /meters/{id}">client.meters_retrieve(id: &amp;str) -&gt; Result&lt;Meter&gt;</code>
-- <code title="get /meters">client.meters_list() -&gt; Result&lt;DefaultPageNumberPagination&lt;Meter&gt;&gt;</code>
+- <code title="get /meters">client.meters_list(query: Option&lt;&amp;serde_json::Value&gt;) -&gt; Result&lt;DefaultPageNumberPagination&lt;Meter&gt;&gt;</code>
 - <code title="delete /meters/{id}">client.meters_archive(id: &amp;str) -&gt; Result&lt;()&gt;</code>
 - <code title="post /meters/{id}/unarchive">client.meters_unarchive(id: &amp;str) -&gt; Result&lt;()&gt;</code>
 
@@ -236,7 +236,7 @@ Methods:
 
 Methods:
 
-- <code title="get /balances/ledger">client.balances_retrieve_ledger() -&gt; Result&lt;DefaultPageNumberPagination&lt;BalanceLedgerEntry&gt;&gt;</code>
+- <code title="get /balances/ledger">client.balances_retrieve_ledger(query: Option&lt;&amp;serde_json::Value&gt;) -&gt; Result&lt;DefaultPageNumberPagination&lt;BalanceLedgerEntry&gt;&gt;</code>
 
 # CreditEntitlements
 
@@ -245,7 +245,7 @@ Methods:
 - <code title="post /credit-entitlements">client.credit_entitlements_create(body: &amp;serde_json::Value) -&gt; Result&lt;CreditEntitlement&gt;</code>
 - <code title="get /credit-entitlements/{id}">client.credit_entitlements_retrieve(id: &amp;str) -&gt; Result&lt;CreditEntitlement&gt;</code>
 - <code title="patch /credit-entitlements/{id}">client.credit_entitlements_update(id: &amp;str, body: &amp;serde_json::Value) -&gt; Result&lt;()&gt;</code>
-- <code title="get /credit-entitlements">client.credit_entitlements_list() -&gt; Result&lt;DefaultPageNumberPagination&lt;CreditEntitlement&gt;&gt;</code>
+- <code title="get /credit-entitlements">client.credit_entitlements_list(query: Option&lt;&amp;serde_json::Value&gt;) -&gt; Result&lt;DefaultPageNumberPagination&lt;CreditEntitlement&gt;&gt;</code>
 - <code title="delete /credit-entitlements/{id}">client.credit_entitlements_delete(id: &amp;str) -&gt; Result&lt;()&gt;</code>
 - <code title="post /credit-entitlements/{id}/undelete">client.credit_entitlements_undelete(id: &amp;str) -&gt; Result&lt;()&gt;</code>
 
@@ -254,10 +254,10 @@ Methods:
 Methods:
 
 - <code title="get /credit-entitlements/{credit_entitlement_id}/balances/{customer_id}">client.credit_entitlements_balances_retrieve(credit_entitlement_id: &amp;str, customer_id: &amp;str) -&gt; Result&lt;CustomerCreditBalance&gt;</code>
-- <code title="get /credit-entitlements/{credit_entitlement_id}/balances">client.credit_entitlements_balances_list(credit_entitlement_id: &amp;str) -&gt; Result&lt;DefaultPageNumberPagination&lt;CustomerCreditBalance&gt;&gt;</code>
+- <code title="get /credit-entitlements/{credit_entitlement_id}/balances">client.credit_entitlements_balances_list(credit_entitlement_id: &amp;str, query: Option&lt;&amp;serde_json::Value&gt;) -&gt; Result&lt;DefaultPageNumberPagination&lt;CustomerCreditBalance&gt;&gt;</code>
 - <code title="post /credit-entitlements/{credit_entitlement_id}/balances/{customer_id}/ledger-entries">client.credit_entitlements_balances_create_ledger_entry(credit_entitlement_id: &amp;str, customer_id: &amp;str, body: &amp;serde_json::Value) -&gt; Result&lt;BalanceCreateLedgerEntryResponse&gt;</code>
-- <code title="get /credit-entitlements/{credit_entitlement_id}/balances/{customer_id}/grants">client.credit_entitlements_balances_list_grants(credit_entitlement_id: &amp;str, customer_id: &amp;str) -&gt; Result&lt;DefaultPageNumberPagination&lt;BalanceListGrantsResponse&gt;&gt;</code>
-- <code title="get /credit-entitlements/{credit_entitlement_id}/balances/{customer_id}/ledger">client.credit_entitlements_balances_list_ledger(credit_entitlement_id: &amp;str, customer_id: &amp;str) -&gt; Result&lt;DefaultPageNumberPagination&lt;CreditLedgerEntry&gt;&gt;</code>
+- <code title="get /credit-entitlements/{credit_entitlement_id}/balances/{customer_id}/grants">client.credit_entitlements_balances_list_grants(credit_entitlement_id: &amp;str, customer_id: &amp;str, query: Option&lt;&amp;serde_json::Value&gt;) -&gt; Result&lt;DefaultPageNumberPagination&lt;BalanceListGrantsResponse&gt;&gt;</code>
+- <code title="get /credit-entitlements/{credit_entitlement_id}/balances/{customer_id}/ledger">client.credit_entitlements_balances_list_ledger(credit_entitlement_id: &amp;str, customer_id: &amp;str, query: Option&lt;&amp;serde_json::Value&gt;) -&gt; Result&lt;DefaultPageNumberPagination&lt;CreditLedgerEntry&gt;&gt;</code>
 
 # Entitlements
 
@@ -266,7 +266,7 @@ Methods:
 - <code title="post /entitlements">client.entitlements_create(body: &amp;serde_json::Value) -&gt; Result&lt;Entitlement&gt;</code>
 - <code title="get /entitlements/{id}">client.entitlements_retrieve(id: &amp;str) -&gt; Result&lt;Entitlement&gt;</code>
 - <code title="patch /entitlements/{id}">client.entitlements_update(id: &amp;str, body: &amp;serde_json::Value) -&gt; Result&lt;Entitlement&gt;</code>
-- <code title="get /entitlements">client.entitlements_list() -&gt; Result&lt;DefaultPageNumberPagination&lt;Entitlement&gt;&gt;</code>
+- <code title="get /entitlements">client.entitlements_list(query: Option&lt;&amp;serde_json::Value&gt;) -&gt; Result&lt;DefaultPageNumberPagination&lt;Entitlement&gt;&gt;</code>
 - <code title="delete /entitlements/{id}">client.entitlements_delete(id: &amp;str) -&gt; Result&lt;()&gt;</code>
 
 ## Files
@@ -280,7 +280,7 @@ Methods:
 
 Methods:
 
-- <code title="get /entitlements/{id}/grants">client.entitlements_grants_list(id: &amp;str) -&gt; Result&lt;DefaultPageNumberPagination&lt;EntitlementGrant&gt;&gt;</code>
+- <code title="get /entitlements/{id}/grants">client.entitlements_grants_list(id: &amp;str, query: Option&lt;&amp;serde_json::Value&gt;) -&gt; Result&lt;DefaultPageNumberPagination&lt;EntitlementGrant&gt;&gt;</code>
 - <code title="delete /entitlements/{id}/grants/{grant_id}">client.entitlements_grants_revoke(id: &amp;str, grant_id: &amp;str) -&gt; Result&lt;EntitlementGrant&gt;</code>
 
 # ProductCollections
@@ -290,10 +290,10 @@ Methods:
 - <code title="post /product-collections">client.product_collections_create(body: &amp;serde_json::Value) -&gt; Result&lt;ProductCollection&gt;</code>
 - <code title="get /product-collections/{id}">client.product_collections_retrieve(id: &amp;str) -&gt; Result&lt;ProductCollection&gt;</code>
 - <code title="patch /product-collections/{id}">client.product_collections_update(id: &amp;str, body: &amp;serde_json::Value) -&gt; Result&lt;()&gt;</code>
-- <code title="get /product-collections">client.product_collections_list() -&gt; Result&lt;DefaultPageNumberPagination&lt;ProductCollectionListResponse&gt;&gt;</code>
+- <code title="get /product-collections">client.product_collections_list(query: Option&lt;&amp;serde_json::Value&gt;) -&gt; Result&lt;DefaultPageNumberPagination&lt;ProductCollectionListResponse&gt;&gt;</code>
 - <code title="delete /product-collections/{id}">client.product_collections_delete(id: &amp;str) -&gt; Result&lt;()&gt;</code>
 - <code title="post /product-collections/{id}/unarchive">client.product_collections_unarchive(id: &amp;str) -&gt; Result&lt;ProductCollectionUnarchiveResponse&gt;</code>
-- <code title="put /product-collections/{id}/images">client.product_collections_update_images(id: &amp;str) -&gt; Result&lt;ProductCollectionUpdateImagesResponse&gt;</code>
+- <code title="put /product-collections/{id}/images">client.product_collections_update_images(id: &amp;str, query: Option&lt;&amp;serde_json::Value&gt;) -&gt; Result&lt;ProductCollectionUpdateImagesResponse&gt;</code>
 
 ## Groups
 

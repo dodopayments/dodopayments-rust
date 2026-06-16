@@ -54,7 +54,7 @@ async fn payments_list() {
     let Some(client) = make_client() else {
         return;
     };
-    let _ = client.payments_list().await;
+    let _ = client.payments_list(None).await;
 }
 
 #[tokio::test]
@@ -96,7 +96,7 @@ async fn subscriptions_list() {
     let Some(client) = make_client() else {
         return;
     };
-    let _ = client.subscriptions_list().await;
+    let _ = client.subscriptions_list(None).await;
 }
 
 #[tokio::test]
@@ -153,7 +153,7 @@ async fn subscriptions_retrieve_usage_history() {
         return;
     };
     let _ = client
-        .subscriptions_retrieve_usage_history("REPLACE_ME")
+        .subscriptions_retrieve_usage_history("REPLACE_ME", None)
         .await;
 }
 
@@ -246,7 +246,7 @@ async fn license_keys_list() {
     let Some(client) = make_client() else {
         return;
     };
-    let _ = client.license_keys_list().await;
+    let _ = client.license_keys_list(None).await;
 }
 
 #[tokio::test]
@@ -272,7 +272,7 @@ async fn license_key_instances_list() {
     let Some(client) = make_client() else {
         return;
     };
-    let _ = client.license_key_instances_list().await;
+    let _ = client.license_key_instances_list(None).await;
 }
 
 #[tokio::test]
@@ -306,7 +306,7 @@ async fn customers_list() {
     let Some(client) = make_client() else {
         return;
     };
-    let _ = client.customers_list().await;
+    let _ = client.customers_list(None).await;
 }
 
 #[tokio::test]
@@ -352,7 +352,9 @@ async fn customers_customer_portal_create() {
     let Some(client) = make_client() else {
         return;
     };
-    let _ = client.customers_customer_portal_create("REPLACE_ME").await;
+    let _ = client
+        .customers_customer_portal_create("REPLACE_ME", None)
+        .await;
 }
 
 #[tokio::test]
@@ -379,7 +381,7 @@ async fn customers_wallets_ledger_entries_list() {
         return;
     };
     let _ = client
-        .customers_wallets_ledger_entries_list("REPLACE_ME")
+        .customers_wallets_ledger_entries_list("REPLACE_ME", None)
         .await;
 }
 
@@ -404,7 +406,7 @@ async fn refunds_list() {
     let Some(client) = make_client() else {
         return;
     };
-    let _ = client.refunds_list().await;
+    let _ = client.refunds_list(None).await;
 }
 
 #[tokio::test]
@@ -420,7 +422,7 @@ async fn disputes_list() {
     let Some(client) = make_client() else {
         return;
     };
-    let _ = client.disputes_list().await;
+    let _ = client.disputes_list(None).await;
 }
 
 #[tokio::test]
@@ -428,7 +430,7 @@ async fn payouts_list() {
     let Some(client) = make_client() else {
         return;
     };
-    let _ = client.payouts_list().await;
+    let _ = client.payouts_list(None).await;
 }
 
 #[tokio::test]
@@ -444,7 +446,9 @@ async fn payouts_breakup_details_list() {
     let Some(client) = make_client() else {
         return;
     };
-    let _ = client.payouts_breakup_details_list("REPLACE_ME").await;
+    let _ = client
+        .payouts_breakup_details_list("REPLACE_ME", None)
+        .await;
 }
 
 #[tokio::test]
@@ -488,7 +492,7 @@ async fn products_list() {
     let Some(client) = make_client() else {
         return;
     };
-    let _ = client.products_list().await;
+    let _ = client.products_list(None).await;
 }
 
 #[tokio::test]
@@ -522,7 +526,7 @@ async fn products_images_update() {
     let Some(client) = make_client() else {
         return;
     };
-    let _ = client.products_images_update("REPLACE_ME").await;
+    let _ = client.products_images_update("REPLACE_ME", None).await;
 }
 
 #[tokio::test]
@@ -540,7 +544,7 @@ async fn products_short_links_list() {
     let Some(client) = make_client() else {
         return;
     };
-    let _ = client.products_short_links_list().await;
+    let _ = client.products_short_links_list(None).await;
 }
 
 #[tokio::test]
@@ -582,7 +586,7 @@ async fn discounts_list() {
     let Some(client) = make_client() else {
         return;
     };
-    let _ = client.discounts_list().await;
+    let _ = client.discounts_list(None).await;
 }
 
 #[tokio::test]
@@ -632,7 +636,7 @@ async fn addons_list() {
     let Some(client) = make_client() else {
         return;
     };
-    let _ = client.addons_list().await;
+    let _ = client.addons_list(None).await;
 }
 
 #[tokio::test]
@@ -716,7 +720,7 @@ async fn webhooks_list() {
     let Some(client) = make_client() else {
         return;
     };
-    let _ = client.webhooks_list().await;
+    let _ = client.webhooks_list(None).await;
 }
 
 #[tokio::test]
@@ -766,7 +770,7 @@ async fn usage_events_list() {
     let Some(client) = make_client() else {
         return;
     };
-    let _ = client.usage_events_list().await;
+    let _ = client.usage_events_list(None).await;
 }
 
 #[tokio::test]
@@ -798,7 +802,7 @@ async fn meters_list() {
     let Some(client) = make_client() else {
         return;
     };
-    let _ = client.meters_list().await;
+    let _ = client.meters_list(None).await;
 }
 
 #[tokio::test]
@@ -822,7 +826,7 @@ async fn balances_retrieve_ledger() {
     let Some(client) = make_client() else {
         return;
     };
-    let _ = client.balances_retrieve_ledger().await;
+    let _ = client.balances_retrieve_ledger(None).await;
 }
 
 #[tokio::test]
@@ -858,7 +862,7 @@ async fn credit_entitlements_list() {
     let Some(client) = make_client() else {
         return;
     };
-    let _ = client.credit_entitlements_list().await;
+    let _ = client.credit_entitlements_list(None).await;
 }
 
 #[tokio::test]
@@ -892,7 +896,9 @@ async fn credit_entitlements_balances_list() {
     let Some(client) = make_client() else {
         return;
     };
-    let _ = client.credit_entitlements_balances_list("REPLACE_ME").await;
+    let _ = client
+        .credit_entitlements_balances_list("REPLACE_ME", None)
+        .await;
 }
 
 #[tokio::test]
@@ -915,7 +921,7 @@ async fn credit_entitlements_balances_list_grants() {
         return;
     };
     let _ = client
-        .credit_entitlements_balances_list_grants("REPLACE_ME", "REPLACE_ME")
+        .credit_entitlements_balances_list_grants("REPLACE_ME", "REPLACE_ME", None)
         .await;
 }
 
@@ -925,7 +931,7 @@ async fn credit_entitlements_balances_list_ledger() {
         return;
     };
     let _ = client
-        .credit_entitlements_balances_list_ledger("REPLACE_ME", "REPLACE_ME")
+        .credit_entitlements_balances_list_ledger("REPLACE_ME", "REPLACE_ME", None)
         .await;
 }
 
@@ -960,7 +966,7 @@ async fn entitlements_list() {
     let Some(client) = make_client() else {
         return;
     };
-    let _ = client.entitlements_list().await;
+    let _ = client.entitlements_list(None).await;
 }
 
 #[tokio::test]
@@ -994,7 +1000,7 @@ async fn entitlements_grants_list() {
     let Some(client) = make_client() else {
         return;
     };
-    let _ = client.entitlements_grants_list("REPLACE_ME").await;
+    let _ = client.entitlements_grants_list("REPLACE_ME", None).await;
 }
 
 #[tokio::test]
@@ -1040,7 +1046,7 @@ async fn product_collections_list() {
     let Some(client) = make_client() else {
         return;
     };
-    let _ = client.product_collections_list().await;
+    let _ = client.product_collections_list(None).await;
 }
 
 #[tokio::test]
@@ -1064,7 +1070,9 @@ async fn product_collections_update_images() {
     let Some(client) = make_client() else {
         return;
     };
-    let _ = client.product_collections_update_images("REPLACE_ME").await;
+    let _ = client
+        .product_collections_update_images("REPLACE_ME", None)
+        .await;
 }
 
 #[tokio::test]

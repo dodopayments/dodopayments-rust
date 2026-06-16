@@ -48,7 +48,7 @@ let client = Client::new(ClientConfig::new("https://test.dodopayments.com").with
 List endpoints return a typed page whose `items` field holds the current page of results:
 
 ```rust
-let page = client.payments_list().await?;
+let page = client.payments_list(None).await?;
 for item in page.items {
     println!("{item:?}");
 }
