@@ -6,6 +6,7 @@ pub struct ClientConfig {
     pub base_url: String,
     pub api_key: Option<String>,
     pub timeout: Duration,
+    pub max_retries: u32,
 }
 
 impl ClientConfig {
@@ -14,6 +15,7 @@ impl ClientConfig {
             base_url: base_url.into(),
             api_key: None,
             timeout: Duration::from_secs(30),
+            max_retries: 2,
         }
     }
 
@@ -34,6 +36,11 @@ impl ClientConfig {
 
     pub fn with_timeout(mut self, timeout: Duration) -> Self {
         self.timeout = timeout;
+        self
+    }
+
+    pub fn with_max_retries(mut self, max_retries: u32) -> Self {
+        self.max_retries = max_retries;
         self
     }
 }
