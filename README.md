@@ -29,7 +29,7 @@ use dodopayments::Client;
 #[tokio::main]
 async fn main() -> dodopayments::Result<()> {
     let client = Client::from_env()?;
-    let result = client.checkout_sessions_create(&serde_json::json!({})).await?;
+    let result = client.checkout_sessions_create(&Default::default()).await?;
     println!("{result:?}");
     Ok(())
 }
@@ -77,7 +77,7 @@ loop {
 Every method returns a `dodopayments::Result<T>`. Failures are represented by the `dodopayments::Error` enum:
 
 ```rust
-match client.checkout_sessions_create(&serde_json::json!({})).await {
+match client.checkout_sessions_create(&Default::default()).await {
     Ok(result) => println!("{result:?}"),
     Err(dodopayments::Error::Api { status, message }) => {
         eprintln!("API returned {status}: {message}");

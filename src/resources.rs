@@ -1,7 +1,7 @@
 impl crate::Client {
     pub async fn checkout_sessions_create(
         &self,
-        body: &serde_json::Value,
+        body: &crate::models::CheckoutSessionsCreateParams,
     ) -> crate::error::Result<crate::models::CheckoutSessionResponse> {
         self.handle_response(self.request(reqwest::Method::POST, "/checkouts").json(body))
             .await
@@ -17,7 +17,7 @@ impl crate::Client {
 
     pub async fn checkout_sessions_preview(
         &self,
-        body: &serde_json::Value,
+        body: &crate::models::CheckoutSessionsCreateParams,
     ) -> crate::error::Result<crate::models::CheckoutSessionPreviewResponse> {
         self.handle_response(
             self.request(reqwest::Method::POST, "/checkouts/preview")
@@ -30,7 +30,7 @@ impl crate::Client {
 impl crate::Client {
     pub async fn payments_create(
         &self,
-        body: &serde_json::Value,
+        body: &crate::models::PaymentsCreateParams,
     ) -> crate::error::Result<crate::models::PaymentCreateResponse> {
         self.handle_response(self.request(reqwest::Method::POST, "/payments").json(body))
             .await
@@ -81,7 +81,7 @@ impl crate::Client {
 impl crate::Client {
     pub async fn subscriptions_create(
         &self,
-        body: &serde_json::Value,
+        body: &crate::models::SubscriptionsCreateParams,
     ) -> crate::error::Result<crate::models::SubscriptionCreateResponse> {
         self.handle_response(
             self.request(reqwest::Method::POST, "/subscriptions")
@@ -104,7 +104,7 @@ impl crate::Client {
     pub async fn subscriptions_update(
         &self,
         subscription_id: &str,
-        body: &serde_json::Value,
+        body: &crate::models::SubscriptionsUpdateParams,
     ) -> crate::error::Result<crate::models::Subscription> {
         self.handle_response(
             self.request(
@@ -150,7 +150,7 @@ impl crate::Client {
     pub async fn subscriptions_change_plan(
         &self,
         subscription_id: &str,
-        body: &serde_json::Value,
+        body: &crate::models::SubscriptionsChangePlanParams,
     ) -> crate::error::Result<()> {
         self.handle_empty(
             self.request(
@@ -165,7 +165,7 @@ impl crate::Client {
     pub async fn subscriptions_charge(
         &self,
         subscription_id: &str,
-        body: &serde_json::Value,
+        body: &crate::models::SubscriptionsChargeParams,
     ) -> crate::error::Result<crate::models::SubscriptionChargeResponse> {
         self.handle_response(
             self.request(
@@ -180,7 +180,7 @@ impl crate::Client {
     pub async fn subscriptions_preview_change_plan(
         &self,
         subscription_id: &str,
-        body: &serde_json::Value,
+        body: &crate::models::SubscriptionsChangePlanParams,
     ) -> crate::error::Result<crate::models::SubscriptionPreviewChangePlanResponse> {
         self.handle_response(
             self.request(
@@ -287,7 +287,7 @@ impl crate::Client {
 impl crate::Client {
     pub async fn licenses_activate(
         &self,
-        body: &serde_json::Value,
+        body: &crate::models::LicensesActivateParams,
     ) -> crate::error::Result<crate::models::LicenseActivateResponse> {
         self.handle_response(
             self.request(reqwest::Method::POST, "/licenses/activate")
@@ -296,7 +296,10 @@ impl crate::Client {
         .await
     }
 
-    pub async fn licenses_deactivate(&self, body: &serde_json::Value) -> crate::error::Result<()> {
+    pub async fn licenses_deactivate(
+        &self,
+        body: &crate::models::LicensesDeactivateParams,
+    ) -> crate::error::Result<()> {
         self.handle_empty(
             self.request(reqwest::Method::POST, "/licenses/deactivate")
                 .json(body),
@@ -306,7 +309,7 @@ impl crate::Client {
 
     pub async fn licenses_validate(
         &self,
-        body: &serde_json::Value,
+        body: &crate::models::LicensesValidateParams,
     ) -> crate::error::Result<crate::models::LicenseValidateResponse> {
         self.handle_response(
             self.request(reqwest::Method::POST, "/licenses/validate")
@@ -319,7 +322,7 @@ impl crate::Client {
 impl crate::Client {
     pub async fn license_keys_create(
         &self,
-        body: &serde_json::Value,
+        body: &crate::models::LicenseKeysCreateParams,
     ) -> crate::error::Result<crate::models::LicenseKey> {
         self.handle_response(
             self.request(reqwest::Method::POST, "/license_keys")
@@ -339,7 +342,7 @@ impl crate::Client {
     pub async fn license_keys_update(
         &self,
         id: &str,
-        body: &serde_json::Value,
+        body: &crate::models::LicenseKeysUpdateParams,
     ) -> crate::error::Result<crate::models::LicenseKey> {
         self.handle_response(
             self.request(reqwest::Method::PATCH, &format!("/license_keys/{}", id))
@@ -383,7 +386,7 @@ impl crate::Client {
     pub async fn license_key_instances_update(
         &self,
         id: &str,
-        body: &serde_json::Value,
+        body: &crate::models::LicenseKeyInstancesUpdateParams,
     ) -> crate::error::Result<crate::models::LicenseKeyInstance> {
         self.handle_response(
             self.request(
@@ -419,7 +422,7 @@ impl crate::Client {
 impl crate::Client {
     pub async fn customers_create(
         &self,
-        body: &serde_json::Value,
+        body: &crate::models::CustomersCreateParams,
     ) -> crate::error::Result<crate::models::Customer> {
         self.handle_response(self.request(reqwest::Method::POST, "/customers").json(body))
             .await
@@ -438,7 +441,7 @@ impl crate::Client {
     pub async fn customers_update(
         &self,
         customer_id: &str,
-        body: &serde_json::Value,
+        body: &crate::models::CustomersUpdateParams,
     ) -> crate::error::Result<crate::models::Customer> {
         self.handle_response(
             self.request(
@@ -556,7 +559,7 @@ impl crate::Client {
     pub async fn customers_wallets_ledger_entries_create(
         &self,
         customer_id: &str,
-        body: &serde_json::Value,
+        body: &crate::models::CustomersWalletsLedgerEntriesCreateParams,
     ) -> crate::error::Result<crate::models::CustomerWallet> {
         self.handle_response(
             self.request(
@@ -600,7 +603,7 @@ impl crate::Client {
 impl crate::Client {
     pub async fn refunds_create(
         &self,
-        body: &serde_json::Value,
+        body: &crate::models::RefundsCreateParams,
     ) -> crate::error::Result<crate::models::Refund> {
         self.handle_response(self.request(reqwest::Method::POST, "/refunds").json(body))
             .await
@@ -742,7 +745,7 @@ impl crate::Client {
 impl crate::Client {
     pub async fn products_create(
         &self,
-        body: &serde_json::Value,
+        body: &crate::models::ProductsCreateParams,
     ) -> crate::error::Result<crate::models::Product> {
         self.handle_response(self.request(reqwest::Method::POST, "/products").json(body))
             .await
@@ -759,7 +762,7 @@ impl crate::Client {
     pub async fn products_update(
         &self,
         id: &str,
-        body: &serde_json::Value,
+        body: &crate::models::ProductsUpdateParams,
     ) -> crate::error::Result<()> {
         self.handle_empty(
             self.request(reqwest::Method::PATCH, &format!("/products/{}", id))
@@ -804,7 +807,7 @@ impl crate::Client {
     pub async fn products_update_files(
         &self,
         id: &str,
-        body: &serde_json::Value,
+        body: &crate::models::ProductsUpdateFilesParams,
     ) -> crate::error::Result<crate::models::ProductUpdateFilesResponse> {
         self.handle_response(
             self.request(reqwest::Method::PUT, &format!("/products/{}/files", id))
@@ -832,7 +835,7 @@ impl crate::Client {
     pub async fn products_short_links_create(
         &self,
         id: &str,
-        body: &serde_json::Value,
+        body: &crate::models::ProductsShortLinksCreateParams,
     ) -> crate::error::Result<crate::models::ShortLinkCreateResponse> {
         self.handle_response(
             self.request(
@@ -877,7 +880,7 @@ impl crate::Client {
 impl crate::Client {
     pub async fn discounts_create(
         &self,
-        body: &serde_json::Value,
+        body: &crate::models::DiscountsCreateParams,
     ) -> crate::error::Result<crate::models::Discount> {
         self.handle_response(self.request(reqwest::Method::POST, "/discounts").json(body))
             .await
@@ -896,7 +899,7 @@ impl crate::Client {
     pub async fn discounts_update(
         &self,
         discount_id: &str,
-        body: &serde_json::Value,
+        body: &crate::models::DiscountsUpdateParams,
     ) -> crate::error::Result<crate::models::Discount> {
         self.handle_response(
             self.request(
@@ -953,7 +956,7 @@ impl crate::Client {
 impl crate::Client {
     pub async fn addons_create(
         &self,
-        body: &serde_json::Value,
+        body: &crate::models::AddonsCreateParams,
     ) -> crate::error::Result<crate::models::AddonResponse> {
         self.handle_response(self.request(reqwest::Method::POST, "/addons").json(body))
             .await
@@ -970,7 +973,7 @@ impl crate::Client {
     pub async fn addons_update(
         &self,
         id: &str,
-        body: &serde_json::Value,
+        body: &crate::models::AddonsUpdateParams,
     ) -> crate::error::Result<crate::models::AddonResponse> {
         self.handle_response(
             self.request(reqwest::Method::PATCH, &format!("/addons/{}", id))
@@ -1011,7 +1014,7 @@ impl crate::Client {
 impl crate::Client {
     pub async fn brands_create(
         &self,
-        body: &serde_json::Value,
+        body: &crate::models::BrandsCreateParams,
     ) -> crate::error::Result<crate::models::Brand> {
         self.handle_response(self.request(reqwest::Method::POST, "/brands").json(body))
             .await
@@ -1025,7 +1028,7 @@ impl crate::Client {
     pub async fn brands_update(
         &self,
         id: &str,
-        body: &serde_json::Value,
+        body: &crate::models::BrandsUpdateParams,
     ) -> crate::error::Result<crate::models::Brand> {
         self.handle_response(
             self.request(reqwest::Method::PATCH, &format!("/brands/{}", id))
@@ -1051,7 +1054,7 @@ impl crate::Client {
 impl crate::Client {
     pub async fn webhooks_create(
         &self,
-        body: &serde_json::Value,
+        body: &crate::models::WebhooksCreateParams,
     ) -> crate::error::Result<crate::models::WebhookDetails> {
         self.handle_response(self.request(reqwest::Method::POST, "/webhooks").json(body))
             .await
@@ -1070,7 +1073,7 @@ impl crate::Client {
     pub async fn webhooks_update(
         &self,
         webhook_id: &str,
-        body: &serde_json::Value,
+        body: &crate::models::WebhooksUpdateParams,
     ) -> crate::error::Result<crate::models::WebhookDetails> {
         self.handle_response(
             self.request(reqwest::Method::PATCH, &format!("/webhooks/{}", webhook_id))
@@ -1137,7 +1140,7 @@ impl crate::Client {
     pub async fn webhooks_headers_update(
         &self,
         webhook_id: &str,
-        body: &serde_json::Value,
+        body: &crate::models::WebhooksHeadersUpdateParams,
     ) -> crate::error::Result<()> {
         self.handle_empty(
             self.request(
@@ -1184,7 +1187,7 @@ impl crate::Client {
 
     pub async fn usage_events_ingest(
         &self,
-        body: &serde_json::Value,
+        body: &crate::models::UsageEventsIngestParams,
     ) -> crate::error::Result<crate::models::UsageEventIngestResponse> {
         self.handle_response(
             self.request(reqwest::Method::POST, "/events/ingest")
@@ -1197,7 +1200,7 @@ impl crate::Client {
 impl crate::Client {
     pub async fn meters_create(
         &self,
-        body: &serde_json::Value,
+        body: &crate::models::MetersCreateParams,
     ) -> crate::error::Result<crate::models::Meter> {
         self.handle_response(self.request(reqwest::Method::POST, "/meters").json(body))
             .await
@@ -1267,7 +1270,7 @@ impl crate::Client {
 impl crate::Client {
     pub async fn credit_entitlements_create(
         &self,
-        body: &serde_json::Value,
+        body: &crate::models::CreditEntitlementsCreateParams,
     ) -> crate::error::Result<crate::models::CreditEntitlement> {
         self.handle_response(
             self.request(reqwest::Method::POST, "/credit-entitlements")
@@ -1290,7 +1293,7 @@ impl crate::Client {
     pub async fn credit_entitlements_update(
         &self,
         id: &str,
-        body: &serde_json::Value,
+        body: &crate::models::CreditEntitlementsUpdateParams,
     ) -> crate::error::Result<()> {
         self.handle_empty(
             self.request(
@@ -1383,7 +1386,7 @@ impl crate::Client {
         &self,
         credit_entitlement_id: &str,
         customer_id: &str,
-        body: &serde_json::Value,
+        body: &crate::models::CreditEntitlementsBalancesCreateLedgerEntryParams,
     ) -> crate::error::Result<crate::models::BalanceCreateLedgerEntryResponse> {
         self.handle_response(
             self.request(
@@ -1468,7 +1471,7 @@ impl crate::Client {
 impl crate::Client {
     pub async fn entitlements_create(
         &self,
-        body: &serde_json::Value,
+        body: &crate::models::EntitlementsCreateParams,
     ) -> crate::error::Result<crate::models::Entitlement> {
         self.handle_response(
             self.request(reqwest::Method::POST, "/entitlements")
@@ -1488,7 +1491,7 @@ impl crate::Client {
     pub async fn entitlements_update(
         &self,
         id: &str,
-        body: &serde_json::Value,
+        body: &crate::models::EntitlementsUpdateParams,
     ) -> crate::error::Result<crate::models::Entitlement> {
         self.handle_response(
             self.request(reqwest::Method::PATCH, &format!("/entitlements/{}", id))
@@ -1588,7 +1591,7 @@ impl crate::Client {
 impl crate::Client {
     pub async fn product_collections_create(
         &self,
-        body: &serde_json::Value,
+        body: &crate::models::ProductCollectionsCreateParams,
     ) -> crate::error::Result<crate::models::ProductCollection> {
         self.handle_response(
             self.request(reqwest::Method::POST, "/product-collections")
@@ -1611,7 +1614,7 @@ impl crate::Client {
     pub async fn product_collections_update(
         &self,
         id: &str,
-        body: &serde_json::Value,
+        body: &crate::models::ProductCollectionsUpdateParams,
     ) -> crate::error::Result<()> {
         self.handle_empty(
             self.request(
@@ -1686,7 +1689,7 @@ impl crate::Client {
     pub async fn product_collections_groups_create(
         &self,
         id: &str,
-        body: &serde_json::Value,
+        body: &crate::models::ProductCollectionsGroupsCreateParams,
     ) -> crate::error::Result<crate::models::ProductCollectionGroupResponse> {
         self.handle_response(
             self.request(
@@ -1702,7 +1705,7 @@ impl crate::Client {
         &self,
         id: &str,
         group_id: &str,
-        body: &serde_json::Value,
+        body: &crate::models::ProductCollectionsGroupsUpdateParams,
     ) -> crate::error::Result<()> {
         self.handle_empty(
             self.request(
@@ -1732,7 +1735,7 @@ impl crate::Client {
         &self,
         id: &str,
         group_id: &str,
-        body: &serde_json::Value,
+        body: &crate::models::ProductCollectionsGroupsItemsCreateParams,
     ) -> crate::error::Result<crate::models::ItemCreateResponse> {
         self.handle_response(
             self.request(
@@ -1749,7 +1752,7 @@ impl crate::Client {
         id: &str,
         group_id: &str,
         item_id: &str,
-        body: &serde_json::Value,
+        body: &crate::models::ProductCollectionsGroupsItemsUpdateParams,
     ) -> crate::error::Result<()> {
         self.handle_empty(
             self.request(

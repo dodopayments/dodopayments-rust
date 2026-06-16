@@ -3245,3 +3245,837 @@ impl<T: serde::de::DeserializeOwned + Clone> CursorPagePagination<T> {
         })
     }
 }
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct CheckoutSessionsCreateParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub product_cart: Option<Vec<crate::models::ProductItemReq>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub allowed_payment_method_types: Option<Vec<crate::models::PaymentMethodTypes>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub billing_address: Option<Box<crate::models::CheckoutSessionBillingAddress>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub billing_currency: Option<Box<crate::models::Currency>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub cancel_url: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub confirm: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub custom_fields: Option<Vec<crate::models::CustomField>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub customer: Option<Box<crate::models::CustomerRequest>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub customer_business_name: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub customization: Option<Box<crate::models::CheckoutSessionCustomization>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub discount_code: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub discount_codes: Option<Vec<String>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub feature_flags: Option<Box<crate::models::CheckoutSessionFlags>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub force_3ds: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub mandate_min_amount_inr_paise: Option<i64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub metadata: Option<std::collections::HashMap<String, String>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub minimal_address: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub payment_method_id: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub product_collection_id: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub return_url: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub short_link: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub show_saved_payment_methods: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub subscription_data: Option<Box<crate::models::SubscriptionData>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub tax_id: Option<String>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct PaymentsCreateParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub billing: Option<Box<crate::models::BillingAddress>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub customer: Option<Box<crate::models::CustomerRequest>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub product_cart: Option<Vec<crate::models::OneTimeProductCartItem>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub adaptive_currency_fees_inclusive: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub allowed_payment_method_types: Option<Vec<crate::models::PaymentMethodTypes>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub billing_currency: Option<Box<crate::models::Currency>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub customer_business_name: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub discount_code: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub discount_codes: Option<Vec<String>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub force_3ds: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub metadata: Option<std::collections::HashMap<String, String>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub payment_link: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub payment_method_id: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub redirect_immediately: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub require_phone_number: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub return_url: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub short_link: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub show_saved_payment_methods: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub tax_id: Option<String>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct SubscriptionsCreateParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub billing: Option<Box<crate::models::BillingAddress>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub customer: Option<Box<crate::models::CustomerRequest>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub product_id: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub quantity: Option<i64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub addons: Option<Vec<crate::models::AttachAddon>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub allowed_payment_method_types: Option<Vec<crate::models::PaymentMethodTypes>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub billing_currency: Option<Box<crate::models::Currency>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub customer_business_name: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub discount_code: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub discount_codes: Option<Vec<String>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub force_3ds: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub mandate_min_amount_inr_paise: Option<i64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub metadata: Option<std::collections::HashMap<String, String>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub on_demand: Option<Box<crate::models::OnDemandSubscription>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub one_time_product_cart: Option<Vec<crate::models::OneTimeProductCartItem>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub payment_link: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub payment_method_id: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub redirect_immediately: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub require_phone_number: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub return_url: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub short_link: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub show_saved_payment_methods: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub tax_id: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub trial_period_days: Option<i64>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct SubscriptionsUpdateParamsCreditEntitlementCartItem {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub credit_entitlement_id: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub credits_amount: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub expires_after_days: Option<i64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub low_balance_threshold_percent: Option<i64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub max_rollover_count: Option<i64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub overage_enabled: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub overage_limit: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub rollover_enabled: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub rollover_percentage: Option<i64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub rollover_timeframe_count: Option<i64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub rollover_timeframe_interval: Option<Box<crate::models::TimeInterval>>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct SubscriptionsUpdateParamsDisableOnDemand {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub next_billing_date: Option<String>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct SubscriptionsUpdateParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub billing: Option<Box<crate::models::BillingAddress>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub cancel_at_next_billing_date: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub cancel_reason: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub cancellation_comment: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub cancellation_feedback: Option<Box<crate::models::CancellationFeedback>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub credit_entitlement_cart:
+        Option<Vec<crate::models::SubscriptionsUpdateParamsCreditEntitlementCartItem>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub customer_business_name: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub customer_name: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub disable_on_demand: Option<Box<crate::models::SubscriptionsUpdateParamsDisableOnDemand>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub metadata: Option<std::collections::HashMap<String, String>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub next_billing_date: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub status: Option<Box<crate::models::SubscriptionStatus>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub tax_id: Option<String>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct SubscriptionsChangePlanParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub product_id: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub proration_billing_mode: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub quantity: Option<i64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub adaptive_currency_fees_inclusive: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub addons: Option<Vec<crate::models::AttachAddon>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub discount_code: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub discount_codes: Option<Vec<String>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub effective_at: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub metadata: Option<std::collections::HashMap<String, String>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub on_payment_failure: Option<String>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct SubscriptionsChargeParamsCustomerBalanceConfig {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub allow_customer_credits_purchase: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub allow_customer_credits_usage: Option<bool>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct SubscriptionsChargeParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub product_price: Option<i64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub adaptive_currency_fees_inclusive: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub customer_balance_config:
+        Option<Box<crate::models::SubscriptionsChargeParamsCustomerBalanceConfig>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub metadata: Option<std::collections::HashMap<String, String>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub product_currency: Option<Box<crate::models::Currency>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub product_description: Option<String>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct LicensesActivateParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub license_key: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct LicensesDeactivateParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub license_key: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub license_key_instance_id: Option<String>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct LicensesValidateParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub license_key: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub license_key_instance_id: Option<String>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct LicenseKeysCreateParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub customer_id: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub key: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub product_id: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub activations_limit: Option<i64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub expires_at: Option<String>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct LicenseKeysUpdateParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub activations_limit: Option<i64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub disabled: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub expires_at: Option<String>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct LicenseKeyInstancesUpdateParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct CustomersCreateParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub email: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub metadata: Option<std::collections::HashMap<String, String>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub phone_number: Option<String>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct CustomersUpdateParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub email: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub metadata: Option<std::collections::HashMap<String, String>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub phone_number: Option<String>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct CustomersWalletsLedgerEntriesCreateParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub amount: Option<i64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub currency: Option<Box<crate::models::Currency>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub entry_type: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub idempotency_key: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub reason: Option<String>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct RefundsCreateParamsItemsItem {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub item_id: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub amount: Option<i64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub tax_inclusive: Option<bool>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct RefundsCreateParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub payment_id: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub items: Option<Vec<crate::models::RefundsCreateParamsItemsItem>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub metadata: Option<std::collections::HashMap<String, String>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub reason: Option<String>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct ProductsCreateParamsDigitalProductDelivery {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub external_url: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub instructions: Option<String>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct ProductsCreateParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub price: Option<Box<crate::models::Price>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub tax_category: Option<Box<crate::models::TaxCategory>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub addons: Option<Vec<String>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub brand_id: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub credit_entitlements: Option<Vec<crate::models::AttachCreditEntitlement>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub description: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub digital_product_delivery:
+        Option<Box<crate::models::ProductsCreateParamsDigitalProductDelivery>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub entitlements: Option<Vec<crate::models::AttachProductEntitlement>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub license_key_activation_message: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub license_key_activations_limit: Option<i64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub license_key_duration: Option<Box<crate::models::LicenseKeyDuration>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub license_key_enabled: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub metadata: Option<std::collections::HashMap<String, String>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub pricing_mode: Option<String>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct ProductsUpdateParamsDigitalProductDelivery {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub external_url: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub files: Option<Vec<String>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub instructions: Option<String>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct ProductsUpdateParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub addons: Option<Vec<String>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub brand_id: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub credit_entitlements: Option<Vec<crate::models::AttachCreditEntitlement>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub description: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub digital_product_delivery:
+        Option<Box<crate::models::ProductsUpdateParamsDigitalProductDelivery>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub entitlements: Option<Vec<crate::models::AttachProductEntitlement>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub image_id: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub license_key_activation_message: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub license_key_activations_limit: Option<i64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub license_key_duration: Option<Box<crate::models::LicenseKeyDuration>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub license_key_enabled: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub metadata: Option<std::collections::HashMap<String, String>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub price: Option<Box<crate::models::Price>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub pricing_mode: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub tax_category: Option<Box<crate::models::TaxCategory>>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct ProductsUpdateFilesParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub file_name: Option<String>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct ProductsShortLinksCreateParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub slug: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub static_checkout_params: Option<std::collections::HashMap<String, String>>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct DiscountsCreateParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub amount: Option<i64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub r#type: Option<Box<crate::models::DiscountType>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub code: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub expires_at: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub metadata: Option<std::collections::HashMap<String, String>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub preserve_on_plan_change: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub restricted_to: Option<Vec<String>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub subscription_cycles: Option<i64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub usage_limit: Option<i64>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct DiscountsUpdateParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub amount: Option<i64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub code: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub expires_at: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub metadata: Option<std::collections::HashMap<String, String>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub preserve_on_plan_change: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub restricted_to: Option<Vec<String>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub subscription_cycles: Option<i64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub r#type: Option<Box<crate::models::DiscountType>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub usage_limit: Option<i64>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct AddonsCreateParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub currency: Option<Box<crate::models::Currency>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub price: Option<i64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub tax_category: Option<Box<crate::models::TaxCategory>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub description: Option<String>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct AddonsUpdateParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub currency: Option<Box<crate::models::Currency>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub description: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub image_id: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub price: Option<i64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub tax_category: Option<Box<crate::models::TaxCategory>>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct BrandsCreateParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub description: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub statement_descriptor: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub support_email: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub url: Option<String>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct BrandsUpdateParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub description: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub image_id: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub statement_descriptor: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub support_email: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub url: Option<String>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct WebhooksCreateParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub url: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub description: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub disabled: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub filter_types: Option<Vec<crate::models::WebhookEventType>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub headers: Option<std::collections::HashMap<String, String>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub idempotency_key: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub metadata: Option<std::collections::HashMap<String, String>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub rate_limit: Option<i64>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct WebhooksUpdateParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub description: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub disabled: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub filter_types: Option<Vec<crate::models::WebhookEventType>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub metadata: Option<std::collections::HashMap<String, String>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub rate_limit: Option<i64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub url: Option<String>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct WebhooksHeadersUpdateParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub headers: Option<std::collections::HashMap<String, String>>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct UsageEventsIngestParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub events: Option<Vec<crate::models::EventInput>>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct MetersCreateParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub aggregation: Option<Box<crate::models::MeterAggregation>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub event_name: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub measurement_unit: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub description: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub filter: Option<Box<crate::models::MeterFilter>>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct CreditEntitlementsCreateParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub overage_enabled: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub precision: Option<i64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub rollover_enabled: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub unit: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub currency: Option<Box<crate::models::Currency>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub description: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub expires_after_days: Option<i64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub max_rollover_count: Option<i64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub overage_behavior: Option<Box<crate::models::CbbOverageBehavior>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub overage_limit: Option<i64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub price_per_unit: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub rollover_percentage: Option<i64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub rollover_timeframe_count: Option<i64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub rollover_timeframe_interval: Option<Box<crate::models::TimeInterval>>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct CreditEntitlementsUpdateParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub currency: Option<Box<crate::models::Currency>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub description: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub expires_after_days: Option<i64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub max_rollover_count: Option<i64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub overage_behavior: Option<Box<crate::models::CbbOverageBehavior>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub overage_enabled: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub overage_limit: Option<i64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub price_per_unit: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub rollover_enabled: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub rollover_percentage: Option<i64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub rollover_timeframe_count: Option<i64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub rollover_timeframe_interval: Option<Box<crate::models::TimeInterval>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub unit: Option<String>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct CreditEntitlementsBalancesCreateLedgerEntryParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub amount: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub entry_type: Option<Box<crate::models::LedgerEntryType>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub expires_at: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub idempotency_key: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub metadata: Option<std::collections::HashMap<String, String>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub reason: Option<String>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct EntitlementsCreateParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub integration_config: Option<Box<crate::models::IntegrationConfig>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub integration_type: Option<Box<crate::models::EntitlementIntegrationType>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub description: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub metadata: Option<std::collections::HashMap<String, String>>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct EntitlementsUpdateParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub description: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub integration_config: Option<Box<crate::models::IntegrationConfig>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub metadata: Option<std::collections::HashMap<String, String>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct ProductCollectionsCreateParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub groups: Option<Vec<crate::models::ProductCollectionGroupDetails>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub brand_id: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub description: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub effective_at_on_downgrade: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub effective_at_on_upgrade: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub on_payment_failure: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub proration_billing_mode_on_downgrade: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub proration_billing_mode_on_upgrade: Option<String>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct ProductCollectionsUpdateParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub brand_id: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub description: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub effective_at_on_downgrade: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub effective_at_on_upgrade: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub group_order: Option<Vec<String>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub image_id: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub on_payment_failure: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub proration_billing_mode_on_downgrade: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub proration_billing_mode_on_upgrade: Option<String>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct ProductCollectionsGroupsCreateParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub products: Option<Vec<crate::models::GroupProduct>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub group_name: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub status: Option<bool>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct ProductCollectionsGroupsUpdateParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub group_name: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub product_order: Option<Vec<String>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub status: Option<bool>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct ProductCollectionsGroupsItemsCreateParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub products: Option<Vec<crate::models::GroupProduct>>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct ProductCollectionsGroupsItemsUpdateParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub status: Option<bool>,
+}

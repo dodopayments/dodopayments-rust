@@ -10,9 +10,7 @@ async fn checkout_sessions_create() {
     let Some(client) = make_client() else {
         return;
     };
-    let _ = client
-        .checkout_sessions_create(&serde_json::json!({}))
-        .await;
+    let _ = client.checkout_sessions_create(&Default::default()).await;
 }
 
 #[tokio::test]
@@ -28,9 +26,7 @@ async fn checkout_sessions_preview() {
     let Some(client) = make_client() else {
         return;
     };
-    let _ = client
-        .checkout_sessions_preview(&serde_json::json!({}))
-        .await;
+    let _ = client.checkout_sessions_preview(&Default::default()).await;
 }
 
 #[tokio::test]
@@ -38,7 +34,7 @@ async fn payments_create() {
     let Some(client) = make_client() else {
         return;
     };
-    let _ = client.payments_create(&serde_json::json!({})).await;
+    let _ = client.payments_create(&Default::default()).await;
 }
 
 #[tokio::test]
@@ -70,7 +66,7 @@ async fn subscriptions_create() {
     let Some(client) = make_client() else {
         return;
     };
-    let _ = client.subscriptions_create(&serde_json::json!({})).await;
+    let _ = client.subscriptions_create(&Default::default()).await;
 }
 
 #[tokio::test]
@@ -87,7 +83,7 @@ async fn subscriptions_update() {
         return;
     };
     let _ = client
-        .subscriptions_update("REPLACE_ME", &serde_json::json!({}))
+        .subscriptions_update("REPLACE_ME", &Default::default())
         .await;
 }
 
@@ -113,7 +109,7 @@ async fn subscriptions_change_plan() {
         return;
     };
     let _ = client
-        .subscriptions_change_plan("REPLACE_ME", &serde_json::json!({}))
+        .subscriptions_change_plan("REPLACE_ME", &Default::default())
         .await;
 }
 
@@ -123,7 +119,7 @@ async fn subscriptions_charge() {
         return;
     };
     let _ = client
-        .subscriptions_charge("REPLACE_ME", &serde_json::json!({}))
+        .subscriptions_charge("REPLACE_ME", &Default::default())
         .await;
 }
 
@@ -133,7 +129,7 @@ async fn subscriptions_preview_change_plan() {
         return;
     };
     let _ = client
-        .subscriptions_preview_change_plan("REPLACE_ME", &serde_json::json!({}))
+        .subscriptions_preview_change_plan("REPLACE_ME", &Default::default())
         .await;
 }
 
@@ -196,7 +192,7 @@ async fn licenses_activate() {
     let Some(client) = make_client() else {
         return;
     };
-    let _ = client.licenses_activate(&serde_json::json!({})).await;
+    let _ = client.licenses_activate(&Default::default()).await;
 }
 
 #[tokio::test]
@@ -204,7 +200,7 @@ async fn licenses_deactivate() {
     let Some(client) = make_client() else {
         return;
     };
-    let _ = client.licenses_deactivate(&serde_json::json!({})).await;
+    let _ = client.licenses_deactivate(&Default::default()).await;
 }
 
 #[tokio::test]
@@ -212,7 +208,7 @@ async fn licenses_validate() {
     let Some(client) = make_client() else {
         return;
     };
-    let _ = client.licenses_validate(&serde_json::json!({})).await;
+    let _ = client.licenses_validate(&Default::default()).await;
 }
 
 #[tokio::test]
@@ -220,7 +216,7 @@ async fn license_keys_create() {
     let Some(client) = make_client() else {
         return;
     };
-    let _ = client.license_keys_create(&serde_json::json!({})).await;
+    let _ = client.license_keys_create(&Default::default()).await;
 }
 
 #[tokio::test]
@@ -237,7 +233,7 @@ async fn license_keys_update() {
         return;
     };
     let _ = client
-        .license_keys_update("REPLACE_ME", &serde_json::json!({}))
+        .license_keys_update("REPLACE_ME", &Default::default())
         .await;
 }
 
@@ -263,7 +259,7 @@ async fn license_key_instances_update() {
         return;
     };
     let _ = client
-        .license_key_instances_update("REPLACE_ME", &serde_json::json!({}))
+        .license_key_instances_update("REPLACE_ME", &Default::default())
         .await;
 }
 
@@ -280,7 +276,7 @@ async fn customers_create() {
     let Some(client) = make_client() else {
         return;
     };
-    let _ = client.customers_create(&serde_json::json!({})).await;
+    let _ = client.customers_create(&Default::default()).await;
 }
 
 #[tokio::test]
@@ -297,7 +293,7 @@ async fn customers_update() {
         return;
     };
     let _ = client
-        .customers_update("REPLACE_ME", &serde_json::json!({}))
+        .customers_update("REPLACE_ME", &Default::default())
         .await;
 }
 
@@ -371,7 +367,7 @@ async fn customers_wallets_ledger_entries_create() {
         return;
     };
     let _ = client
-        .customers_wallets_ledger_entries_create("REPLACE_ME", &serde_json::json!({}))
+        .customers_wallets_ledger_entries_create("REPLACE_ME", &Default::default())
         .await;
 }
 
@@ -390,7 +386,7 @@ async fn refunds_create() {
     let Some(client) = make_client() else {
         return;
     };
-    let _ = client.refunds_create(&serde_json::json!({})).await;
+    let _ = client.refunds_create(&Default::default()).await;
 }
 
 #[tokio::test]
@@ -466,7 +462,7 @@ async fn products_create() {
     let Some(client) = make_client() else {
         return;
     };
-    let _ = client.products_create(&serde_json::json!({})).await;
+    let _ = client.products_create(&Default::default()).await;
 }
 
 #[tokio::test]
@@ -483,7 +479,7 @@ async fn products_update() {
         return;
     };
     let _ = client
-        .products_update("REPLACE_ME", &serde_json::json!({}))
+        .products_update("REPLACE_ME", &Default::default())
         .await;
 }
 
@@ -517,7 +513,7 @@ async fn products_update_files() {
         return;
     };
     let _ = client
-        .products_update_files("REPLACE_ME", &serde_json::json!({}))
+        .products_update_files("REPLACE_ME", &Default::default())
         .await;
 }
 
@@ -535,7 +531,7 @@ async fn products_short_links_create() {
         return;
     };
     let _ = client
-        .products_short_links_create("REPLACE_ME", &serde_json::json!({}))
+        .products_short_links_create("REPLACE_ME", &Default::default())
         .await;
 }
 
@@ -560,7 +556,7 @@ async fn discounts_create() {
     let Some(client) = make_client() else {
         return;
     };
-    let _ = client.discounts_create(&serde_json::json!({})).await;
+    let _ = client.discounts_create(&Default::default()).await;
 }
 
 #[tokio::test]
@@ -577,7 +573,7 @@ async fn discounts_update() {
         return;
     };
     let _ = client
-        .discounts_update("REPLACE_ME", &serde_json::json!({}))
+        .discounts_update("REPLACE_ME", &Default::default())
         .await;
 }
 
@@ -610,7 +606,7 @@ async fn addons_create() {
     let Some(client) = make_client() else {
         return;
     };
-    let _ = client.addons_create(&serde_json::json!({})).await;
+    let _ = client.addons_create(&Default::default()).await;
 }
 
 #[tokio::test]
@@ -627,7 +623,7 @@ async fn addons_update() {
         return;
     };
     let _ = client
-        .addons_update("REPLACE_ME", &serde_json::json!({}))
+        .addons_update("REPLACE_ME", &Default::default())
         .await;
 }
 
@@ -652,7 +648,7 @@ async fn brands_create() {
     let Some(client) = make_client() else {
         return;
     };
-    let _ = client.brands_create(&serde_json::json!({})).await;
+    let _ = client.brands_create(&Default::default()).await;
 }
 
 #[tokio::test]
@@ -669,7 +665,7 @@ async fn brands_update() {
         return;
     };
     let _ = client
-        .brands_update("REPLACE_ME", &serde_json::json!({}))
+        .brands_update("REPLACE_ME", &Default::default())
         .await;
 }
 
@@ -694,7 +690,7 @@ async fn webhooks_create() {
     let Some(client) = make_client() else {
         return;
     };
-    let _ = client.webhooks_create(&serde_json::json!({})).await;
+    let _ = client.webhooks_create(&Default::default()).await;
 }
 
 #[tokio::test]
@@ -711,7 +707,7 @@ async fn webhooks_update() {
         return;
     };
     let _ = client
-        .webhooks_update("REPLACE_ME", &serde_json::json!({}))
+        .webhooks_update("REPLACE_ME", &Default::default())
         .await;
 }
 
@@ -753,7 +749,7 @@ async fn webhooks_headers_update() {
         return;
     };
     let _ = client
-        .webhooks_headers_update("REPLACE_ME", &serde_json::json!({}))
+        .webhooks_headers_update("REPLACE_ME", &Default::default())
         .await;
 }
 
@@ -778,7 +774,7 @@ async fn usage_events_ingest() {
     let Some(client) = make_client() else {
         return;
     };
-    let _ = client.usage_events_ingest(&serde_json::json!({})).await;
+    let _ = client.usage_events_ingest(&Default::default()).await;
 }
 
 #[tokio::test]
@@ -786,7 +782,7 @@ async fn meters_create() {
     let Some(client) = make_client() else {
         return;
     };
-    let _ = client.meters_create(&serde_json::json!({})).await;
+    let _ = client.meters_create(&Default::default()).await;
 }
 
 #[tokio::test]
@@ -834,9 +830,7 @@ async fn credit_entitlements_create() {
     let Some(client) = make_client() else {
         return;
     };
-    let _ = client
-        .credit_entitlements_create(&serde_json::json!({}))
-        .await;
+    let _ = client.credit_entitlements_create(&Default::default()).await;
 }
 
 #[tokio::test]
@@ -853,7 +847,7 @@ async fn credit_entitlements_update() {
         return;
     };
     let _ = client
-        .credit_entitlements_update("REPLACE_ME", &serde_json::json!({}))
+        .credit_entitlements_update("REPLACE_ME", &Default::default())
         .await;
 }
 
@@ -910,7 +904,7 @@ async fn credit_entitlements_balances_create_ledger_entry() {
         .credit_entitlements_balances_create_ledger_entry(
             "REPLACE_ME",
             "REPLACE_ME",
-            &serde_json::json!({}),
+            &Default::default(),
         )
         .await;
 }
@@ -940,7 +934,7 @@ async fn entitlements_create() {
     let Some(client) = make_client() else {
         return;
     };
-    let _ = client.entitlements_create(&serde_json::json!({})).await;
+    let _ = client.entitlements_create(&Default::default()).await;
 }
 
 #[tokio::test]
@@ -957,7 +951,7 @@ async fn entitlements_update() {
         return;
     };
     let _ = client
-        .entitlements_update("REPLACE_ME", &serde_json::json!({}))
+        .entitlements_update("REPLACE_ME", &Default::default())
         .await;
 }
 
@@ -1018,9 +1012,7 @@ async fn product_collections_create() {
     let Some(client) = make_client() else {
         return;
     };
-    let _ = client
-        .product_collections_create(&serde_json::json!({}))
-        .await;
+    let _ = client.product_collections_create(&Default::default()).await;
 }
 
 #[tokio::test]
@@ -1037,7 +1029,7 @@ async fn product_collections_update() {
         return;
     };
     let _ = client
-        .product_collections_update("REPLACE_ME", &serde_json::json!({}))
+        .product_collections_update("REPLACE_ME", &Default::default())
         .await;
 }
 
@@ -1081,7 +1073,7 @@ async fn product_collections_groups_create() {
         return;
     };
     let _ = client
-        .product_collections_groups_create("REPLACE_ME", &serde_json::json!({}))
+        .product_collections_groups_create("REPLACE_ME", &Default::default())
         .await;
 }
 
@@ -1091,7 +1083,7 @@ async fn product_collections_groups_update() {
         return;
     };
     let _ = client
-        .product_collections_groups_update("REPLACE_ME", "REPLACE_ME", &serde_json::json!({}))
+        .product_collections_groups_update("REPLACE_ME", "REPLACE_ME", &Default::default())
         .await;
 }
 
@@ -1111,7 +1103,7 @@ async fn product_collections_groups_items_create() {
         return;
     };
     let _ = client
-        .product_collections_groups_items_create("REPLACE_ME", "REPLACE_ME", &serde_json::json!({}))
+        .product_collections_groups_items_create("REPLACE_ME", "REPLACE_ME", &Default::default())
         .await;
 }
 
@@ -1125,7 +1117,7 @@ async fn product_collections_groups_items_update() {
             "REPLACE_ME",
             "REPLACE_ME",
             "REPLACE_ME",
-            &serde_json::json!({}),
+            &Default::default(),
         )
         .await;
 }
