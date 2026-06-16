@@ -2,6 +2,15 @@
 name = "dodopayments"
 version = "0.0.1"
 edition = "2021"
+description = "The official Rust library for the Dodo Payments API"
+authors = ["Dodo Payments <support@dodopayments.com>"]
+license = "Apache-2.0"
+repository = "https://github.com/dodopayments/dodopayments-rust"
+homepage = "https://docs.dodopayments.com/api-reference/introduction"
+documentation = "https://docs.rs/dodopayments"
+readme = "README.md"
+keywords = ["sdk", "api", "dodopayments"]
+categories = ["api-bindings"]
 
 [dependencies]
 reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"] }

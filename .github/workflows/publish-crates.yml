@@ -1,0 +1,23 @@
+# This workflow is triggered when a GitHub release is created.
+# It can also be run manually to re-publish to crates.io in case it failed for some reason.
+name: Publish crates.io
+on:
+  workflow_dispatch:
+
+  release:
+    types: [published]
+
+jobs:
+  publish:
+    name: publish
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - name: Publish to crates.io
+        run: cargo publish
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
