@@ -14,7 +14,7 @@ Or add it to your `Cargo.toml` manually:
 
 ```toml
 [dependencies]
-dodopayments = "1.105.0"
+dodopayments = "1.105.1"
 tokio = { version = "1", features = ["full"] }
 serde_json = "1"
 ```
