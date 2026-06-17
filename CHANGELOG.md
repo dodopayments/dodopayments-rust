@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.105.0](https://github.com/dodopayments/dodopayments-rust/compare/v0.1.0...v1.105.0) (2026-06-17)
+
+
+### Chores
+
+* align version with API line (1.105.0) ([f52def9](https://github.com/dodopayments/dodopayments-rust/commit/f52def92d73d72801a16708d10612e68bb734e98))
+
 ## [0.1.0](https://github.com/dodopayments/dodopayments-rust/compare/v0.0.1...v0.1.0) (2026-06-16)
 
 
