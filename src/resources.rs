@@ -253,8 +253,8 @@ impl crate::Client {
     pub async fn invoices_payments_retrieve(
         &self,
         payment_id: &str,
-    ) -> crate::error::Result<serde_json::Value> {
-        self.handle_response(self.request(
+    ) -> crate::error::Result<Vec<u8>> {
+        self.handle_bytes(self.request(
             reqwest::Method::GET,
             &format!("/invoices/payments/{}", payment_id),
         ))
@@ -264,8 +264,8 @@ impl crate::Client {
     pub async fn invoices_payments_retrieve_payout(
         &self,
         payout_id: &str,
-    ) -> crate::error::Result<serde_json::Value> {
-        self.handle_response(self.request(
+    ) -> crate::error::Result<Vec<u8>> {
+        self.handle_bytes(self.request(
             reqwest::Method::GET,
             &format!("/invoices/payouts/{}", payout_id),
         ))
@@ -275,8 +275,8 @@ impl crate::Client {
     pub async fn invoices_payments_retrieve_refund(
         &self,
         refund_id: &str,
-    ) -> crate::error::Result<serde_json::Value> {
-        self.handle_response(self.request(
+    ) -> crate::error::Result<Vec<u8>> {
+        self.handle_bytes(self.request(
             reqwest::Method::GET,
             &format!("/invoices/refunds/{}", refund_id),
         ))
