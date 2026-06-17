@@ -39,9 +39,9 @@ Methods:
 
 Methods:
 
-- <code title="get /invoices/payments/{payment_id}">client.invoices_payments_retrieve(payment_id: &amp;str) -&gt; Result&lt;serde_json::Value&gt;</code>
-- <code title="get /invoices/payouts/{payout_id}">client.invoices_payments_retrieve_payout(payout_id: &amp;str) -&gt; Result&lt;serde_json::Value&gt;</code>
-- <code title="get /invoices/refunds/{refund_id}">client.invoices_payments_retrieve_refund(refund_id: &amp;str) -&gt; Result&lt;serde_json::Value&gt;</code>
+- <code title="get /invoices/payments/{payment_id}">client.invoices_payments_retrieve(payment_id: &amp;str) -&gt; Result&lt;Vec&lt;u8&gt;&gt;</code>
+- <code title="get /invoices/payouts/{payout_id}">client.invoices_payments_retrieve_payout(payout_id: &amp;str) -&gt; Result&lt;Vec&lt;u8&gt;&gt;</code>
+- <code title="get /invoices/refunds/{refund_id}">client.invoices_payments_retrieve_refund(refund_id: &amp;str) -&gt; Result&lt;Vec&lt;u8&gt;&gt;</code>
 
 # Licenses
 

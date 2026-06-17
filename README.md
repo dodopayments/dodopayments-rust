@@ -14,7 +14,7 @@ Or add it to your `Cargo.toml` manually:
 
 ```toml
 [dependencies]
-dodopayments = "1.105.0"
+dodopayments = "1.105.1"
 tokio = { version = "1", features = ["full"] }
 serde_json = "1"
 ```
@@ -33,18 +33,44 @@ use dodopayments::Client;
 #[tokio::main]
 async fn main() -> dodopayments::Result<()> {
     let client = Client::from_env()?;
-    let result = client.checkout_sessions_create(&Default::default()).await?;
+    let result = client
+        .checkout_sessions_create(
+            &dodopayments::models::CheckoutSessionsCreateParams {
+                cancel_url: Some("cancel_url".to_string()),
+                confirm: Some(true),
+                customer_business_name: Some("customer_business_name".to_string()),
+                discount_code: Some("discount_code".to_string()),
+                discount_codes: Some(vec!["string".to_string()]),
+                force_3ds: Some(true),
+                mandate_min_amount_inr_paise: Some(0),
+                metadata: Some(std::collections::HashMap::from([("foo".to_string(), "string".to_string())])),
+                minimal_address: Some(true),
+                payment_method_id: Some("payment_method_id".to_string()),
+                product_collection_id: Some("product_collection_id".to_string()),
+                return_url: Some("return_url".to_string()),
+                short_link: Some(true),
+                show_saved_payment_methods: Some(true),
+                tax_id: Some("tax_id".to_string()),
+                ..Default::default()
+            },
+        )
+        .await?;
     println!("{result:?}");
     Ok(())
 }
 ```
 
-You can also configure the client explicitly:
+You can also configure the client explicitly. `Client::new` returns a `Result`, so unwrap it with `?` inside a function that returns `dodopayments::Result`:
 
 ```rust
 use dodopayments::{Client, ClientConfig};
 
-let client = Client::new(ClientConfig::new("https://live.dodopayments.com").with_api_key("My API Key"))?;
+#[tokio::main]
+async fn main() -> dodopayments::Result<()> {
+    let client = Client::new(ClientConfig::new("https://live.dodopayments.com").with_api_key("My API Key"))?;
+    println!("{}", client.base_url());
+    Ok(())
+}
 ```
 
 ### Pagination
@@ -81,8 +107,31 @@ loop {
 Every method returns a `dodopayments::Result<T>`. Failures are represented by the `dodopayments::Error` enum:
 
 ```rust
-match client.checkout_sessions_create(&Default::default()).await {
-    Ok(result) => println!("{result:?}"),
+let result = client
+    .checkout_sessions_create(
+        &dodopayments::models::CheckoutSessionsCreateParams {
+            cancel_url: Some("cancel_url".to_string()),
+            confirm: Some(true),
+            customer_business_name: Some("customer_business_name".to_string()),
+            discount_code: Some("discount_code".to_string()),
+            discount_codes: Some(vec!["string".to_string()]),
+            force_3ds: Some(true),
+            mandate_min_amount_inr_paise: Some(0),
+            metadata: Some(std::collections::HashMap::from([("foo".to_string(), "string".to_string())])),
+            minimal_address: Some(true),
+            payment_method_id: Some("payment_method_id".to_string()),
+            product_collection_id: Some("product_collection_id".to_string()),
+            return_url: Some("return_url".to_string()),
+            short_link: Some(true),
+            show_saved_payment_methods: Some(true),
+            tax_id: Some("tax_id".to_string()),
+            ..Default::default()
+        },
+    )
+    .await;
+
+match result {
+    Ok(value) => println!("{value:?}"),
     Err(dodopayments::Error::Api { status, message }) => {
         eprintln!("API returned {status}: {message}");
     }
@@ -112,7 +161,17 @@ let client = Client::new(
 | `live_mode` | https://live.dodopayments.com |
 | `test_mode` | https://test.dodopayments.com |
 
-Pass the desired base URL to `ClientConfig::new`.
+The default base URL is `https://live.dodopayments.com`. Select another environment with the `Environment` enum instead of hard-coding URLs:
+
+```rust
+use dodopayments::{Client, ClientConfig, Environment};
+
+let client = Client::new(
+    ClientConfig::from_environment(Environment::TestMode).with_api_key("My API Key"),
+)?;
+```
+
+`Client::from_env()` uses the default base URL unless you set the `DODO_PAYMENTS_BASE_URL` environment variable, e.g. `DODO_PAYMENTS_BASE_URL=https://test.dodopayments.com` to target `test_mode`.
 
 ### Undocumented endpoints
 
