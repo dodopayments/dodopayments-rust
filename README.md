@@ -14,7 +14,7 @@ Or add it to your `Cargo.toml` manually:
 
 ```toml
 [dependencies]
-dodopayments = "0.0.1"
+dodopayments = "1.105.0"
 tokio = { version = "1", features = ["full"] }
 serde_json = "1"
 ```
@@ -127,7 +127,7 @@ let response = client
 
 ## Semantic versioning
 
-This package follows [SemVer](https://semver.org/spec/v2.0.0.html) conventions. As the library is in initial development (`0.x`), minor version bumps may include breaking changes until `1.0.0`.
+This package follows [SemVer](https://semver.org/spec/v2.0.0.html) conventions. Breaking changes are released in major versions; minor and patch versions remain backwards compatible.
 
 We take backwards compatibility seriously and work hard to ensure that breaking changes are clearly communicated in the [changelog](CHANGELOG.md).
 
