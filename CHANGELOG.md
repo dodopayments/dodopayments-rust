@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.105.1](https://github.com/dodopayments/dodopayments-rust/compare/v1.105.0...v1.105.1) (2026-06-17)
+
+
+### Documentation
+
+* align generated README with released version 1.105.0 ([#6](https://github.com/dodopayments/dodopayments-rust/issues/6)) ([57d0638](https://github.com/dodopayments/dodopayments-rust/commit/57d063898cd46c585b511c5aca95b5d4813c8957))
+
 ## [1.105.0](https://github.com/dodopayments/dodopayments-rust/compare/v0.1.0...v1.105.0) (2026-06-17)
 
 
