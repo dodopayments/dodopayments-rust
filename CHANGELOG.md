@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.105.1](https://github.com/dodopayments/dodopayments-rust/compare/v1.105.0...v1.105.1) (2026-06-17)
+
+
+### Features
+
+* **rust:** test-mode Environment support and binary response decoding ([#14](https://github.com/dodopayments/dodopayments-rust/issues/14)) ([f289dc2](https://github.com/dodopayments/dodopayments-rust/commit/f289dc22e3fc3df1790194df38501f0e2e95c8a4))
+
+
+### Chores
+
+* release rust SDK as 1.105.1 ([b7583ca](https://github.com/dodopayments/dodopayments-rust/commit/b7583ca25c32f2490e3df3610569ca3057d57f38))
+
+
+### Documentation
+
+* align generated README with released version 1.105.0 ([#6](https://github.com/dodopayments/dodopayments-rust/issues/6)) ([57d0638](https://github.com/dodopayments/dodopayments-rust/commit/57d063898cd46c585b511c5aca95b5d4813c8957))
+
 ## [1.105.0](https://github.com/dodopayments/dodopayments-rust/compare/v0.1.0...v1.105.0) (2026-06-17)
 
 
