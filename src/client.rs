@@ -65,6 +65,18 @@ impl Client {
         Ok(())
     }
 
+    pub(crate) async fn handle_bytes(&self, req: reqwest::RequestBuilder) -> Result<Vec<u8>> {
+        let resp = self.send_with_retry(req).await?;
+        let status = resp.status();
+        if !status.is_success() {
+            return Err(Error::Api {
+                status: status.as_u16(),
+                message: resp.text().await.unwrap_or_default(),
+            });
+        }
+        Ok(resp.bytes().await?.to_vec())
+    }
+
     async fn send_with_retry(&self, builder: reqwest::RequestBuilder) -> Result<reqwest::Response> {
         let max_retries = self.config.max_retries;
         let mut attempt: u32 = 0;

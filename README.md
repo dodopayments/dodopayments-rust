@@ -60,12 +60,17 @@ async fn main() -> dodopayments::Result<()> {
 }
 ```
 
-You can also configure the client explicitly:
+You can also configure the client explicitly. `Client::new` returns a `Result`, so unwrap it with `?` inside a function that returns `dodopayments::Result`:
 
 ```rust
 use dodopayments::{Client, ClientConfig};
 
-let client = Client::new(ClientConfig::new("https://live.dodopayments.com").with_api_key("My API Key"))?;
+#[tokio::main]
+async fn main() -> dodopayments::Result<()> {
+    let client = Client::new(ClientConfig::new("https://live.dodopayments.com").with_api_key("My API Key"))?;
+    println!("{}", client.base_url());
+    Ok(())
+}
 ```
 
 ### Pagination
@@ -156,7 +161,17 @@ let client = Client::new(
 | `live_mode` | https://live.dodopayments.com |
 | `test_mode` | https://test.dodopayments.com |
 
-Pass the desired base URL to `ClientConfig::new`.
+The default base URL is `https://live.dodopayments.com`. Select another environment with the `Environment` enum instead of hard-coding URLs:
+
+```rust
+use dodopayments::{Client, ClientConfig, Environment};
+
+let client = Client::new(
+    ClientConfig::from_environment(Environment::TestMode).with_api_key("My API Key"),
+)?;
+```
+
+`Client::from_env()` uses the default base URL unless you set the `DODO_PAYMENTS_BASE_URL` environment variable, e.g. `DODO_PAYMENTS_BASE_URL=https://test.dodopayments.com` to target `test_mode`.
 
 ### Undocumented endpoints
 
