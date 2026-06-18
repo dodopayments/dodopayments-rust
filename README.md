@@ -34,8 +34,9 @@ use dodopayments::Client;
 async fn main() -> dodopayments::Result<()> {
     let client = Client::from_env()?;
     let result = client
-        .checkout_sessions_create(
-            &dodopayments::models::CheckoutSessionsCreateParams {
+        .checkout_sessions()
+        .create()
+        .body(dodopayments::models::CheckoutSessionsCreateParams {
                 cancel_url: Some("cancel_url".to_string()),
                 confirm: Some(true),
                 customer_business_name: Some("customer_business_name".to_string()),
@@ -52,8 +53,7 @@ async fn main() -> dodopayments::Result<()> {
                 show_saved_payment_methods: Some(true),
                 tax_id: Some("tax_id".to_string()),
                 ..Default::default()
-            },
-        )
+            })
         .await?;
     println!("{result:?}");
     Ok(())
@@ -80,7 +80,11 @@ List endpoints return a typed page whose `items` field holds the current page of
 ```rust
 use futures::StreamExt;
 
-let mut items = Box::pin(client.payments_list(None).await?.into_stream());
+let mut items = Box::pin(client
+    .payments()
+    .list()
+    .query(serde_json::json!({}))
+    .await?.into_stream());
 while let Some(item) = items.next().await {
     let item = item?;
     println!("{item:?}");
@@ -90,7 +94,11 @@ while let Some(item) = items.next().await {
 Or advance one page at a time:
 
 ```rust
-let mut page = client.payments_list(None).await?;
+let mut page = client
+    .payments()
+    .list()
+    .query(serde_json::json!({}))
+    .await?;
 loop {
     for item in &page.items {
         println!("{item:?}");
@@ -108,8 +116,9 @@ Every method returns a `dodopayments::Result<T>`. Failures are represented by th
 
 ```rust
 let result = client
-    .checkout_sessions_create(
-        &dodopayments::models::CheckoutSessionsCreateParams {
+    .checkout_sessions()
+    .create()
+    .body(dodopayments::models::CheckoutSessionsCreateParams {
             cancel_url: Some("cancel_url".to_string()),
             confirm: Some(true),
             customer_business_name: Some("customer_business_name".to_string()),
@@ -126,8 +135,7 @@ let result = client
             show_saved_payment_methods: Some(true),
             tax_id: Some("tax_id".to_string()),
             ..Default::default()
-        },
-    )
+        })
     .await;
 
 match result {
@@ -171,7 +179,15 @@ let client = Client::new(
 )?;
 ```
 
-`Client::from_env()` uses the default base URL unless you set the `DODO_PAYMENTS_BASE_URL` environment variable, e.g. `DODO_PAYMENTS_BASE_URL=https://test.dodopayments.com` to target `test_mode`.
+To keep reading the API key from `DODO_PAYMENTS_API_KEY` via `from_env()` while targeting a non-default environment, override it on the config:
+
+```rust
+use dodopayments::{Client, ClientConfig, Environment};
+
+let client = Client::new(ClientConfig::from_env()?.with_environment(Environment::TestMode))?;
+```
+
+Alternatively, `Client::from_env()` uses the default base URL unless you set the `DODO_PAYMENTS_BASE_URL` environment variable, e.g. `DODO_PAYMENTS_BASE_URL=https://test.dodopayments.com` to target `test_mode`.
 
 ### Undocumented endpoints
 
