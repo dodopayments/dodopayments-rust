@@ -17,4 +17,13 @@ pub enum Error {
 
     #[error("configuration error: {0}")]
     Config(String),
+
+    #[error("missing required path parameter `{param}` for operation `{operation}`")]
+    MissingPathParam {
+        operation: &'static str,
+        param: &'static str,
+    },
+
+    #[error("missing required body for operation `{operation}`")]
+    MissingBody { operation: &'static str },
 }
