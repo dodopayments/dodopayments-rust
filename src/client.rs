@@ -65,6 +65,18 @@ impl Client {
         Ok(())
     }
 
+    pub(crate) async fn handle_bytes(&self, req: reqwest::RequestBuilder) -> Result<Vec<u8>> {
+        let resp = self.send_with_retry(req).await?;
+        let status = resp.status();
+        if !status.is_success() {
+            return Err(Error::Api {
+                status: status.as_u16(),
+                message: resp.text().await.unwrap_or_default(),
+            });
+        }
+        Ok(resp.bytes().await?.to_vec())
+    }
+
     async fn send_with_retry(&self, builder: reqwest::RequestBuilder) -> Result<reqwest::Response> {
         let max_retries = self.config.max_retries;
         let mut attempt: u32 = 0;
@@ -191,7 +203,9 @@ impl PaginationContext {
                     .as_i64()
                     .or_else(|| value.as_str().and_then(|text| text.parse().ok()))
             })
-            .unwrap_or(1)
+            // Page numbers are 0-indexed: an omitted page param is the first page (0), so
+            // get_next_page advances to 1. Defaulting to 1 here would skip the second page.
+            .unwrap_or(0)
     }
 
     pub(crate) fn with_param(&self, name: &str, value: serde_json::Value) -> Self {
@@ -278,5 +292,25 @@ mod tests {
     fn retry_after_seconds_is_honored() {
         let map = headers(&[("retry-after", "3")]);
         assert_eq!(parse_retry_after(&map), Some(Duration::from_secs(3)));
+    }
+
+    #[test]
+    fn missing_page_number_defaults_to_zero() {
+        let client = Client::new(ClientConfig::new("https://example.invalid")).unwrap();
+        let ctx = PaginationContext::new(
+            client.clone(),
+            reqwest::Method::GET,
+            "/items".to_string(),
+            serde_json::json!({ "page_size": 10 }),
+        );
+        assert_eq!(ctx.int_param("page_number"), 0);
+
+        let ctx = PaginationContext::new(
+            client,
+            reqwest::Method::GET,
+            "/items".to_string(),
+            serde_json::json!({ "page_number": 2 }),
+        );
+        assert_eq!(ctx.int_param("page_number"), 2);
     }
 }
