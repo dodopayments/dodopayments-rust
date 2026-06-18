@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.105.2](https://github.com/dodopayments/dodopayments-rust/compare/v1.105.1...v1.105.2) (2026-06-18)
+
+
+### ⚠ BREAKING CHANGES
+
+* **rust:** flat positional methods (e.g. client.credit_entitlements_balances_create_ledger_entry(..)) are replaced by the fluent builder API; all call sites must migrate.
+
+### Features
+
+* **rust:** fluent resource-chain builder API ([53cba1f](https://github.com/dodopayments/dodopayments-rust/commit/53cba1f65dcfa27c2cf99ac76e9a4520c684bda9))
+
 ## [1.105.1](https://github.com/dodopayments/dodopayments-rust/compare/v1.105.0...v1.105.1) (2026-06-17)
 
 
