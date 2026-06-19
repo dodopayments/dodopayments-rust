@@ -3207,9 +3207,6 @@ impl<T: serde::de::DeserializeOwned> CursorPagePagination<T> {
         if self.data.is_empty() {
             return Ok(None);
         }
-        if let Some(false) = self.extra.get("done").and_then(|value| value.as_bool()) {
-            return Ok(None);
-        }
         let Some(cursor) = self
             .extra
             .get("iterator")
