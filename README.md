@@ -14,7 +14,7 @@ Or add it to your `Cargo.toml` manually:
 
 ```toml
 [dependencies]
-dodopayments = "1.105.2"
+dodopayments = "1.106.0"
 tokio = { version = "1", features = ["full"] }
 serde_json = "1"
 ```
@@ -37,21 +37,13 @@ async fn main() -> dodopayments::Result<()> {
         .checkout_sessions()
         .create()
         .body(dodopayments::models::CheckoutSessionsCreateParams {
-                cancel_url: Some("cancel_url".to_string()),
-                confirm: Some(true),
-                customer_business_name: Some("customer_business_name".to_string()),
-                discount_code: Some("discount_code".to_string()),
-                discount_codes: Some(vec!["string".to_string()]),
-                force_3ds: Some(true),
-                mandate_min_amount_inr_paise: Some(0),
-                metadata: Some(std::collections::HashMap::from([("foo".to_string(), "string".to_string())])),
-                minimal_address: Some(true),
-                payment_method_id: Some("payment_method_id".to_string()),
-                product_collection_id: Some("product_collection_id".to_string()),
-                return_url: Some("return_url".to_string()),
-                short_link: Some(true),
-                show_saved_payment_methods: Some(true),
-                tax_id: Some("tax_id".to_string()),
+                product_cart: Some(vec![dodopayments::models::ProductItemReq {
+                    product_id: "product_id".to_string(),
+                    quantity: 0,
+                    addons: None,
+                    amount: None,
+                    credit_entitlements: None,
+                }]),
                 ..Default::default()
             })
         .await?;
@@ -119,21 +111,13 @@ let result = client
     .checkout_sessions()
     .create()
     .body(dodopayments::models::CheckoutSessionsCreateParams {
-            cancel_url: Some("cancel_url".to_string()),
-            confirm: Some(true),
-            customer_business_name: Some("customer_business_name".to_string()),
-            discount_code: Some("discount_code".to_string()),
-            discount_codes: Some(vec!["string".to_string()]),
-            force_3ds: Some(true),
-            mandate_min_amount_inr_paise: Some(0),
-            metadata: Some(std::collections::HashMap::from([("foo".to_string(), "string".to_string())])),
-            minimal_address: Some(true),
-            payment_method_id: Some("payment_method_id".to_string()),
-            product_collection_id: Some("product_collection_id".to_string()),
-            return_url: Some("return_url".to_string()),
-            short_link: Some(true),
-            show_saved_payment_methods: Some(true),
-            tax_id: Some("tax_id".to_string()),
+            product_cart: Some(vec![dodopayments::models::ProductItemReq {
+                product_id: "product_id".to_string(),
+                quantity: 0,
+                addons: None,
+                amount: None,
+                credit_entitlements: None,
+            }]),
             ..Default::default()
         })
     .await;
