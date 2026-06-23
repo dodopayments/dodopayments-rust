@@ -3437,6 +3437,13 @@ impl ProductsResource {
         }
     }
 
+    #[must_use = "resource accessors do nothing unless chained to a request"]
+    pub fn localized_prices(&self) -> ProductsLocalizedPricesResource {
+        ProductsLocalizedPricesResource {
+            client: self.client.clone(),
+        }
+    }
+
     #[must_use = "request builders do nothing until you send or await them"]
     pub fn create(&self) -> ProductsCreateBuilder {
         ProductsCreateBuilder {
@@ -4006,6 +4013,338 @@ impl std::future::IntoFuture for ProductsShortLinksListBuilder {
                 > + Send
                 + 'static,
         >,
+    >;
+
+    fn into_future(self) -> Self::IntoFuture {
+        Box::pin(self.send())
+    }
+}
+
+#[derive(Clone, Debug)]
+pub struct ProductsLocalizedPricesResource {
+    client: crate::Client,
+}
+
+impl ProductsLocalizedPricesResource {
+    #[must_use = "request builders do nothing until you send or await them"]
+    pub fn create(&self) -> ProductsLocalizedPricesCreateBuilder {
+        ProductsLocalizedPricesCreateBuilder {
+            client: self.client.clone(),
+            product_id: None,
+            body: None,
+        }
+    }
+
+    #[must_use = "request builders do nothing until you send or await them"]
+    pub fn retrieve(&self) -> ProductsLocalizedPricesRetrieveBuilder {
+        ProductsLocalizedPricesRetrieveBuilder {
+            client: self.client.clone(),
+            product_id: None,
+            id: None,
+        }
+    }
+
+    #[must_use = "request builders do nothing until you send or await them"]
+    pub fn update(&self) -> ProductsLocalizedPricesUpdateBuilder {
+        ProductsLocalizedPricesUpdateBuilder {
+            client: self.client.clone(),
+            product_id: None,
+            id: None,
+            body: None,
+        }
+    }
+
+    #[must_use = "request builders do nothing until you send or await them"]
+    pub fn list(&self) -> ProductsLocalizedPricesListBuilder {
+        ProductsLocalizedPricesListBuilder {
+            client: self.client.clone(),
+            product_id: None,
+        }
+    }
+
+    #[must_use = "request builders do nothing until you send or await them"]
+    pub fn archive(&self) -> ProductsLocalizedPricesArchiveBuilder {
+        ProductsLocalizedPricesArchiveBuilder {
+            client: self.client.clone(),
+            product_id: None,
+            id: None,
+        }
+    }
+}
+
+#[must_use = "request builders do nothing until you send or await them"]
+#[derive(Clone, Debug)]
+pub struct ProductsLocalizedPricesCreateBuilder {
+    client: crate::Client,
+    product_id: Option<String>,
+    body: Option<crate::models::ProductsLocalizedPricesCreateParams>,
+}
+
+impl ProductsLocalizedPricesCreateBuilder {
+    #[must_use = "setters return an updated request builder"]
+    pub fn product_id(mut self, product_id: impl Into<String>) -> Self {
+        self.product_id = Some(product_id.into());
+        self
+    }
+
+    #[must_use = "setters return an updated request builder"]
+    pub fn body(mut self, body: crate::models::ProductsLocalizedPricesCreateParams) -> Self {
+        self.body = Some(body);
+        self
+    }
+
+    pub async fn send(self) -> crate::error::Result<crate::models::LocalizedPrice> {
+        let client = self.client;
+        let product_id = self
+            .product_id
+            .ok_or(crate::error::Error::MissingPathParam {
+                operation: "products.localized_prices.create",
+                param: "product_id",
+            })?;
+        let body = self.body.ok_or(crate::error::Error::MissingBody {
+            operation: "products.localized_prices.create",
+        })?;
+        let path = build_path(
+            "/products/{product_id}/localized-prices",
+            &[("product_id", product_id.as_str())],
+        );
+        let request = client.request(reqwest::Method::POST, &path).json(&body);
+        client.handle_response(request).await
+    }
+}
+
+impl std::future::IntoFuture for ProductsLocalizedPricesCreateBuilder {
+    type Output = crate::error::Result<crate::models::LocalizedPrice>;
+    type IntoFuture = std::pin::Pin<
+        Box<
+            dyn std::future::Future<Output = crate::error::Result<crate::models::LocalizedPrice>>
+                + Send
+                + 'static,
+        >,
+    >;
+
+    fn into_future(self) -> Self::IntoFuture {
+        Box::pin(self.send())
+    }
+}
+
+#[must_use = "request builders do nothing until you send or await them"]
+#[derive(Clone, Debug)]
+pub struct ProductsLocalizedPricesRetrieveBuilder {
+    client: crate::Client,
+    product_id: Option<String>,
+    id: Option<String>,
+}
+
+impl ProductsLocalizedPricesRetrieveBuilder {
+    #[must_use = "setters return an updated request builder"]
+    pub fn product_id(mut self, product_id: impl Into<String>) -> Self {
+        self.product_id = Some(product_id.into());
+        self
+    }
+
+    #[must_use = "setters return an updated request builder"]
+    pub fn id(mut self, id: impl Into<String>) -> Self {
+        self.id = Some(id.into());
+        self
+    }
+
+    pub async fn send(self) -> crate::error::Result<crate::models::LocalizedPrice> {
+        let client = self.client;
+        let product_id = self
+            .product_id
+            .ok_or(crate::error::Error::MissingPathParam {
+                operation: "products.localized_prices.retrieve",
+                param: "product_id",
+            })?;
+        let id = self.id.ok_or(crate::error::Error::MissingPathParam {
+            operation: "products.localized_prices.retrieve",
+            param: "id",
+        })?;
+        let path = build_path(
+            "/products/{product_id}/localized-prices/{id}",
+            &[("product_id", product_id.as_str()), ("id", id.as_str())],
+        );
+        let request = client.request(reqwest::Method::GET, &path);
+        client.handle_response(request).await
+    }
+}
+
+impl std::future::IntoFuture for ProductsLocalizedPricesRetrieveBuilder {
+    type Output = crate::error::Result<crate::models::LocalizedPrice>;
+    type IntoFuture = std::pin::Pin<
+        Box<
+            dyn std::future::Future<Output = crate::error::Result<crate::models::LocalizedPrice>>
+                + Send
+                + 'static,
+        >,
+    >;
+
+    fn into_future(self) -> Self::IntoFuture {
+        Box::pin(self.send())
+    }
+}
+
+#[must_use = "request builders do nothing until you send or await them"]
+#[derive(Clone, Debug)]
+pub struct ProductsLocalizedPricesUpdateBuilder {
+    client: crate::Client,
+    product_id: Option<String>,
+    id: Option<String>,
+    body: Option<crate::models::ProductsLocalizedPricesUpdateParams>,
+}
+
+impl ProductsLocalizedPricesUpdateBuilder {
+    #[must_use = "setters return an updated request builder"]
+    pub fn product_id(mut self, product_id: impl Into<String>) -> Self {
+        self.product_id = Some(product_id.into());
+        self
+    }
+
+    #[must_use = "setters return an updated request builder"]
+    pub fn id(mut self, id: impl Into<String>) -> Self {
+        self.id = Some(id.into());
+        self
+    }
+
+    #[must_use = "setters return an updated request builder"]
+    pub fn body(mut self, body: crate::models::ProductsLocalizedPricesUpdateParams) -> Self {
+        self.body = Some(body);
+        self
+    }
+
+    pub async fn send(self) -> crate::error::Result<crate::models::LocalizedPrice> {
+        let client = self.client;
+        let product_id = self
+            .product_id
+            .ok_or(crate::error::Error::MissingPathParam {
+                operation: "products.localized_prices.update",
+                param: "product_id",
+            })?;
+        let id = self.id.ok_or(crate::error::Error::MissingPathParam {
+            operation: "products.localized_prices.update",
+            param: "id",
+        })?;
+        let body = self.body.ok_or(crate::error::Error::MissingBody {
+            operation: "products.localized_prices.update",
+        })?;
+        let path = build_path(
+            "/products/{product_id}/localized-prices/{id}",
+            &[("product_id", product_id.as_str()), ("id", id.as_str())],
+        );
+        let request = client.request(reqwest::Method::PATCH, &path).json(&body);
+        client.handle_response(request).await
+    }
+}
+
+impl std::future::IntoFuture for ProductsLocalizedPricesUpdateBuilder {
+    type Output = crate::error::Result<crate::models::LocalizedPrice>;
+    type IntoFuture = std::pin::Pin<
+        Box<
+            dyn std::future::Future<Output = crate::error::Result<crate::models::LocalizedPrice>>
+                + Send
+                + 'static,
+        >,
+    >;
+
+    fn into_future(self) -> Self::IntoFuture {
+        Box::pin(self.send())
+    }
+}
+
+#[must_use = "request builders do nothing until you send or await them"]
+#[derive(Clone, Debug)]
+pub struct ProductsLocalizedPricesListBuilder {
+    client: crate::Client,
+    product_id: Option<String>,
+}
+
+impl ProductsLocalizedPricesListBuilder {
+    #[must_use = "setters return an updated request builder"]
+    pub fn product_id(mut self, product_id: impl Into<String>) -> Self {
+        self.product_id = Some(product_id.into());
+        self
+    }
+
+    pub async fn send(self) -> crate::error::Result<crate::models::ListLocalizedPricesResponse> {
+        let client = self.client;
+        let product_id = self
+            .product_id
+            .ok_or(crate::error::Error::MissingPathParam {
+                operation: "products.localized_prices.list",
+                param: "product_id",
+            })?;
+        let path = build_path(
+            "/products/{product_id}/localized-prices",
+            &[("product_id", product_id.as_str())],
+        );
+        let request = client.request(reqwest::Method::GET, &path);
+        client.handle_response(request).await
+    }
+}
+
+impl std::future::IntoFuture for ProductsLocalizedPricesListBuilder {
+    type Output = crate::error::Result<crate::models::ListLocalizedPricesResponse>;
+    type IntoFuture = std::pin::Pin<
+        Box<
+            dyn std::future::Future<
+                    Output = crate::error::Result<crate::models::ListLocalizedPricesResponse>,
+                > + Send
+                + 'static,
+        >,
+    >;
+
+    fn into_future(self) -> Self::IntoFuture {
+        Box::pin(self.send())
+    }
+}
+
+#[must_use = "request builders do nothing until you send or await them"]
+#[derive(Clone, Debug)]
+pub struct ProductsLocalizedPricesArchiveBuilder {
+    client: crate::Client,
+    product_id: Option<String>,
+    id: Option<String>,
+}
+
+impl ProductsLocalizedPricesArchiveBuilder {
+    #[must_use = "setters return an updated request builder"]
+    pub fn product_id(mut self, product_id: impl Into<String>) -> Self {
+        self.product_id = Some(product_id.into());
+        self
+    }
+
+    #[must_use = "setters return an updated request builder"]
+    pub fn id(mut self, id: impl Into<String>) -> Self {
+        self.id = Some(id.into());
+        self
+    }
+
+    pub async fn send(self) -> crate::error::Result<()> {
+        let client = self.client;
+        let product_id = self
+            .product_id
+            .ok_or(crate::error::Error::MissingPathParam {
+                operation: "products.localized_prices.archive",
+                param: "product_id",
+            })?;
+        let id = self.id.ok_or(crate::error::Error::MissingPathParam {
+            operation: "products.localized_prices.archive",
+            param: "id",
+        })?;
+        let path = build_path(
+            "/products/{product_id}/localized-prices/{id}",
+            &[("product_id", product_id.as_str()), ("id", id.as_str())],
+        );
+        let request = client.request(reqwest::Method::DELETE, &path);
+        client.handle_empty(request).await
+    }
+}
+
+impl std::future::IntoFuture for ProductsLocalizedPricesArchiveBuilder {
+    type Output = crate::error::Result<()>;
+    type IntoFuture = std::pin::Pin<
+        Box<dyn std::future::Future<Output = crate::error::Result<()>> + Send + 'static>,
     >;
 
     fn into_future(self) -> Self::IntoFuture {
@@ -7119,6 +7458,15 @@ impl EntitlementsGrantsResource {
     }
 
     #[must_use = "request builders do nothing until you send or await them"]
+    pub fn fulfill_license_key(&self) -> EntitlementsGrantsFulfillLicenseKeyBuilder {
+        EntitlementsGrantsFulfillLicenseKeyBuilder {
+            client: self.client.clone(),
+            grant_id: None,
+            body: None,
+        }
+    }
+
+    #[must_use = "request builders do nothing until you send or await them"]
     pub fn revoke(&self) -> EntitlementsGrantsRevokeBuilder {
         EntitlementsGrantsRevokeBuilder {
             client: self.client.clone(),
@@ -7187,6 +7535,60 @@ impl std::future::IntoFuture for EntitlementsGrantsListBuilder {
                         crate::models::DefaultPageNumberPagination<crate::models::EntitlementGrant>,
                     >,
                 > + Send
+                + 'static,
+        >,
+    >;
+
+    fn into_future(self) -> Self::IntoFuture {
+        Box::pin(self.send())
+    }
+}
+
+#[must_use = "request builders do nothing until you send or await them"]
+#[derive(Clone, Debug)]
+pub struct EntitlementsGrantsFulfillLicenseKeyBuilder {
+    client: crate::Client,
+    grant_id: Option<String>,
+    body: Option<crate::models::EntitlementsGrantsFulfillLicenseKeyParams>,
+}
+
+impl EntitlementsGrantsFulfillLicenseKeyBuilder {
+    #[must_use = "setters return an updated request builder"]
+    pub fn grant_id(mut self, grant_id: impl Into<String>) -> Self {
+        self.grant_id = Some(grant_id.into());
+        self
+    }
+
+    #[must_use = "setters return an updated request builder"]
+    pub fn body(mut self, body: crate::models::EntitlementsGrantsFulfillLicenseKeyParams) -> Self {
+        self.body = Some(body);
+        self
+    }
+
+    pub async fn send(self) -> crate::error::Result<crate::models::EntitlementGrant> {
+        let client = self.client;
+        let grant_id = self.grant_id.ok_or(crate::error::Error::MissingPathParam {
+            operation: "entitlements.grants.fulfill_license_key",
+            param: "grant_id",
+        })?;
+        let body = self.body.ok_or(crate::error::Error::MissingBody {
+            operation: "entitlements.grants.fulfill_license_key",
+        })?;
+        let path = build_path(
+            "/grants/{grant_id}/license-key",
+            &[("grant_id", grant_id.as_str())],
+        );
+        let request = client.request(reqwest::Method::POST, &path).json(&body);
+        client.handle_response(request).await
+    }
+}
+
+impl std::future::IntoFuture for EntitlementsGrantsFulfillLicenseKeyBuilder {
+    type Output = crate::error::Result<crate::models::EntitlementGrant>;
+    type IntoFuture = std::pin::Pin<
+        Box<
+            dyn std::future::Future<Output = crate::error::Result<crate::models::EntitlementGrant>>
+                + Send
                 + 'static,
         >,
     >;
