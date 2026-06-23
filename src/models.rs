@@ -496,6 +496,8 @@ pub enum PaymentMethodTypes {
     NaverPay,
     #[serde(rename = "payco")]
     Payco,
+    #[serde(rename = "satispay")]
+    Satispay,
     #[serde(other)]
     Unknown,
 }
@@ -1211,7 +1213,7 @@ pub struct Product {
     pub license_key_activations_limit: Option<i64>,
     pub license_key_duration: Option<Box<crate::models::LicenseKeyDuration>>,
     pub name: Option<String>,
-    pub pricing_mode: Option<String>,
+    pub pricing_mode: Option<Box<crate::models::PricingMode>>,
     pub product_collection_id: Option<String>,
 }
 
@@ -1240,7 +1242,7 @@ pub struct ProductListResponse {
     pub name: Option<String>,
     pub price: Option<i64>,
     pub price_detail: Option<Box<crate::models::Price>>,
-    pub pricing_mode: Option<String>,
+    pub pricing_mode: Option<Box<crate::models::PricingMode>>,
     pub tax_inclusive: Option<bool>,
 }
 
@@ -1268,6 +1270,33 @@ pub struct ShortLinkListResponse {
     pub full_url: String,
     pub product_id: String,
     pub short_url: String,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub struct ListLocalizedPricesResponse {
+    pub items: Vec<crate::models::LocalizedPrice>,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub struct LocalizedPrice {
+    pub id: String,
+    pub amount: i64,
+    pub created_at: String,
+    pub currency: Box<crate::models::Currency>,
+    pub mode: Box<crate::models::PricingMode>,
+    pub product_id: String,
+    pub updated_at: String,
+    pub country_code: Option<Box<crate::models::CountryCode>>,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub enum PricingMode {
+    #[serde(rename = "by_currency")]
+    ByCurrency,
+    #[serde(rename = "by_country")]
+    ByCountry,
+    #[serde(other)]
+    Unknown,
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
@@ -2869,6 +2898,7 @@ pub struct CreditLedgerEntry {
     pub credit_entitlement_id: String,
     pub customer_id: String,
     pub is_credit: bool,
+    pub metadata: std::collections::HashMap<String, String>,
     pub overage_after: String,
     pub overage_before: String,
     pub transaction_type: String,
@@ -3657,7 +3687,7 @@ pub struct ProductsCreateParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub metadata: Option<std::collections::HashMap<String, String>>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub pricing_mode: Option<String>,
+    pub pricing_mode: Option<Box<crate::models::PricingMode>>,
 }
 
 #[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
@@ -3702,7 +3732,7 @@ pub struct ProductsUpdateParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub price: Option<Box<crate::models::Price>>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub pricing_mode: Option<String>,
+    pub pricing_mode: Option<Box<crate::models::PricingMode>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub tax_category: Option<Box<crate::models::TaxCategory>>,
 }
@@ -3719,6 +3749,22 @@ pub struct ProductsShortLinksCreateParams {
     pub slug: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub static_checkout_params: Option<std::collections::HashMap<String, String>>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct ProductsLocalizedPricesCreateParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub amount: Option<i64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub currency: Option<Box<crate::models::Currency>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub country_code: Option<Box<crate::models::CountryCode>>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct ProductsLocalizedPricesUpdateParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub amount: Option<i64>,
 }
 
 #[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
@@ -3999,6 +4045,16 @@ pub struct EntitlementsUpdateParams {
     pub metadata: Option<std::collections::HashMap<String, String>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct EntitlementsGrantsFulfillLicenseKeyParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub key: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub activations_limit: Option<i64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub expires_at: Option<String>,
 }
 
 #[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
