@@ -159,6 +159,16 @@ Methods:
 - <code title="post /products/{id}/short_links">client.products().short_links().create().id(id: impl Into&lt;String&gt;).body(body: ProductsShortLinksCreateParams) -&gt; Result&lt;ShortLinkCreateResponse&gt;</code>
 - <code title="get /products/short_links">client.products().short_links().list().query(query: serde_json::Value) -&gt; Result&lt;DefaultPageNumberPagination&lt;ShortLinkListResponse&gt;&gt;</code>
 
+## LocalizedPrices
+
+Methods:
+
+- <code title="post /products/{product_id}/localized-prices">client.products().localized_prices().create().product_id(product_id: impl Into&lt;String&gt;).body(body: ProductsLocalizedPricesCreateParams) -&gt; Result&lt;LocalizedPrice&gt;</code>
+- <code title="get /products/{product_id}/localized-prices/{id}">client.products().localized_prices().retrieve().product_id(product_id: impl Into&lt;String&gt;).id(id: impl Into&lt;String&gt;) -&gt; Result&lt;LocalizedPrice&gt;</code>
+- <code title="patch /products/{product_id}/localized-prices/{id}">client.products().localized_prices().update().product_id(product_id: impl Into&lt;String&gt;).id(id: impl Into&lt;String&gt;).body(body: ProductsLocalizedPricesUpdateParams) -&gt; Result&lt;LocalizedPrice&gt;</code>
+- <code title="get /products/{product_id}/localized-prices">client.products().localized_prices().list().product_id(product_id: impl Into&lt;String&gt;) -&gt; Result&lt;ListLocalizedPricesResponse&gt;</code>
+- <code title="delete /products/{product_id}/localized-prices/{id}">client.products().localized_prices().archive().product_id(product_id: impl Into&lt;String&gt;).id(id: impl Into&lt;String&gt;) -&gt; Result&lt;()&gt;</code>
+
 # Misc
 
 Methods:
@@ -281,6 +291,7 @@ Methods:
 Methods:
 
 - <code title="get /entitlements/{id}/grants">client.entitlements().grants().list().id(id: impl Into&lt;String&gt;).query(query: serde_json::Value) -&gt; Result&lt;DefaultPageNumberPagination&lt;EntitlementGrant&gt;&gt;</code>
+- <code title="post /grants/{grant_id}/license-key">client.entitlements().grants().fulfill_license_key().grant_id(grant_id: impl Into&lt;String&gt;).body(body: EntitlementsGrantsFulfillLicenseKeyParams) -&gt; Result&lt;EntitlementGrant&gt;</code>
 - <code title="delete /entitlements/{id}/grants/{grant_id}">client.entitlements().grants().revoke().id(id: impl Into&lt;String&gt;).grant_id(grant_id: impl Into&lt;String&gt;) -&gt; Result&lt;EntitlementGrant&gt;</code>
 
 # ProductCollections
