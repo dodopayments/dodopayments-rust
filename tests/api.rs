@@ -739,6 +739,84 @@ async fn products_short_links_list() {
 }
 
 #[tokio::test]
+async fn products_localized_prices_create() {
+    let Some(client) = make_client() else {
+        return;
+    };
+    let product_id = "product_id";
+    let _ = client
+        .products()
+        .localized_prices()
+        .create()
+        .product_id(product_id)
+        .body(Default::default())
+        .await;
+}
+
+#[tokio::test]
+async fn products_localized_prices_retrieve() {
+    let Some(client) = make_client() else {
+        return;
+    };
+    let product_id = "product_id";
+    let id = "id";
+    let _ = client
+        .products()
+        .localized_prices()
+        .retrieve()
+        .product_id(product_id)
+        .id(id)
+        .await;
+}
+
+#[tokio::test]
+async fn products_localized_prices_update() {
+    let Some(client) = make_client() else {
+        return;
+    };
+    let product_id = "product_id";
+    let id = "id";
+    let _ = client
+        .products()
+        .localized_prices()
+        .update()
+        .product_id(product_id)
+        .id(id)
+        .body(Default::default())
+        .await;
+}
+
+#[tokio::test]
+async fn products_localized_prices_list() {
+    let Some(client) = make_client() else {
+        return;
+    };
+    let product_id = "product_id";
+    let _ = client
+        .products()
+        .localized_prices()
+        .list()
+        .product_id(product_id)
+        .await;
+}
+
+#[tokio::test]
+async fn products_localized_prices_archive() {
+    let Some(client) = make_client() else {
+        return;
+    };
+    let product_id = "product_id";
+    let id = "id";
+    let _ = client
+        .products()
+        .localized_prices()
+        .archive()
+        .product_id(product_id)
+        .id(id)
+        .await;
+}
+
+#[tokio::test]
 async fn misc_list_supported_countries() {
     let Some(client) = make_client() else {
         return;
@@ -1317,6 +1395,21 @@ async fn entitlements_grants_list() {
         .list()
         .id(id)
         .query(serde_json::json!({}))
+        .await;
+}
+
+#[tokio::test]
+async fn entitlements_grants_fulfill_license_key() {
+    let Some(client) = make_client() else {
+        return;
+    };
+    let grant_id = "grant_id";
+    let _ = client
+        .entitlements()
+        .grants()
+        .fulfill_license_key()
+        .grant_id(grant_id)
+        .body(Default::default())
         .await;
 }
 
