@@ -496,6 +496,8 @@ pub enum PaymentMethodTypes {
     NaverPay,
     #[serde(rename = "payco")]
     Payco,
+    #[serde(rename = "satispay")]
+    Satispay,
     #[serde(other)]
     Unknown,
 }
@@ -2869,6 +2871,7 @@ pub struct CreditLedgerEntry {
     pub credit_entitlement_id: String,
     pub customer_id: String,
     pub is_credit: bool,
+    pub metadata: std::collections::HashMap<String, String>,
     pub overage_after: String,
     pub overage_before: String,
     pub transaction_type: String,
