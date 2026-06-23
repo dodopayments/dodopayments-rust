@@ -53,7 +53,7 @@ pub struct CheckoutSessionRequest {
     pub feature_flags: Option<Box<crate::models::CheckoutSessionFlags>>,
     pub force_3ds: Option<bool>,
     pub mandate_min_amount_inr_paise: Option<i64>,
-    pub metadata: Option<std::collections::HashMap<String, String>>,
+    pub metadata: Option<Box<crate::models::Metadata>>,
     pub minimal_address: Option<bool>,
     pub payment_method_id: Option<String>,
     pub product_collection_id: Option<String>,
@@ -188,7 +188,7 @@ pub struct CustomerLimitedDetails {
     pub customer_id: String,
     pub email: String,
     pub name: String,
-    pub metadata: Option<std::collections::HashMap<String, String>>,
+    pub metadata: Option<Box<crate::models::Metadata>>,
     pub phone_number: Option<String>,
 }
 
@@ -251,7 +251,7 @@ pub struct Payment {
     pub customer: Box<crate::models::CustomerLimitedDetails>,
     pub digital_products_delivered: bool,
     pub disputes: Vec<crate::models::Dispute>,
-    pub metadata: std::collections::HashMap<String, String>,
+    pub metadata: Box<crate::models::Metadata>,
     pub payment_id: String,
     pub payment_provider: String,
     pub refunds: Vec<crate::models::RefundListItem>,
@@ -496,6 +496,8 @@ pub enum PaymentMethodTypes {
     NaverPay,
     #[serde(rename = "payco")]
     Payco,
+    #[serde(rename = "satispay")]
+    Satispay,
     #[serde(other)]
     Unknown,
 }
@@ -527,7 +529,7 @@ pub struct RefundListItem {
 pub struct PaymentCreateResponse {
     pub client_secret: String,
     pub customer: Box<crate::models::CustomerLimitedDetails>,
-    pub metadata: std::collections::HashMap<String, String>,
+    pub metadata: Box<crate::models::Metadata>,
     pub payment_id: String,
     pub total_amount: i64,
     pub discount_id: Option<String>,
@@ -545,7 +547,7 @@ pub struct PaymentListResponse {
     pub customer: Box<crate::models::CustomerLimitedDetails>,
     pub digital_products_delivered: bool,
     pub has_license_key: bool,
-    pub metadata: std::collections::HashMap<String, String>,
+    pub metadata: Box<crate::models::Metadata>,
     pub payment_id: String,
     pub payment_provider: String,
     pub total_amount: i64,
@@ -673,7 +675,7 @@ pub struct Subscription {
     pub credit_entitlement_cart: Vec<crate::models::CreditEntitlementCartResponse>,
     pub currency: Box<crate::models::Currency>,
     pub customer: Box<crate::models::CustomerLimitedDetails>,
-    pub metadata: std::collections::HashMap<String, String>,
+    pub metadata: Box<crate::models::Metadata>,
     pub meter_credit_entitlement_cart: Vec<crate::models::MeterCreditEntitlementCartResponse>,
     pub meters: Vec<crate::models::MeterCartResponseItem>,
     pub next_billing_date: String,
@@ -742,7 +744,7 @@ pub struct UpdateSubscriptionPlanReq {
     pub discount_code: Option<String>,
     pub discount_codes: Option<Vec<String>>,
     pub effective_at: Option<String>,
-    pub metadata: Option<std::collections::HashMap<String, String>>,
+    pub metadata: Option<Box<crate::models::Metadata>>,
     pub on_payment_failure: Option<String>,
 }
 
@@ -750,7 +752,7 @@ pub struct UpdateSubscriptionPlanReq {
 pub struct SubscriptionCreateResponse {
     pub addons: Vec<crate::models::AddonCartResponseItem>,
     pub customer: Box<crate::models::CustomerLimitedDetails>,
-    pub metadata: std::collections::HashMap<String, String>,
+    pub metadata: Box<crate::models::Metadata>,
     pub payment_id: String,
     pub recurring_pre_tax_amount: i64,
     pub subscription_id: String,
@@ -770,7 +772,7 @@ pub struct SubscriptionListResponse {
     pub currency: Box<crate::models::Currency>,
     pub customer: Box<crate::models::CustomerLimitedDetails>,
     pub discounts: Vec<serde_json::Value>,
-    pub metadata: std::collections::HashMap<String, String>,
+    pub metadata: Box<crate::models::Metadata>,
     pub next_billing_date: String,
     pub on_demand: bool,
     pub payment_frequency_count: i64,
@@ -889,7 +891,7 @@ pub struct Customer {
     pub customer_id: String,
     pub email: String,
     pub name: String,
-    pub metadata: Option<std::collections::HashMap<String, String>>,
+    pub metadata: Option<Box<crate::models::Metadata>>,
     pub phone_number: Option<String>,
 }
 
@@ -951,7 +953,7 @@ pub struct Refund {
     pub created_at: String,
     pub customer: Box<crate::models::CustomerLimitedDetails>,
     pub is_partial: bool,
-    pub metadata: std::collections::HashMap<String, String>,
+    pub metadata: Box<crate::models::Metadata>,
     pub payment_id: String,
     pub refund_id: String,
     pub status: Box<crate::models::RefundStatus>,
@@ -1198,7 +1200,7 @@ pub struct Product {
     pub entitlements: Vec<crate::models::ProductEntitlementSummary>,
     pub is_recurring: bool,
     pub license_key_enabled: bool,
-    pub metadata: std::collections::HashMap<String, String>,
+    pub metadata: Box<crate::models::Metadata>,
     pub price: Box<crate::models::Price>,
     pub product_id: String,
     pub tax_category: Box<crate::models::TaxCategory>,
@@ -1211,7 +1213,7 @@ pub struct Product {
     pub license_key_activations_limit: Option<i64>,
     pub license_key_duration: Option<Box<crate::models::LicenseKeyDuration>>,
     pub name: Option<String>,
-    pub pricing_mode: Option<String>,
+    pub pricing_mode: Option<Box<crate::models::PricingMode>>,
     pub product_collection_id: Option<String>,
 }
 
@@ -1230,7 +1232,7 @@ pub struct ProductListResponse {
     pub created_at: String,
     pub entitlements: Vec<crate::models::ProductEntitlementSummary>,
     pub is_recurring: bool,
-    pub metadata: std::collections::HashMap<String, String>,
+    pub metadata: Box<crate::models::Metadata>,
     pub product_id: String,
     pub tax_category: Box<crate::models::TaxCategory>,
     pub updated_at: String,
@@ -1240,7 +1242,7 @@ pub struct ProductListResponse {
     pub name: Option<String>,
     pub price: Option<i64>,
     pub price_detail: Option<Box<crate::models::Price>>,
-    pub pricing_mode: Option<String>,
+    pub pricing_mode: Option<Box<crate::models::PricingMode>>,
     pub tax_inclusive: Option<bool>,
 }
 
@@ -1268,6 +1270,33 @@ pub struct ShortLinkListResponse {
     pub full_url: String,
     pub product_id: String,
     pub short_url: String,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub struct ListLocalizedPricesResponse {
+    pub items: Vec<crate::models::LocalizedPrice>,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub struct LocalizedPrice {
+    pub id: String,
+    pub amount: i64,
+    pub created_at: String,
+    pub currency: Box<crate::models::Currency>,
+    pub mode: Box<crate::models::PricingMode>,
+    pub product_id: String,
+    pub updated_at: String,
+    pub country_code: Option<Box<crate::models::CountryCode>>,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub enum PricingMode {
+    #[serde(rename = "by_currency")]
+    ByCurrency,
+    #[serde(rename = "by_country")]
+    ByCountry,
+    #[serde(other)]
+    Unknown,
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
@@ -2066,6 +2095,8 @@ pub enum Currency {
     Unknown,
 }
 
+pub type Metadata = std::collections::HashMap<String, String>;
+
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub enum TaxCategory {
     #[serde(rename = "digital_products")]
@@ -2089,7 +2120,7 @@ pub struct Discount {
     pub code: String,
     pub created_at: String,
     pub discount_id: String,
-    pub metadata: std::collections::HashMap<String, String>,
+    pub metadata: Box<crate::models::Metadata>,
     pub preserve_on_plan_change: bool,
     pub restricted_to: Vec<String>,
     pub times_used: i64,
@@ -2107,7 +2138,7 @@ pub struct DiscountDetail {
     pub code: String,
     pub created_at: String,
     pub discount_id: String,
-    pub metadata: std::collections::HashMap<String, String>,
+    pub metadata: Box<crate::models::Metadata>,
     pub position: i64,
     pub preserve_on_plan_change: bool,
     pub restricted_to: Vec<String>,
@@ -2869,6 +2900,7 @@ pub struct CreditLedgerEntry {
     pub credit_entitlement_id: String,
     pub customer_id: String,
     pub is_credit: bool,
+    pub metadata: Box<crate::models::Metadata>,
     pub overage_after: String,
     pub overage_before: String,
     pub transaction_type: String,
@@ -2931,7 +2963,7 @@ pub struct BalanceListGrantsResponse {
     pub source_type: String,
     pub updated_at: String,
     pub expires_at: Option<String>,
-    pub metadata: Option<std::collections::HashMap<String, String>>,
+    pub metadata: Option<Box<crate::models::Metadata>>,
     pub parent_grant_id: Option<String>,
     pub source_id: Option<String>,
 }
@@ -2944,7 +2976,7 @@ pub struct Entitlement {
     pub integration_config: Box<crate::models::IntegrationConfigResponse>,
     pub integration_type: Box<crate::models::EntitlementIntegrationType>,
     pub is_active: bool,
-    pub metadata: std::collections::HashMap<String, String>,
+    pub metadata: Box<crate::models::Metadata>,
     pub name: String,
     pub updated_at: String,
     pub description: Option<String>,
@@ -3028,7 +3060,7 @@ pub struct EntitlementGrant {
     pub customer_id: String,
     pub entitlement_id: String,
     pub integration_type: Box<crate::models::EntitlementIntegrationType>,
-    pub metadata: std::collections::HashMap<String, String>,
+    pub metadata: Box<crate::models::Metadata>,
     pub status: String,
     pub updated_at: String,
     pub delivered_at: Option<String>,
@@ -3278,7 +3310,7 @@ pub struct CheckoutSessionsCreateParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub mandate_min_amount_inr_paise: Option<i64>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub metadata: Option<std::collections::HashMap<String, String>>,
+    pub metadata: Option<Box<crate::models::Metadata>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub minimal_address: Option<bool>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -3320,7 +3352,7 @@ pub struct PaymentsCreateParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub force_3ds: Option<bool>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub metadata: Option<std::collections::HashMap<String, String>>,
+    pub metadata: Option<Box<crate::models::Metadata>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub payment_link: Option<bool>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -3366,7 +3398,7 @@ pub struct SubscriptionsCreateParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub mandate_min_amount_inr_paise: Option<i64>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub metadata: Option<std::collections::HashMap<String, String>>,
+    pub metadata: Option<Box<crate::models::Metadata>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub on_demand: Option<Box<crate::models::OnDemandSubscription>>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -3445,7 +3477,7 @@ pub struct SubscriptionsUpdateParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub disable_on_demand: Option<Box<crate::models::SubscriptionsUpdateParamsDisableOnDemand>>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub metadata: Option<std::collections::HashMap<String, String>>,
+    pub metadata: Option<Box<crate::models::Metadata>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub next_billing_date: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -3473,7 +3505,7 @@ pub struct SubscriptionsChangePlanParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub effective_at: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub metadata: Option<std::collections::HashMap<String, String>>,
+    pub metadata: Option<Box<crate::models::Metadata>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub on_payment_failure: Option<String>,
 }
@@ -3496,7 +3528,7 @@ pub struct SubscriptionsChargeParams {
     pub customer_balance_config:
         Option<Box<crate::models::SubscriptionsChargeParamsCustomerBalanceConfig>>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub metadata: Option<std::collections::HashMap<String, String>>,
+    pub metadata: Option<Box<crate::models::Metadata>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub product_currency: Option<Box<crate::models::Currency>>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -3564,7 +3596,7 @@ pub struct CustomersCreateParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub metadata: Option<std::collections::HashMap<String, String>>,
+    pub metadata: Option<Box<crate::models::Metadata>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub phone_number: Option<String>,
 }
@@ -3574,7 +3606,7 @@ pub struct CustomersUpdateParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub email: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub metadata: Option<std::collections::HashMap<String, String>>,
+    pub metadata: Option<Box<crate::models::Metadata>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -3612,7 +3644,7 @@ pub struct RefundsCreateParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub items: Option<Vec<crate::models::RefundsCreateParamsItemsItem>>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub metadata: Option<std::collections::HashMap<String, String>>,
+    pub metadata: Option<Box<crate::models::Metadata>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub reason: Option<String>,
 }
@@ -3655,9 +3687,9 @@ pub struct ProductsCreateParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub license_key_enabled: Option<bool>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub metadata: Option<std::collections::HashMap<String, String>>,
+    pub metadata: Option<Box<crate::models::Metadata>>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub pricing_mode: Option<String>,
+    pub pricing_mode: Option<Box<crate::models::PricingMode>>,
 }
 
 #[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
@@ -3696,13 +3728,13 @@ pub struct ProductsUpdateParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub license_key_enabled: Option<bool>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub metadata: Option<std::collections::HashMap<String, String>>,
+    pub metadata: Option<Box<crate::models::Metadata>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub price: Option<Box<crate::models::Price>>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub pricing_mode: Option<String>,
+    pub pricing_mode: Option<Box<crate::models::PricingMode>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub tax_category: Option<Box<crate::models::TaxCategory>>,
 }
@@ -3722,6 +3754,22 @@ pub struct ProductsShortLinksCreateParams {
 }
 
 #[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct ProductsLocalizedPricesCreateParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub amount: Option<i64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub currency: Option<Box<crate::models::Currency>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub country_code: Option<Box<crate::models::CountryCode>>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct ProductsLocalizedPricesUpdateParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub amount: Option<i64>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
 pub struct DiscountsCreateParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub amount: Option<i64>,
@@ -3732,7 +3780,7 @@ pub struct DiscountsCreateParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub expires_at: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub metadata: Option<std::collections::HashMap<String, String>>,
+    pub metadata: Option<Box<crate::models::Metadata>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -3754,7 +3802,7 @@ pub struct DiscountsUpdateParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub expires_at: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub metadata: Option<std::collections::HashMap<String, String>>,
+    pub metadata: Option<Box<crate::models::Metadata>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -3970,7 +4018,7 @@ pub struct CreditEntitlementsBalancesCreateLedgerEntryParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub idempotency_key: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub metadata: Option<std::collections::HashMap<String, String>>,
+    pub metadata: Option<Box<crate::models::Metadata>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub reason: Option<String>,
 }
@@ -3986,7 +4034,7 @@ pub struct EntitlementsCreateParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub metadata: Option<std::collections::HashMap<String, String>>,
+    pub metadata: Option<Box<crate::models::Metadata>>,
 }
 
 #[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
@@ -3996,9 +4044,19 @@ pub struct EntitlementsUpdateParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub integration_config: Option<Box<crate::models::IntegrationConfig>>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub metadata: Option<std::collections::HashMap<String, String>>,
+    pub metadata: Option<Box<crate::models::Metadata>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct EntitlementsGrantsFulfillLicenseKeyParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub key: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub activations_limit: Option<i64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub expires_at: Option<String>,
 }
 
 #[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
