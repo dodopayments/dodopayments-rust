@@ -1,6 +1,6 @@
 [package]
 name = "dodopayments"
-version = "1.106.0"
+version = "1.107.0"
 edition = "2021"
 description = "The official Rust library for the Dodo Payments API"
 authors = ["Dodo Payments <support@dodopayments.com>"]
