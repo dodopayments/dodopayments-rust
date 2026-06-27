@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.107.1](https://github.com/dodopayments/dodopayments-rust/compare/v1.107.0...v1.107.1) (2026-06-27)
+
+
+### Bug Fixes
+
+* **api:** add allow_editing_addons checkout flag and refine schema descriptions ([8059f23](https://github.com/dodopayments/dodopayments-rust/commit/8059f23bfbd88ced9cca601fa1347f3bfb7f3d62))
+* **api:** add allow_editing_addons checkout flag and refine schema descriptions ([db1f242](https://github.com/dodopayments/dodopayments-rust/commit/db1f2425f5e8913fd83c14bbc639759b6056a035))
+
 ## [1.107.0](https://github.com/dodopayments/dodopayments-rust/compare/v1.106.0...v1.107.0) (2026-06-23)
 
 
