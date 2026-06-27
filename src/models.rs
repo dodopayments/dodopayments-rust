@@ -29,6 +29,7 @@ pub struct CheckoutSessionFlags {
     pub allow_customer_editing_tax_id: Option<bool>,
     pub allow_customer_editing_zipcode: Option<bool>,
     pub allow_discount_code: Option<bool>,
+    pub allow_editing_addons: Option<bool>,
     pub allow_phone_number_collection: Option<bool>,
     pub allow_tax_id: Option<bool>,
     pub always_create_new_customer: Option<bool>,
