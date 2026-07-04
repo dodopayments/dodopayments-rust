@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.108.0](https://github.com/dodopayments/dodopayments-rust/compare/v1.107.1...v1.108.0) (2026-07-04)
+
+
+### Features
+
+* **api:** register Feature/FeatureType models and expose customer entitlement-grants list endpoint ([7c97d23](https://github.com/dodopayments/dodopayments-rust/commit/7c97d230917ac22a148008dbfd0780ff4d30f79c))
+* **api:** register Feature/FeatureType models and expose customer entitlement-grants list endpoint ([9c794df](https://github.com/dodopayments/dodopayments-rust/commit/9c794df6f11b79e41fb27977a89cc7f15f36ed0a))
+
 ## [1.107.1](https://github.com/dodopayments/dodopayments-rust/compare/v1.107.0...v1.107.1) (2026-06-27)
 
 
