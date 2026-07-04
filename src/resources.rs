@@ -2102,6 +2102,15 @@ impl CustomersResource {
     }
 
     #[must_use = "request builders do nothing until you send or await them"]
+    pub fn list_entitlement_grants(&self) -> CustomersListEntitlementGrantsBuilder {
+        CustomersListEntitlementGrantsBuilder {
+            client: self.client.clone(),
+            customer_id: None,
+            query: None,
+        }
+    }
+
+    #[must_use = "request builders do nothing until you send or await them"]
     pub fn list_entitlements(&self) -> CustomersListEntitlementsBuilder {
         CustomersListEntitlementsBuilder {
             client: self.client.clone(),
@@ -2417,6 +2426,79 @@ impl std::future::IntoFuture for CustomersListCreditEntitlementsBuilder {
             dyn std::future::Future<
                     Output = crate::error::Result<
                         crate::models::CustomerListCreditEntitlementsResponse,
+                    >,
+                > + Send
+                + 'static,
+        >,
+    >;
+
+    fn into_future(self) -> Self::IntoFuture {
+        Box::pin(self.send())
+    }
+}
+
+#[must_use = "request builders do nothing until you send or await them"]
+#[derive(Clone, Debug)]
+pub struct CustomersListEntitlementGrantsBuilder {
+    client: crate::Client,
+    customer_id: Option<String>,
+    query: Option<serde_json::Value>,
+}
+
+impl CustomersListEntitlementGrantsBuilder {
+    #[must_use = "setters return an updated request builder"]
+    pub fn customer_id(mut self, customer_id: impl Into<String>) -> Self {
+        self.customer_id = Some(customer_id.into());
+        self
+    }
+
+    #[must_use = "setters return an updated request builder"]
+    pub fn query(mut self, query: serde_json::Value) -> Self {
+        self.query = Some(query);
+        self
+    }
+
+    pub async fn send(
+        self,
+    ) -> crate::error::Result<
+        crate::models::DefaultPageNumberPagination<crate::models::EntitlementGrant>,
+    > {
+        let client = self.client;
+        let customer_id = self
+            .customer_id
+            .ok_or(crate::error::Error::MissingPathParam {
+                operation: "customers.list_entitlement_grants",
+                param: "customer_id",
+            })?;
+        let query = self.query;
+        let path = build_path(
+            "/customers/{customer_id}/entitlement-grants",
+            &[("customer_id", customer_id.as_str())],
+        );
+        let mut request = client.request(reqwest::Method::GET, &path);
+        if let Some(query) = &query {
+            request = request.query(query);
+        }
+        let mut page = client.handle_response::<crate::models::DefaultPageNumberPagination<crate::models::EntitlementGrant>>(request).await?;
+        page.set_pagination_context(crate::client::PaginationContext::new(
+            client.clone(),
+            reqwest::Method::GET,
+            path,
+            query.unwrap_or_else(|| serde_json::json!({})),
+        ));
+        Ok(page)
+    }
+}
+
+impl std::future::IntoFuture for CustomersListEntitlementGrantsBuilder {
+    type Output = crate::error::Result<
+        crate::models::DefaultPageNumberPagination<crate::models::EntitlementGrant>,
+    >;
+    type IntoFuture = std::pin::Pin<
+        Box<
+            dyn std::future::Future<
+                    Output = crate::error::Result<
+                        crate::models::DefaultPageNumberPagination<crate::models::EntitlementGrant>,
                     >,
                 > + Send
                 + 'static,
