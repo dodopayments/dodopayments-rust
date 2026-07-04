@@ -2096,7 +2096,7 @@ pub enum Currency {
     Unknown,
 }
 
-pub type Metadata = std::collections::HashMap<String, String>;
+pub type Metadata = std::collections::HashMap<String, serde_json::Value>;
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub enum TaxCategory {
@@ -3001,6 +3001,22 @@ pub enum EntitlementIntegrationType {
     DigitalFiles,
     #[serde(rename = "license_key")]
     LicenseKey,
+    #[serde(rename = "feature_flag")]
+    FeatureFlag,
+    #[serde(other)]
+    Unknown,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub struct Feature {
+    pub feature_id: String,
+    pub feature_type: Box<crate::models::FeatureType>,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub enum FeatureType {
+    #[serde(rename = "boolean")]
+    Boolean,
     #[serde(other)]
     Unknown,
 }
@@ -3032,6 +3048,7 @@ pub enum IntegrationConfig {
     Variant5(serde_json::Value),
     Variant6(serde_json::Value),
     Variant7(serde_json::Value),
+    Variant8(serde_json::Value),
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
@@ -3045,6 +3062,7 @@ pub enum IntegrationConfigResponse {
     Variant5(serde_json::Value),
     Variant6(serde_json::Value),
     Variant7(serde_json::Value),
+    Variant8(serde_json::Value),
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
@@ -3068,6 +3086,7 @@ pub struct EntitlementGrant {
     pub digital_product_delivery: Option<Box<crate::models::DigitalProductDelivery>>,
     pub error_code: Option<String>,
     pub error_message: Option<String>,
+    pub feature: Option<Box<crate::models::Feature>>,
     pub license_key: Option<Box<crate::models::LicenseKeyGrant>>,
     pub oauth_expires_at: Option<String>,
     pub oauth_url: Option<String>,
