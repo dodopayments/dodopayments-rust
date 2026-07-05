@@ -443,6 +443,20 @@ async fn customers_list_credit_entitlements() {
 }
 
 #[tokio::test]
+async fn customers_list_entitlement_grants() {
+    let Some(client) = make_client() else {
+        return;
+    };
+    let customer_id = "customer_id";
+    let _ = client
+        .customers()
+        .list_entitlement_grants()
+        .customer_id(customer_id)
+        .query(serde_json::json!({}))
+        .await;
+}
+
+#[tokio::test]
 async fn customers_list_entitlements() {
     let Some(client) = make_client() else {
         return;

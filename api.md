@@ -78,6 +78,7 @@ Methods:
 - <code title="get /customers">client.customers().list().query(query: serde_json::Value) -&gt; Result&lt;DefaultPageNumberPagination&lt;Customer&gt;&gt;</code>
 - <code title="delete /customers/{customer_id}/payment-methods/{payment_method_id}">client.customers().delete_payment_method().customer_id(customer_id: impl Into&lt;String&gt;).payment_method_id(payment_method_id: impl Into&lt;String&gt;) -&gt; Result&lt;()&gt;</code>
 - <code title="get /customers/{customer_id}/credit-entitlements">client.customers().list_credit_entitlements().customer_id(customer_id: impl Into&lt;String&gt;) -&gt; Result&lt;CustomerListCreditEntitlementsResponse&gt;</code>
+- <code title="get /customers/{customer_id}/entitlement-grants">client.customers().list_entitlement_grants().customer_id(customer_id: impl Into&lt;String&gt;).query(query: serde_json::Value) -&gt; Result&lt;DefaultPageNumberPagination&lt;EntitlementGrant&gt;&gt;</code>
 - <code title="get /customers/{customer_id}/entitlements">client.customers().list_entitlements().customer_id(customer_id: impl Into&lt;String&gt;) -&gt; Result&lt;CustomerListEntitlementsResponse&gt;</code>
 - <code title="get /customers/{customer_id}/payment-methods">client.customers().retrieve_payment_methods().customer_id(customer_id: impl Into&lt;String&gt;) -&gt; Result&lt;CustomerRetrievePaymentMethodsResponse&gt;</code>
 
