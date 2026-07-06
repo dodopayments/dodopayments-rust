@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.109.0](https://github.com/dodopayments/dodopayments-rust/compare/v1.108.0...v1.109.0) (2026-07-06)
+
+
+### Features
+
+* **api:** add subscription period override fields to subscription update ([e94f46d](https://github.com/dodopayments/dodopayments-rust/commit/e94f46d0cea44a43b46517196d62334bed6506ce))
+* **api:** add subscription period override fields to subscription update ([08b7919](https://github.com/dodopayments/dodopayments-rust/commit/08b7919f97b23d4bca17bedc9e3b17933751213e))
+
 ## [1.108.0](https://github.com/dodopayments/dodopayments-rust/compare/v1.107.1...v1.108.0) (2026-07-04)
 
 
