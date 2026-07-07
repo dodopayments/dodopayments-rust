@@ -3503,6 +3503,10 @@ pub struct SubscriptionsUpdateParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub status: Option<Box<crate::models::SubscriptionStatus>>,
     #[serde(skip_serializing_if = "Option::is_none")]
+    pub subscription_period_count: Option<i64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub subscription_period_interval: Option<Box<crate::models::TimeInterval>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub tax_id: Option<String>,
 }
 
