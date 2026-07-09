@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.109.1](https://github.com/dodopayments/dodopayments-rust/compare/v1.109.0...v1.109.1) (2026-07-09)
+
+
+### Bug Fixes
+
+* **api:** add subscription.update_payment_method webhook and payment-method fields ([778d00e](https://github.com/dodopayments/dodopayments-rust/commit/778d00e5de82fb9383f0a1077f982bec1f0920a0))
+* **api:** add subscription.update_payment_method webhook and payment-method fields ([5ade290](https://github.com/dodopayments/dodopayments-rust/commit/5ade29058320297751eb6bfa051ea5b154ac68ea))
+
 ## [1.109.0](https://github.com/dodopayments/dodopayments-rust/compare/v1.108.0...v1.109.0) (2026-07-06)
 
 
