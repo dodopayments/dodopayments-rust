@@ -149,6 +149,7 @@ pub struct CheckoutSessionPreviewResponse {
     pub is_byop: bool,
     pub product_cart: Vec<serde_json::Value>,
     pub total_price: i64,
+    pub next_billing_date: Option<String>,
     pub recurring_breakup: Option<serde_json::Value>,
     pub tax_id_business_name: Option<String>,
     pub tax_id_err_msg: Option<String>,
@@ -252,6 +253,7 @@ pub struct Payment {
     pub customer: Box<crate::models::CustomerLimitedDetails>,
     pub digital_products_delivered: bool,
     pub disputes: Vec<crate::models::Dispute>,
+    pub is_update_payment_method: bool,
     pub metadata: Box<crate::models::Metadata>,
     pub payment_id: String,
     pub payment_provider: String,
@@ -275,6 +277,7 @@ pub struct Payment {
     pub invoice_url: Option<String>,
     pub payment_link: Option<String>,
     pub payment_method: Option<String>,
+    pub payment_method_id: Option<String>,
     pub payment_method_type: Option<String>,
     pub product_cart: Option<Vec<serde_json::Value>>,
     pub refund_status: Option<Box<crate::models::PaymentRefundStatus>>,
@@ -2530,6 +2533,14 @@ pub struct SubscriptionRenewedWebhookEvent {
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub struct SubscriptionUpdatePaymentMethodWebhookEvent {
+    pub business_id: String,
+    pub data: Box<crate::models::Subscription>,
+    pub timestamp: String,
+    pub r#type: String,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct SubscriptionUpdatedWebhookEvent {
     pub business_id: String,
     pub data: Box<crate::models::Subscription>,
@@ -2584,6 +2595,9 @@ pub enum UnsafeUnwrapWebhookEvent {
     SubscriptionOnHoldWebhookEvent(Box<crate::models::SubscriptionOnHoldWebhookEvent>),
     SubscriptionPlanChangedWebhookEvent(Box<crate::models::SubscriptionPlanChangedWebhookEvent>),
     SubscriptionRenewedWebhookEvent(Box<crate::models::SubscriptionRenewedWebhookEvent>),
+    SubscriptionUpdatePaymentMethodWebhookEvent(
+        Box<crate::models::SubscriptionUpdatePaymentMethodWebhookEvent>,
+    ),
     SubscriptionUpdatedWebhookEvent(Box<crate::models::SubscriptionUpdatedWebhookEvent>),
 }
 
@@ -2634,6 +2648,9 @@ pub enum UnwrapWebhookEvent {
     SubscriptionOnHoldWebhookEvent(Box<crate::models::SubscriptionOnHoldWebhookEvent>),
     SubscriptionPlanChangedWebhookEvent(Box<crate::models::SubscriptionPlanChangedWebhookEvent>),
     SubscriptionRenewedWebhookEvent(Box<crate::models::SubscriptionRenewedWebhookEvent>),
+    SubscriptionUpdatePaymentMethodWebhookEvent(
+        Box<crate::models::SubscriptionUpdatePaymentMethodWebhookEvent>,
+    ),
     SubscriptionUpdatedWebhookEvent(Box<crate::models::SubscriptionUpdatedWebhookEvent>),
 }
 
@@ -2689,6 +2706,8 @@ pub enum WebhookEventType {
     SubscriptionPlanChanged,
     #[serde(rename = "subscription.updated")]
     SubscriptionUpdated,
+    #[serde(rename = "subscription.update_payment_method")]
+    SubscriptionUpdatePaymentMethod,
     #[serde(rename = "license_key.created")]
     LicenseKeyCreated,
     #[serde(rename = "payout.not_initiated")]
