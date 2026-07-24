@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.110.0](https://github.com/dodopayments/dodopayments-rust/compare/v1.109.1...v1.110.0) (2026-07-24)
+
+
+### Features
+
+* **api:** add discount customers endpoints, trial support, currency options, and failure details ([cc40660](https://github.com/dodopayments/dodopayments-rust/commit/cc40660d35da94e24785d372ad39ede0cffd16e6))
+* **api:** add discount customers endpoints, trial support, currency options, and failure details ([52a3e6c](https://github.com/dodopayments/dodopayments-rust/commit/52a3e6c459501ec254c289e64af6422555c86809))
+
 ## [1.109.1](https://github.com/dodopayments/dodopayments-rust/compare/v1.109.0...v1.109.1) (2026-07-09)
 
 
