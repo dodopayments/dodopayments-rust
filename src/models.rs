@@ -155,6 +155,8 @@ pub struct CheckoutSessionPreviewResponse {
     pub tax_id_err_msg: Option<String>,
     pub tax_id_format_name: Option<String>,
     pub total_tax: Option<i64>,
+    pub trial_amount: Option<i64>,
+    pub trial_period_days: Option<i64>,
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
@@ -273,6 +275,7 @@ pub struct Payment {
     pub discounts: Option<Vec<crate::models::DiscountDetail>>,
     pub error_code: Option<String>,
     pub error_message: Option<String>,
+    pub failure_details: Option<serde_json::Value>,
     pub invoice_id: Option<String>,
     pub invoice_url: Option<String>,
     pub payment_link: Option<String>,
@@ -444,8 +447,6 @@ pub enum PaymentMethodTypes {
     SepaBankTransfer,
     #[serde(rename = "sofort")]
     Sofort,
-    #[serde(rename = "sunbit")]
-    Sunbit,
     #[serde(rename = "swish")]
     Swish,
     #[serde(rename = "touch_n_go")]
@@ -708,6 +709,7 @@ pub struct Subscription {
     pub payment_method_id: Option<String>,
     pub scheduled_change: Option<Box<crate::models::ScheduledPlanChange>>,
     pub tax_id: Option<String>,
+    pub trial_amount: Option<i64>,
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
@@ -766,6 +768,7 @@ pub struct SubscriptionCreateResponse {
     pub expires_on: Option<String>,
     pub one_time_product_cart: Option<Vec<serde_json::Value>>,
     pub payment_link: Option<String>,
+    pub trial_amount: Option<i64>,
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
@@ -799,6 +802,7 @@ pub struct SubscriptionListResponse {
     pub product_name: Option<String>,
     pub scheduled_change: Option<Box<crate::models::ScheduledPlanChange>>,
     pub tax_id: Option<String>,
+    pub trial_amount: Option<i64>,
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
@@ -2123,14 +2127,18 @@ pub struct Discount {
     pub business_id: String,
     pub code: String,
     pub created_at: String,
+    pub customer_eligibility: String,
     pub discount_id: String,
     pub metadata: Box<crate::models::Metadata>,
     pub preserve_on_plan_change: bool,
     pub restricted_to: Vec<String>,
     pub times_used: i64,
     pub r#type: Box<crate::models::DiscountType>,
+    pub currency_options: Option<Vec<serde_json::Value>>,
     pub expires_at: Option<String>,
     pub name: Option<String>,
+    pub per_customer_usage_limit: Option<i64>,
+    pub starts_at: Option<String>,
     pub subscription_cycles: Option<i64>,
     pub usage_limit: Option<i64>,
 }
@@ -2157,6 +2165,8 @@ pub struct DiscountDetail {
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub enum DiscountType {
+    #[serde(rename = "flat")]
+    Flat,
     #[serde(rename = "percentage")]
     Percentage,
     #[serde(other)]
@@ -3813,6 +3823,18 @@ pub struct ProductsLocalizedPricesUpdateParams {
 }
 
 #[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct DiscountsCreateParamsCurrencyOptionsItem {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub currency: Option<Box<crate::models::Currency>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub is_default: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub max_amount_possible: Option<i64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub minimum_subtotal: Option<i64>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
 pub struct DiscountsCreateParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub amount: Option<i64>,
@@ -3821,19 +3843,39 @@ pub struct DiscountsCreateParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub code: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
+    pub currency_options: Option<Vec<crate::models::DiscountsCreateParamsCurrencyOptionsItem>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub customer_eligibility: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub expires_at: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub metadata: Option<Box<crate::models::Metadata>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
+    pub per_customer_usage_limit: Option<i64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub preserve_on_plan_change: Option<bool>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub restricted_to: Option<Vec<String>>,
     #[serde(skip_serializing_if = "Option::is_none")]
+    pub starts_at: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub subscription_cycles: Option<i64>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub usage_limit: Option<i64>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct DiscountsUpdateParamsCurrencyOptionsItem {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub currency: Option<Box<crate::models::Currency>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub is_default: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub max_amount_possible: Option<i64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub minimum_subtotal: Option<i64>,
 }
 
 #[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
@@ -3843,15 +3885,23 @@ pub struct DiscountsUpdateParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub code: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
+    pub currency_options: Option<Vec<crate::models::DiscountsUpdateParamsCurrencyOptionsItem>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub customer_eligibility: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub expires_at: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub metadata: Option<Box<crate::models::Metadata>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
+    pub per_customer_usage_limit: Option<i64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub preserve_on_plan_change: Option<bool>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub restricted_to: Option<Vec<String>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub starts_at: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub subscription_cycles: Option<i64>,
     #[serde(skip_serializing_if = "Option::is_none")]
