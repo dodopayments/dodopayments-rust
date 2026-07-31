@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.111.0](https://github.com/dodopayments/dodopayments-rust/compare/v1.110.0...v1.111.0) (2026-07-31)
+
+
+### Features
+
+* **api:** add payout webhook events and remove payment failure_details ([3a6da3c](https://github.com/dodopayments/dodopayments-rust/commit/3a6da3cac4fcd97926e51d38080912704040662f))
+* **api:** add payout webhook events and remove payment failure_details ([3a24cc0](https://github.com/dodopayments/dodopayments-rust/commit/3a24cc003bb237888f0646b8ce383b715455a504))
+
 ## [1.110.0](https://github.com/dodopayments/dodopayments-rust/compare/v1.109.1...v1.110.0) (2026-07-24)
 
 
