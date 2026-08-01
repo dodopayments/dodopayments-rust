@@ -275,7 +275,6 @@ pub struct Payment {
     pub discounts: Option<Vec<crate::models::DiscountDetail>>,
     pub error_code: Option<String>,
     pub error_message: Option<String>,
-    pub failure_details: Option<serde_json::Value>,
     pub invoice_id: Option<String>,
     pub invoice_url: Option<String>,
     pub payment_link: Option<String>,
@@ -2471,6 +2470,46 @@ pub struct PaymentSucceededWebhookEvent {
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub struct PayoutCreatedWebhookEvent {
+    pub business_id: String,
+    pub data: serde_json::Value,
+    pub timestamp: String,
+    pub r#type: String,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub struct PayoutFailedWebhookEvent {
+    pub business_id: String,
+    pub data: serde_json::Value,
+    pub timestamp: String,
+    pub r#type: String,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub struct PayoutInProgressWebhookEvent {
+    pub business_id: String,
+    pub data: serde_json::Value,
+    pub timestamp: String,
+    pub r#type: String,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub struct PayoutOnHoldWebhookEvent {
+    pub business_id: String,
+    pub data: serde_json::Value,
+    pub timestamp: String,
+    pub r#type: String,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub struct PayoutSuccessWebhookEvent {
+    pub business_id: String,
+    pub data: serde_json::Value,
+    pub timestamp: String,
+    pub r#type: String,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct RefundFailedWebhookEvent {
     pub business_id: String,
     pub data: Box<crate::models::Refund>,
@@ -2596,6 +2635,11 @@ pub enum UnsafeUnwrapWebhookEvent {
     PaymentFailedWebhookEvent(Box<crate::models::PaymentFailedWebhookEvent>),
     PaymentProcessingWebhookEvent(Box<crate::models::PaymentProcessingWebhookEvent>),
     PaymentSucceededWebhookEvent(Box<crate::models::PaymentSucceededWebhookEvent>),
+    PayoutCreatedWebhookEvent(Box<crate::models::PayoutCreatedWebhookEvent>),
+    PayoutFailedWebhookEvent(Box<crate::models::PayoutFailedWebhookEvent>),
+    PayoutInProgressWebhookEvent(Box<crate::models::PayoutInProgressWebhookEvent>),
+    PayoutOnHoldWebhookEvent(Box<crate::models::PayoutOnHoldWebhookEvent>),
+    PayoutSuccessWebhookEvent(Box<crate::models::PayoutSuccessWebhookEvent>),
     RefundFailedWebhookEvent(Box<crate::models::RefundFailedWebhookEvent>),
     RefundSucceededWebhookEvent(Box<crate::models::RefundSucceededWebhookEvent>),
     SubscriptionActiveWebhookEvent(Box<crate::models::SubscriptionActiveWebhookEvent>),
@@ -2649,6 +2693,11 @@ pub enum UnwrapWebhookEvent {
     PaymentFailedWebhookEvent(Box<crate::models::PaymentFailedWebhookEvent>),
     PaymentProcessingWebhookEvent(Box<crate::models::PaymentProcessingWebhookEvent>),
     PaymentSucceededWebhookEvent(Box<crate::models::PaymentSucceededWebhookEvent>),
+    PayoutCreatedWebhookEvent(Box<crate::models::PayoutCreatedWebhookEvent>),
+    PayoutFailedWebhookEvent(Box<crate::models::PayoutFailedWebhookEvent>),
+    PayoutInProgressWebhookEvent(Box<crate::models::PayoutInProgressWebhookEvent>),
+    PayoutOnHoldWebhookEvent(Box<crate::models::PayoutOnHoldWebhookEvent>),
+    PayoutSuccessWebhookEvent(Box<crate::models::PayoutSuccessWebhookEvent>),
     RefundFailedWebhookEvent(Box<crate::models::RefundFailedWebhookEvent>),
     RefundSucceededWebhookEvent(Box<crate::models::RefundSucceededWebhookEvent>),
     SubscriptionActiveWebhookEvent(Box<crate::models::SubscriptionActiveWebhookEvent>),
@@ -2720,8 +2769,8 @@ pub enum WebhookEventType {
     SubscriptionUpdatePaymentMethod,
     #[serde(rename = "license_key.created")]
     LicenseKeyCreated,
-    #[serde(rename = "payout.not_initiated")]
-    PayoutNotInitiated,
+    #[serde(rename = "payout.created")]
+    PayoutCreated,
     #[serde(rename = "payout.on_hold")]
     PayoutOnHold,
     #[serde(rename = "payout.in_progress")]
