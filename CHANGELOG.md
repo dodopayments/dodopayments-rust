@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.112.0](https://github.com/dodopayments/dodopayments-rust/compare/v1.111.0...v1.112.0) (2026-08-05)
+
+
+### Features
+
+* **api:** add addon single_quantity_price and live_tutoring tax category ([3603699](https://github.com/dodopayments/dodopayments-rust/commit/3603699497eda30de1e54b69068042ce185803d9))
+* **api:** add addon single_quantity_price and live_tutoring tax category ([569f6e8](https://github.com/dodopayments/dodopayments-rust/commit/569f6e8c5c07e1ad069d3ccb1de4ad51a45ba41b))
+
 ## [1.111.0](https://github.com/dodopayments/dodopayments-rust/compare/v1.110.0...v1.111.0) (2026-07-31)
 
 
