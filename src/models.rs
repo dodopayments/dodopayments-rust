@@ -2114,6 +2114,8 @@ pub enum TaxCategory {
     EBook,
     #[serde(rename = "edtech")]
     Edtech,
+    #[serde(rename = "live_tutoring")]
+    LiveTutoring,
     #[serde(other)]
     Unknown,
 }
