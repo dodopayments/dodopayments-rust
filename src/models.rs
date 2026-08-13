@@ -705,6 +705,7 @@ pub struct Subscription {
     pub discount_id: Option<String>,
     pub discounts: Option<Vec<crate::models::DiscountDetail>>,
     pub expires_at: Option<String>,
+    pub paused_at: Option<String>,
     pub payment_method_id: Option<String>,
     pub scheduled_change: Option<Box<crate::models::ScheduledPlanChange>>,
     pub tax_id: Option<String>,
@@ -719,6 +720,8 @@ pub enum SubscriptionStatus {
     Active,
     #[serde(rename = "on_hold")]
     OnHold,
+    #[serde(rename = "paused")]
+    Paused,
     #[serde(rename = "cancelled")]
     Cancelled,
     #[serde(rename = "failed")]
@@ -797,6 +800,7 @@ pub struct SubscriptionListResponse {
     pub customer_business_name: Option<String>,
     pub discount_cycles_remaining: Option<i64>,
     pub discount_id: Option<String>,
+    pub paused_at: Option<String>,
     pub payment_method_id: Option<String>,
     pub product_name: Option<String>,
     pub scheduled_change: Option<Box<crate::models::ScheduledPlanChange>>,
@@ -2568,6 +2572,14 @@ pub struct SubscriptionOnHoldWebhookEvent {
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub struct SubscriptionPausedWebhookEvent {
+    pub business_id: String,
+    pub data: Box<crate::models::Subscription>,
+    pub timestamp: String,
+    pub r#type: String,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct SubscriptionPlanChangedWebhookEvent {
     pub business_id: String,
     pub data: Box<crate::models::Subscription>,
@@ -2577,6 +2589,14 @@ pub struct SubscriptionPlanChangedWebhookEvent {
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct SubscriptionRenewedWebhookEvent {
+    pub business_id: String,
+    pub data: Box<crate::models::Subscription>,
+    pub timestamp: String,
+    pub r#type: String,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub struct SubscriptionUnpausedWebhookEvent {
     pub business_id: String,
     pub data: Box<crate::models::Subscription>,
     pub timestamp: String,
@@ -2649,8 +2669,10 @@ pub enum UnsafeUnwrapWebhookEvent {
     SubscriptionExpiredWebhookEvent(Box<crate::models::SubscriptionExpiredWebhookEvent>),
     SubscriptionFailedWebhookEvent(Box<crate::models::SubscriptionFailedWebhookEvent>),
     SubscriptionOnHoldWebhookEvent(Box<crate::models::SubscriptionOnHoldWebhookEvent>),
+    SubscriptionPausedWebhookEvent(Box<crate::models::SubscriptionPausedWebhookEvent>),
     SubscriptionPlanChangedWebhookEvent(Box<crate::models::SubscriptionPlanChangedWebhookEvent>),
     SubscriptionRenewedWebhookEvent(Box<crate::models::SubscriptionRenewedWebhookEvent>),
+    SubscriptionUnpausedWebhookEvent(Box<crate::models::SubscriptionUnpausedWebhookEvent>),
     SubscriptionUpdatePaymentMethodWebhookEvent(
         Box<crate::models::SubscriptionUpdatePaymentMethodWebhookEvent>,
     ),
@@ -2707,8 +2729,10 @@ pub enum UnwrapWebhookEvent {
     SubscriptionExpiredWebhookEvent(Box<crate::models::SubscriptionExpiredWebhookEvent>),
     SubscriptionFailedWebhookEvent(Box<crate::models::SubscriptionFailedWebhookEvent>),
     SubscriptionOnHoldWebhookEvent(Box<crate::models::SubscriptionOnHoldWebhookEvent>),
+    SubscriptionPausedWebhookEvent(Box<crate::models::SubscriptionPausedWebhookEvent>),
     SubscriptionPlanChangedWebhookEvent(Box<crate::models::SubscriptionPlanChangedWebhookEvent>),
     SubscriptionRenewedWebhookEvent(Box<crate::models::SubscriptionRenewedWebhookEvent>),
+    SubscriptionUnpausedWebhookEvent(Box<crate::models::SubscriptionUnpausedWebhookEvent>),
     SubscriptionUpdatePaymentMethodWebhookEvent(
         Box<crate::models::SubscriptionUpdatePaymentMethodWebhookEvent>,
     ),
@@ -2757,6 +2781,8 @@ pub enum WebhookEventType {
     SubscriptionOnHold,
     #[serde(rename = "subscription.paused")]
     SubscriptionPaused,
+    #[serde(rename = "subscription.unpaused")]
+    SubscriptionUnpaused,
     #[serde(rename = "subscription.cancelled")]
     SubscriptionCancelled,
     #[serde(rename = "subscription.failed")]
@@ -3580,6 +3606,8 @@ pub struct SubscriptionsUpdateParams {
     pub metadata: Option<Box<crate::models::Metadata>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub next_billing_date: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub pause: Option<bool>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub status: Option<Box<crate::models::SubscriptionStatus>>,
     #[serde(skip_serializing_if = "Option::is_none")]
