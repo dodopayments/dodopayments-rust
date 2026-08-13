@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.113.0](https://github.com/dodopayments/dodopayments-rust/compare/v1.112.0...v1.113.0) (2026-08-13)
+
+
+### Features
+
+* **api:** add subscription pause/unpause ([83fc284](https://github.com/dodopayments/dodopayments-rust/commit/83fc284729f029342326ad4f6d481813b4f56e38))
+* **api:** add subscription pause/unpause ([9fcffe3](https://github.com/dodopayments/dodopayments-rust/commit/9fcffe3d9e90ce58a0a88d1ca9bbc480c256aab9))
+
 ## [1.112.0](https://github.com/dodopayments/dodopayments-rust/compare/v1.111.0...v1.112.0) (2026-08-05)
 
 
