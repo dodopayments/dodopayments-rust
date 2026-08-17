@@ -979,7 +979,21 @@ async fn brands_list() {
     let Some(client) = make_client() else {
         return;
     };
-    let _ = client.brands().list().await;
+    let _ = client.brands().list().query(serde_json::json!({})).await;
+}
+
+#[tokio::test]
+async fn brands_archive() {
+    let Some(client) = make_client() else {
+        return;
+    };
+    let id = "id";
+    let _ = client
+        .brands()
+        .archive()
+        .id(id)
+        .body(Default::default())
+        .await;
 }
 
 #[tokio::test]

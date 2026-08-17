@@ -5137,6 +5137,16 @@ impl BrandsResource {
     pub fn list(&self) -> BrandsListBuilder {
         BrandsListBuilder {
             client: self.client.clone(),
+            query: None,
+        }
+    }
+
+    #[must_use = "request builders do nothing until you send or await them"]
+    pub fn archive(&self) -> BrandsArchiveBuilder {
+        BrandsArchiveBuilder {
+            client: self.client.clone(),
+            id: None,
+            body: None,
         }
     }
 
@@ -5285,13 +5295,24 @@ impl std::future::IntoFuture for BrandsUpdateBuilder {
 #[derive(Clone, Debug)]
 pub struct BrandsListBuilder {
     client: crate::Client,
+    query: Option<serde_json::Value>,
 }
 
 impl BrandsListBuilder {
+    #[must_use = "setters return an updated request builder"]
+    pub fn query(mut self, query: serde_json::Value) -> Self {
+        self.query = Some(query);
+        self
+    }
+
     pub async fn send(self) -> crate::error::Result<crate::models::BrandListResponse> {
         let client = self.client;
+        let query = self.query;
         let path = "/brands".to_string();
-        let request = client.request(reqwest::Method::GET, &path);
+        let mut request = client.request(reqwest::Method::GET, &path);
+        if let Some(query) = &query {
+            request = request.query(query);
+        }
         client.handle_response(request).await
     }
 }
@@ -5302,6 +5323,58 @@ impl std::future::IntoFuture for BrandsListBuilder {
         Box<
             dyn std::future::Future<Output = crate::error::Result<crate::models::BrandListResponse>>
                 + Send
+                + 'static,
+        >,
+    >;
+
+    fn into_future(self) -> Self::IntoFuture {
+        Box::pin(self.send())
+    }
+}
+
+#[must_use = "request builders do nothing until you send or await them"]
+#[derive(Clone, Debug)]
+pub struct BrandsArchiveBuilder {
+    client: crate::Client,
+    id: Option<String>,
+    body: Option<crate::models::BrandsArchiveParams>,
+}
+
+impl BrandsArchiveBuilder {
+    #[must_use = "setters return an updated request builder"]
+    pub fn id(mut self, id: impl Into<String>) -> Self {
+        self.id = Some(id.into());
+        self
+    }
+
+    #[must_use = "setters return an updated request builder"]
+    pub fn body(mut self, body: crate::models::BrandsArchiveParams) -> Self {
+        self.body = Some(body);
+        self
+    }
+
+    pub async fn send(self) -> crate::error::Result<crate::models::BrandArchiveResponse> {
+        let client = self.client;
+        let id = self.id.ok_or(crate::error::Error::MissingPathParam {
+            operation: "brands.archive",
+            param: "id",
+        })?;
+        let body = self.body.ok_or(crate::error::Error::MissingBody {
+            operation: "brands.archive",
+        })?;
+        let path = build_path("/brands/{id}/archive", &[("id", id.as_str())]);
+        let request = client.request(reqwest::Method::POST, &path).json(&body);
+        client.handle_response(request).await
+    }
+}
+
+impl std::future::IntoFuture for BrandsArchiveBuilder {
+    type Output = crate::error::Result<crate::models::BrandArchiveResponse>;
+    type IntoFuture = std::pin::Pin<
+        Box<
+            dyn std::future::Future<
+                    Output = crate::error::Result<crate::models::BrandArchiveResponse>,
+                > + Send
                 + 'static,
         >,
     >;
