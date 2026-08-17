@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.114.0](https://github.com/dodopayments/dodopayments-rust/compare/v1.113.0...v1.114.0) (2026-08-17)
+
+
+### Features
+
+* **api:** add brand archive endpoint ([d609a08](https://github.com/dodopayments/dodopayments-rust/commit/d609a08039ba4f463dad79d66ebef518335d01b6))
+* **api:** add brand archive endpoint ([4fd3198](https://github.com/dodopayments/dodopayments-rust/commit/4fd3198b8d9ba6788da82aeabe21058eb0b3c18f))
+
 ## [1.113.0](https://github.com/dodopayments/dodopayments-rust/compare/v1.112.0...v1.113.0) (2026-08-13)
 
 

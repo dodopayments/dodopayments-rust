@@ -87,7 +87,7 @@ dependencies = [
 
 [[package]]
 name = "dodopayments"
-version = "1.113.0"
+version = "1.114.0"
 dependencies = [
  "futures",
  "httpdate",
