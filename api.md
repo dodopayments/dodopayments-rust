@@ -204,7 +204,8 @@ Methods:
 - <code title="post /brands">client.brands().create().body(body: BrandsCreateParams) -&gt; Result&lt;Brand&gt;</code>
 - <code title="get /brands/{id}">client.brands().retrieve().id(id: impl Into&lt;String&gt;) -&gt; Result&lt;Brand&gt;</code>
 - <code title="patch /brands/{id}">client.brands().update().id(id: impl Into&lt;String&gt;).body(body: BrandsUpdateParams) -&gt; Result&lt;Brand&gt;</code>
-- <code title="get /brands">client.brands().list() -&gt; Result&lt;BrandListResponse&gt;</code>
+- <code title="get /brands">client.brands().list().query(query: serde_json::Value) -&gt; Result&lt;BrandListResponse&gt;</code>
+- <code title="post /brands/{id}/archive">client.brands().archive().id(id: impl Into&lt;String&gt;).body(body: BrandsArchiveParams) -&gt; Result&lt;BrandArchiveResponse&gt;</code>
 - <code title="put /brands/{id}/images">client.brands().update_images().id(id: impl Into&lt;String&gt;) -&gt; Result&lt;BrandUpdateImagesResponse&gt;</code>
 
 # Webhooks
