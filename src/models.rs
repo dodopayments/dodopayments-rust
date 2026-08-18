@@ -35,6 +35,7 @@ pub struct CheckoutSessionFlags {
     pub always_create_new_customer: Option<bool>,
     pub redirect_immediately: Option<bool>,
     pub require_phone_number: Option<bool>,
+    pub single_page: Option<bool>,
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
@@ -2206,6 +2207,7 @@ pub struct Brand {
     pub statement_descriptor: String,
     pub verification_enabled: bool,
     pub verification_status: String,
+    pub archived_at: Option<String>,
     pub description: Option<String>,
     pub image: Option<String>,
     pub name: Option<String>,
@@ -2217,6 +2219,16 @@ pub struct Brand {
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct BrandListResponse {
     pub items: Vec<crate::models::Brand>,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub struct BrandArchiveResponse {
+    pub archived_at: String,
+    pub brand_id: String,
+    pub collections_moved: i64,
+    pub products_moved: i64,
+    pub subscriptions_moved: i64,
+    pub moved_to_brand_id: Option<String>,
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
@@ -4047,6 +4059,12 @@ pub struct BrandsUpdateParams {
     pub support_email: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub url: Option<String>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct BrandsArchiveParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub move_products_to: Option<String>,
 }
 
 #[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
