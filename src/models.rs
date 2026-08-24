@@ -750,6 +750,8 @@ pub struct UpdateSubscriptionPlanReq {
     pub quantity: i64,
     pub adaptive_currency_fees_inclusive: Option<bool>,
     pub addons: Option<Vec<crate::models::AttachAddon>>,
+    pub cancel_scheduled_change_plan: Option<bool>,
+    pub collect_via_payment_link: Option<bool>,
     pub discount_code: Option<String>,
     pub discount_codes: Option<Vec<String>>,
     pub effective_at: Option<String>,
@@ -807,6 +809,14 @@ pub struct SubscriptionListResponse {
     pub scheduled_change: Option<Box<crate::models::ScheduledPlanChange>>,
     pub tax_id: Option<String>,
     pub trial_amount: Option<i64>,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub struct SubscriptionChangePlanResponse {
+    pub client_secret: Option<String>,
+    pub expires_on: Option<String>,
+    pub payment_id: Option<String>,
+    pub payment_link: Option<String>,
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
@@ -3216,8 +3226,10 @@ pub struct EntitlementGrant {
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct LicenseKeyGrant {
+    pub id: String,
     pub activations_used: i64,
     pub key: String,
+    pub status: Box<crate::models::LicenseKeyStatus>,
     pub activations_limit: Option<i64>,
     pub expires_at: Option<String>,
 }
@@ -3642,6 +3654,10 @@ pub struct SubscriptionsChangePlanParams {
     pub adaptive_currency_fees_inclusive: Option<bool>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub addons: Option<Vec<crate::models::AttachAddon>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub cancel_scheduled_change_plan: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub collect_via_payment_link: Option<bool>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub discount_code: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
