@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.115.0](https://github.com/dodopayments/dodopayments-rust/compare/v1.114.0...v1.115.0) (2026-08-24)
+
+
+### Features
+
+* **api:** return checkout handles from subscription change-plan ([5d88fdc](https://github.com/dodopayments/dodopayments-rust/commit/5d88fdc547e2ac90b80322c03c02ac99d7065564))
+* **api:** return checkout handles from subscription change-plan ([a99f880](https://github.com/dodopayments/dodopayments-rust/commit/a99f880d7edd501b7dc21bdcf3fa26f5e15f2592))
+
 ## [1.114.0](https://github.com/dodopayments/dodopayments-rust/compare/v1.113.0...v1.114.0) (2026-08-17)
 
 
