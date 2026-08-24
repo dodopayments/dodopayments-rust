@@ -955,7 +955,7 @@ impl SubscriptionsChangePlanBuilder {
         self
     }
 
-    pub async fn send(self) -> crate::error::Result<()> {
+    pub async fn send(self) -> crate::error::Result<crate::models::SubscriptionChangePlanResponse> {
         let client = self.client;
         let subscription_id =
             self.subscription_id
@@ -971,14 +971,19 @@ impl SubscriptionsChangePlanBuilder {
             &[("subscription_id", subscription_id.as_str())],
         );
         let request = client.request(reqwest::Method::POST, &path).json(&body);
-        client.handle_empty(request).await
+        client.handle_response(request).await
     }
 }
 
 impl std::future::IntoFuture for SubscriptionsChangePlanBuilder {
-    type Output = crate::error::Result<()>;
+    type Output = crate::error::Result<crate::models::SubscriptionChangePlanResponse>;
     type IntoFuture = std::pin::Pin<
-        Box<dyn std::future::Future<Output = crate::error::Result<()>> + Send + 'static>,
+        Box<
+            dyn std::future::Future<
+                    Output = crate::error::Result<crate::models::SubscriptionChangePlanResponse>,
+                > + Send
+                + 'static,
+        >,
     >;
 
     fn into_future(self) -> Self::IntoFuture {
