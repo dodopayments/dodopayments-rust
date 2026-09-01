@@ -16,6 +16,8 @@ Methods:
 - <code title="get /payments/{payment_id}">client.payments().retrieve().payment_id(payment_id: impl Into&lt;String&gt;) -&gt; Result&lt;Payment&gt;</code>
 - <code title="get /payments">client.payments().list().query(query: serde_json::Value) -&gt; Result&lt;DefaultPageNumberPagination&lt;PaymentListResponse&gt;&gt;</code>
 - <code title="get /payments/{payment_id}/line-items">client.payments().retrieve_line_items().payment_id(payment_id: impl Into&lt;String&gt;) -&gt; Result&lt;PaymentRetrieveLineItemsResponse&gt;</code>
+- <code title="get /payments/{payment_id}/retry">client.payments().retrieve_retry_state().payment_id(payment_id: impl Into&lt;String&gt;) -&gt; Result&lt;ManualRetryState&gt;</code>
+- <code title="post /payments/{payment_id}/retry">client.payments().retry().payment_id(payment_id: impl Into&lt;String&gt;) -&gt; Result&lt;ManualRetry&gt;</code>
 
 # Subscriptions
 
@@ -100,6 +102,24 @@ Methods:
 
 - <code title="post /customers/{customer_id}/wallets/ledger-entries">client.customers().wallets().ledger_entries().create().customer_id(customer_id: impl Into&lt;String&gt;).body(body: CustomersWalletsLedgerEntriesCreateParams) -&gt; Result&lt;CustomerWallet&gt;</code>
 - <code title="get /customers/{customer_id}/wallets/ledger-entries">client.customers().wallets().ledger_entries().list().customer_id(customer_id: impl Into&lt;String&gt;).query(query: serde_json::Value) -&gt; Result&lt;DefaultPageNumberPagination&lt;CustomerWalletTransaction&gt;&gt;</code>
+
+# Blocklist
+
+## Customers
+
+Methods:
+
+- <code title="post /blocklist/customers">client.blocklist().customers().create().body(body: serde_json::Value) -&gt; Result&lt;BlockedCustomer&gt;</code>
+- <code title="get /blocklist/customers/{entry_id}">client.blocklist().customers().retrieve().entry_id(entry_id: impl Into&lt;String&gt;) -&gt; Result&lt;BlockedCustomer&gt;</code>
+- <code title="get /blocklist/customers">client.blocklist().customers().list().query(query: serde_json::Value) -&gt; Result&lt;DefaultPageNumberPagination&lt;BlockedCustomer&gt;&gt;</code>
+- <code title="delete /blocklist/customers/{entry_id}">client.blocklist().customers().delete().entry_id(entry_id: impl Into&lt;String&gt;) -&gt; Result&lt;()&gt;</code>
+
+### Notes
+
+Methods:
+
+- <code title="post /blocklist/customers/{entry_id}/notes">client.blocklist().customers().notes().create().entry_id(entry_id: impl Into&lt;String&gt;).body(body: BlocklistCustomersNotesCreateParams) -&gt; Result&lt;BlockedCustomerNote&gt;</code>
+- <code title="patch /blocklist/customers/{entry_id}/notes/{note_id}">client.blocklist().customers().notes().update().entry_id(entry_id: impl Into&lt;String&gt;).note_id(note_id: impl Into&lt;String&gt;).body(body: BlocklistCustomersNotesCreateParams) -&gt; Result&lt;BlockedCustomerNote&gt;</code>
 
 # Refunds
 

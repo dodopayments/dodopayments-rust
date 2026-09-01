@@ -88,6 +88,13 @@ impl crate::Client {
     }
 
     #[must_use = "resource accessors do nothing unless chained to a request"]
+    pub fn blocklist(&self) -> BlocklistResource {
+        BlocklistResource {
+            client: self.clone(),
+        }
+    }
+
+    #[must_use = "resource accessors do nothing unless chained to a request"]
     pub fn refunds(&self) -> RefundsResource {
         RefundsResource {
             client: self.clone(),
@@ -392,6 +399,22 @@ impl PaymentsResource {
             payment_id: None,
         }
     }
+
+    #[must_use = "request builders do nothing until you send or await them"]
+    pub fn retrieve_retry_state(&self) -> PaymentsRetrieveRetryStateBuilder {
+        PaymentsRetrieveRetryStateBuilder {
+            client: self.client.clone(),
+            payment_id: None,
+        }
+    }
+
+    #[must_use = "request builders do nothing until you send or await them"]
+    pub fn retry(&self) -> PaymentsRetryBuilder {
+        PaymentsRetryBuilder {
+            client: self.client.clone(),
+            payment_id: None,
+        }
+    }
 }
 
 #[must_use = "request builders do nothing until you send or await them"]
@@ -580,6 +603,98 @@ impl std::future::IntoFuture for PaymentsRetrieveLineItemsBuilder {
             dyn std::future::Future<
                     Output = crate::error::Result<crate::models::PaymentRetrieveLineItemsResponse>,
                 > + Send
+                + 'static,
+        >,
+    >;
+
+    fn into_future(self) -> Self::IntoFuture {
+        Box::pin(self.send())
+    }
+}
+
+#[must_use = "request builders do nothing until you send or await them"]
+#[derive(Clone, Debug)]
+pub struct PaymentsRetrieveRetryStateBuilder {
+    client: crate::Client,
+    payment_id: Option<String>,
+}
+
+impl PaymentsRetrieveRetryStateBuilder {
+    #[must_use = "setters return an updated request builder"]
+    pub fn payment_id(mut self, payment_id: impl Into<String>) -> Self {
+        self.payment_id = Some(payment_id.into());
+        self
+    }
+
+    pub async fn send(self) -> crate::error::Result<crate::models::ManualRetryState> {
+        let client = self.client;
+        let payment_id = self
+            .payment_id
+            .ok_or(crate::error::Error::MissingPathParam {
+                operation: "payments.retrieve_retry_state",
+                param: "payment_id",
+            })?;
+        let path = build_path(
+            "/payments/{payment_id}/retry",
+            &[("payment_id", payment_id.as_str())],
+        );
+        let request = client.request(reqwest::Method::GET, &path);
+        client.handle_response(request).await
+    }
+}
+
+impl std::future::IntoFuture for PaymentsRetrieveRetryStateBuilder {
+    type Output = crate::error::Result<crate::models::ManualRetryState>;
+    type IntoFuture = std::pin::Pin<
+        Box<
+            dyn std::future::Future<Output = crate::error::Result<crate::models::ManualRetryState>>
+                + Send
+                + 'static,
+        >,
+    >;
+
+    fn into_future(self) -> Self::IntoFuture {
+        Box::pin(self.send())
+    }
+}
+
+#[must_use = "request builders do nothing until you send or await them"]
+#[derive(Clone, Debug)]
+pub struct PaymentsRetryBuilder {
+    client: crate::Client,
+    payment_id: Option<String>,
+}
+
+impl PaymentsRetryBuilder {
+    #[must_use = "setters return an updated request builder"]
+    pub fn payment_id(mut self, payment_id: impl Into<String>) -> Self {
+        self.payment_id = Some(payment_id.into());
+        self
+    }
+
+    pub async fn send(self) -> crate::error::Result<crate::models::ManualRetry> {
+        let client = self.client;
+        let payment_id = self
+            .payment_id
+            .ok_or(crate::error::Error::MissingPathParam {
+                operation: "payments.retry",
+                param: "payment_id",
+            })?;
+        let path = build_path(
+            "/payments/{payment_id}/retry",
+            &[("payment_id", payment_id.as_str())],
+        );
+        let request = client.request(reqwest::Method::POST, &path);
+        client.handle_response(request).await
+    }
+}
+
+impl std::future::IntoFuture for PaymentsRetryBuilder {
+    type Output = crate::error::Result<crate::models::ManualRetry>;
+    type IntoFuture = std::pin::Pin<
+        Box<
+            dyn std::future::Future<Output = crate::error::Result<crate::models::ManualRetry>>
+                + Send
                 + 'static,
         >,
     >;
@@ -2904,6 +3019,397 @@ impl std::future::IntoFuture for CustomersWalletsLedgerEntriesListBuilder {
                             crate::models::CustomerWalletTransaction,
                         >,
                     >,
+                > + Send
+                + 'static,
+        >,
+    >;
+
+    fn into_future(self) -> Self::IntoFuture {
+        Box::pin(self.send())
+    }
+}
+
+#[derive(Clone, Debug)]
+pub struct BlocklistResource {
+    client: crate::Client,
+}
+
+impl BlocklistResource {
+    #[must_use = "resource accessors do nothing unless chained to a request"]
+    pub fn customers(&self) -> BlocklistCustomersResource {
+        BlocklistCustomersResource {
+            client: self.client.clone(),
+        }
+    }
+}
+
+#[derive(Clone, Debug)]
+pub struct BlocklistCustomersResource {
+    client: crate::Client,
+}
+
+impl BlocklistCustomersResource {
+    #[must_use = "resource accessors do nothing unless chained to a request"]
+    pub fn notes(&self) -> BlocklistCustomersNotesResource {
+        BlocklistCustomersNotesResource {
+            client: self.client.clone(),
+        }
+    }
+
+    #[must_use = "request builders do nothing until you send or await them"]
+    pub fn create(&self) -> BlocklistCustomersCreateBuilder {
+        BlocklistCustomersCreateBuilder {
+            client: self.client.clone(),
+            body: None,
+        }
+    }
+
+    #[must_use = "request builders do nothing until you send or await them"]
+    pub fn retrieve(&self) -> BlocklistCustomersRetrieveBuilder {
+        BlocklistCustomersRetrieveBuilder {
+            client: self.client.clone(),
+            entry_id: None,
+        }
+    }
+
+    #[must_use = "request builders do nothing until you send or await them"]
+    pub fn list(&self) -> BlocklistCustomersListBuilder {
+        BlocklistCustomersListBuilder {
+            client: self.client.clone(),
+            query: None,
+        }
+    }
+
+    #[must_use = "request builders do nothing until you send or await them"]
+    pub fn delete(&self) -> BlocklistCustomersDeleteBuilder {
+        BlocklistCustomersDeleteBuilder {
+            client: self.client.clone(),
+            entry_id: None,
+        }
+    }
+}
+
+#[must_use = "request builders do nothing until you send or await them"]
+#[derive(Clone, Debug)]
+pub struct BlocklistCustomersCreateBuilder {
+    client: crate::Client,
+    body: Option<serde_json::Value>,
+}
+
+impl BlocklistCustomersCreateBuilder {
+    #[must_use = "setters return an updated request builder"]
+    pub fn body(mut self, body: serde_json::Value) -> Self {
+        self.body = Some(body);
+        self
+    }
+
+    pub async fn send(self) -> crate::error::Result<crate::models::BlockedCustomer> {
+        let client = self.client;
+        let body = self.body.ok_or(crate::error::Error::MissingBody {
+            operation: "blocklist.customers.create",
+        })?;
+        let path = "/blocklist/customers".to_string();
+        let request = client.request(reqwest::Method::POST, &path).json(&body);
+        client.handle_response(request).await
+    }
+}
+
+impl std::future::IntoFuture for BlocklistCustomersCreateBuilder {
+    type Output = crate::error::Result<crate::models::BlockedCustomer>;
+    type IntoFuture = std::pin::Pin<
+        Box<
+            dyn std::future::Future<Output = crate::error::Result<crate::models::BlockedCustomer>>
+                + Send
+                + 'static,
+        >,
+    >;
+
+    fn into_future(self) -> Self::IntoFuture {
+        Box::pin(self.send())
+    }
+}
+
+#[must_use = "request builders do nothing until you send or await them"]
+#[derive(Clone, Debug)]
+pub struct BlocklistCustomersRetrieveBuilder {
+    client: crate::Client,
+    entry_id: Option<String>,
+}
+
+impl BlocklistCustomersRetrieveBuilder {
+    #[must_use = "setters return an updated request builder"]
+    pub fn entry_id(mut self, entry_id: impl Into<String>) -> Self {
+        self.entry_id = Some(entry_id.into());
+        self
+    }
+
+    pub async fn send(self) -> crate::error::Result<crate::models::BlockedCustomer> {
+        let client = self.client;
+        let entry_id = self.entry_id.ok_or(crate::error::Error::MissingPathParam {
+            operation: "blocklist.customers.retrieve",
+            param: "entry_id",
+        })?;
+        let path = build_path(
+            "/blocklist/customers/{entry_id}",
+            &[("entry_id", entry_id.as_str())],
+        );
+        let request = client.request(reqwest::Method::GET, &path);
+        client.handle_response(request).await
+    }
+}
+
+impl std::future::IntoFuture for BlocklistCustomersRetrieveBuilder {
+    type Output = crate::error::Result<crate::models::BlockedCustomer>;
+    type IntoFuture = std::pin::Pin<
+        Box<
+            dyn std::future::Future<Output = crate::error::Result<crate::models::BlockedCustomer>>
+                + Send
+                + 'static,
+        >,
+    >;
+
+    fn into_future(self) -> Self::IntoFuture {
+        Box::pin(self.send())
+    }
+}
+
+#[must_use = "request builders do nothing until you send or await them"]
+#[derive(Clone, Debug)]
+pub struct BlocklistCustomersListBuilder {
+    client: crate::Client,
+    query: Option<serde_json::Value>,
+}
+
+impl BlocklistCustomersListBuilder {
+    #[must_use = "setters return an updated request builder"]
+    pub fn query(mut self, query: serde_json::Value) -> Self {
+        self.query = Some(query);
+        self
+    }
+
+    pub async fn send(
+        self,
+    ) -> crate::error::Result<
+        crate::models::DefaultPageNumberPagination<crate::models::BlockedCustomer>,
+    > {
+        let client = self.client;
+        let query = self.query;
+        let path = "/blocklist/customers".to_string();
+        let mut request = client.request(reqwest::Method::GET, &path);
+        if let Some(query) = &query {
+            request = request.query(query);
+        }
+        let mut page = client.handle_response::<crate::models::DefaultPageNumberPagination<crate::models::BlockedCustomer>>(request).await?;
+        page.set_pagination_context(crate::client::PaginationContext::new(
+            client.clone(),
+            reqwest::Method::GET,
+            path,
+            query.unwrap_or_else(|| serde_json::json!({})),
+        ));
+        Ok(page)
+    }
+}
+
+impl std::future::IntoFuture for BlocklistCustomersListBuilder {
+    type Output = crate::error::Result<
+        crate::models::DefaultPageNumberPagination<crate::models::BlockedCustomer>,
+    >;
+    type IntoFuture = std::pin::Pin<
+        Box<
+            dyn std::future::Future<
+                    Output = crate::error::Result<
+                        crate::models::DefaultPageNumberPagination<crate::models::BlockedCustomer>,
+                    >,
+                > + Send
+                + 'static,
+        >,
+    >;
+
+    fn into_future(self) -> Self::IntoFuture {
+        Box::pin(self.send())
+    }
+}
+
+#[must_use = "request builders do nothing until you send or await them"]
+#[derive(Clone, Debug)]
+pub struct BlocklistCustomersDeleteBuilder {
+    client: crate::Client,
+    entry_id: Option<String>,
+}
+
+impl BlocklistCustomersDeleteBuilder {
+    #[must_use = "setters return an updated request builder"]
+    pub fn entry_id(mut self, entry_id: impl Into<String>) -> Self {
+        self.entry_id = Some(entry_id.into());
+        self
+    }
+
+    pub async fn send(self) -> crate::error::Result<()> {
+        let client = self.client;
+        let entry_id = self.entry_id.ok_or(crate::error::Error::MissingPathParam {
+            operation: "blocklist.customers.delete",
+            param: "entry_id",
+        })?;
+        let path = build_path(
+            "/blocklist/customers/{entry_id}",
+            &[("entry_id", entry_id.as_str())],
+        );
+        let request = client.request(reqwest::Method::DELETE, &path);
+        client.handle_empty(request).await
+    }
+}
+
+impl std::future::IntoFuture for BlocklistCustomersDeleteBuilder {
+    type Output = crate::error::Result<()>;
+    type IntoFuture = std::pin::Pin<
+        Box<dyn std::future::Future<Output = crate::error::Result<()>> + Send + 'static>,
+    >;
+
+    fn into_future(self) -> Self::IntoFuture {
+        Box::pin(self.send())
+    }
+}
+
+#[derive(Clone, Debug)]
+pub struct BlocklistCustomersNotesResource {
+    client: crate::Client,
+}
+
+impl BlocklistCustomersNotesResource {
+    #[must_use = "request builders do nothing until you send or await them"]
+    pub fn create(&self) -> BlocklistCustomersNotesCreateBuilder {
+        BlocklistCustomersNotesCreateBuilder {
+            client: self.client.clone(),
+            entry_id: None,
+            body: None,
+        }
+    }
+
+    #[must_use = "request builders do nothing until you send or await them"]
+    pub fn update(&self) -> BlocklistCustomersNotesUpdateBuilder {
+        BlocklistCustomersNotesUpdateBuilder {
+            client: self.client.clone(),
+            entry_id: None,
+            note_id: None,
+            body: None,
+        }
+    }
+}
+
+#[must_use = "request builders do nothing until you send or await them"]
+#[derive(Clone, Debug)]
+pub struct BlocklistCustomersNotesCreateBuilder {
+    client: crate::Client,
+    entry_id: Option<String>,
+    body: Option<crate::models::BlocklistCustomersNotesCreateParams>,
+}
+
+impl BlocklistCustomersNotesCreateBuilder {
+    #[must_use = "setters return an updated request builder"]
+    pub fn entry_id(mut self, entry_id: impl Into<String>) -> Self {
+        self.entry_id = Some(entry_id.into());
+        self
+    }
+
+    #[must_use = "setters return an updated request builder"]
+    pub fn body(mut self, body: crate::models::BlocklistCustomersNotesCreateParams) -> Self {
+        self.body = Some(body);
+        self
+    }
+
+    pub async fn send(self) -> crate::error::Result<crate::models::BlockedCustomerNote> {
+        let client = self.client;
+        let entry_id = self.entry_id.ok_or(crate::error::Error::MissingPathParam {
+            operation: "blocklist.customers.notes.create",
+            param: "entry_id",
+        })?;
+        let body = self.body.ok_or(crate::error::Error::MissingBody {
+            operation: "blocklist.customers.notes.create",
+        })?;
+        let path = build_path(
+            "/blocklist/customers/{entry_id}/notes",
+            &[("entry_id", entry_id.as_str())],
+        );
+        let request = client.request(reqwest::Method::POST, &path).json(&body);
+        client.handle_response(request).await
+    }
+}
+
+impl std::future::IntoFuture for BlocklistCustomersNotesCreateBuilder {
+    type Output = crate::error::Result<crate::models::BlockedCustomerNote>;
+    type IntoFuture = std::pin::Pin<
+        Box<
+            dyn std::future::Future<
+                    Output = crate::error::Result<crate::models::BlockedCustomerNote>,
+                > + Send
+                + 'static,
+        >,
+    >;
+
+    fn into_future(self) -> Self::IntoFuture {
+        Box::pin(self.send())
+    }
+}
+
+#[must_use = "request builders do nothing until you send or await them"]
+#[derive(Clone, Debug)]
+pub struct BlocklistCustomersNotesUpdateBuilder {
+    client: crate::Client,
+    entry_id: Option<String>,
+    note_id: Option<String>,
+    body: Option<crate::models::BlocklistCustomersNotesCreateParams>,
+}
+
+impl BlocklistCustomersNotesUpdateBuilder {
+    #[must_use = "setters return an updated request builder"]
+    pub fn entry_id(mut self, entry_id: impl Into<String>) -> Self {
+        self.entry_id = Some(entry_id.into());
+        self
+    }
+
+    #[must_use = "setters return an updated request builder"]
+    pub fn note_id(mut self, note_id: impl Into<String>) -> Self {
+        self.note_id = Some(note_id.into());
+        self
+    }
+
+    #[must_use = "setters return an updated request builder"]
+    pub fn body(mut self, body: crate::models::BlocklistCustomersNotesCreateParams) -> Self {
+        self.body = Some(body);
+        self
+    }
+
+    pub async fn send(self) -> crate::error::Result<crate::models::BlockedCustomerNote> {
+        let client = self.client;
+        let entry_id = self.entry_id.ok_or(crate::error::Error::MissingPathParam {
+            operation: "blocklist.customers.notes.update",
+            param: "entry_id",
+        })?;
+        let note_id = self.note_id.ok_or(crate::error::Error::MissingPathParam {
+            operation: "blocklist.customers.notes.update",
+            param: "note_id",
+        })?;
+        let body = self.body.ok_or(crate::error::Error::MissingBody {
+            operation: "blocklist.customers.notes.update",
+        })?;
+        let path = build_path(
+            "/blocklist/customers/{entry_id}/notes/{note_id}",
+            &[
+                ("entry_id", entry_id.as_str()),
+                ("note_id", note_id.as_str()),
+            ],
+        );
+        let request = client.request(reqwest::Method::PATCH, &path).json(&body);
+        client.handle_response(request).await
+    }
+}
+
+impl std::future::IntoFuture for BlocklistCustomersNotesUpdateBuilder {
+    type Output = crate::error::Result<crate::models::BlockedCustomerNote>;
+    type IntoFuture = std::pin::Pin<
+        Box<
+            dyn std::future::Future<
+                    Output = crate::error::Result<crate::models::BlockedCustomerNote>,
                 > + Send
                 + 'static,
         >,
