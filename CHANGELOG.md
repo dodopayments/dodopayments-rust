@@ -1,13 +1,5 @@
 # Changelog
 
-## [1.116.0](https://github.com/dodopayments/dodopayments-rust/compare/v1.115.0...v1.116.0) (2026-09-01)
-
-
-### Features
-
-* **api:** add customer blocklist and manual payment retry ([d3db429](https://github.com/dodopayments/dodopayments-rust/commit/d3db429bc610af9f97ef46a7ac7d884d949dea2e))
-* **api:** add customer blocklist and manual payment retry ([6be5c45](https://github.com/dodopayments/dodopayments-rust/commit/6be5c45cdcdb228964da6c211a8fa144832a051b))
-
 ## [1.115.0](https://github.com/dodopayments/dodopayments-rust/compare/v1.114.0...v1.115.0) (2026-08-24)
 
 
