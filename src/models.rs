@@ -233,6 +233,27 @@ pub enum IntentStatus {
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub struct ManualRetry {
+    pub invoice_id: String,
+    pub is_manual_retry: bool,
+    pub payment_id: String,
+    pub retry_attempt: i64,
+    pub sends_allowed: i64,
+    pub sends_used: i64,
+    pub retry_available_at: Option<String>,
+    pub status: Option<Box<crate::models::IntentStatus>>,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub struct ManualRetryState {
+    pub can_retry: bool,
+    pub sends_allowed: i64,
+    pub sends_used: i64,
+    pub reason: Option<String>,
+    pub retry_available_at: Option<String>,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct NewCustomer {
     pub email: String,
     pub name: Option<String>,
@@ -729,6 +750,8 @@ pub enum SubscriptionStatus {
     Failed,
     #[serde(rename = "expired")]
     Expired,
+    #[serde(rename = "past_due")]
+    PastDue,
     #[serde(other)]
     Unknown,
 }
@@ -913,6 +936,8 @@ pub struct Customer {
     pub customer_id: String,
     pub email: String,
     pub name: String,
+    pub blocked_at: Option<String>,
+    pub blocklist_entry_id: Option<String>,
     pub metadata: Option<Box<crate::models::Metadata>>,
     pub phone_number: Option<String>,
 }
@@ -966,6 +991,78 @@ pub struct CustomerWalletTransaction {
     pub is_credit: bool,
     pub reason: Option<String>,
     pub reference_object_id: Option<String>,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub struct BlockByCustomerID {
+    pub customer_id: String,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub struct BlockByEmail {
+    pub email: String,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+#[serde(untagged)]
+pub enum BlockIdentifier {
+    BlockByCustomerID(Box<crate::models::BlockByCustomerID>),
+    BlockByEmail(Box<crate::models::BlockByEmail>),
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub struct BlockedCustomer {
+    pub id: String,
+    pub created_at: String,
+    pub customer_email: String,
+    pub customer_id: String,
+    pub customer_name: String,
+    pub identifier: String,
+    pub source: Box<crate::models::BlockedCustomerSource>,
+    pub blocked_by_email: Option<String>,
+    pub cancelled_subscription_ids: Option<Vec<String>>,
+    pub notes: Option<Vec<crate::models::BlockedCustomerNote>>,
+    pub reason: Option<String>,
+    pub remaining_subscription_ids: Option<Vec<String>>,
+    pub subscriptions_swept: Option<bool>,
+    pub unblocked_at: Option<String>,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub enum BlockedCustomerSource {
+    #[serde(rename = "blocklist_page")]
+    BlocklistPage,
+    #[serde(rename = "customer_page")]
+    CustomerPage,
+    #[serde(rename = "payment_page")]
+    PaymentPage,
+    #[serde(rename = "dispute_page")]
+    DisputePage,
+    #[serde(rename = "api")]
+    API,
+    #[serde(other)]
+    Unknown,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+#[serde(untagged)]
+pub enum CreateBlockedCustomerRequest {
+    Variant0(serde_json::Value),
+    Variant1(serde_json::Value),
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub struct BlockedCustomerNote {
+    pub id: String,
+    pub created_at: String,
+    pub note: String,
+    pub author_email: Option<String>,
+    pub updated_at: Option<String>,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub struct NoteRequest {
+    pub note: String,
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
@@ -2556,7 +2653,7 @@ pub struct RefundSucceededWebhookEvent {
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct SubscriptionActiveWebhookEvent {
     pub business_id: String,
-    pub data: Box<crate::models::Subscription>,
+    pub data: serde_json::Value,
     pub timestamp: String,
     pub r#type: String,
 }
@@ -2564,7 +2661,7 @@ pub struct SubscriptionActiveWebhookEvent {
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct SubscriptionCancelledWebhookEvent {
     pub business_id: String,
-    pub data: Box<crate::models::Subscription>,
+    pub data: serde_json::Value,
     pub timestamp: String,
     pub r#type: String,
 }
@@ -2572,7 +2669,7 @@ pub struct SubscriptionCancelledWebhookEvent {
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct SubscriptionExpiredWebhookEvent {
     pub business_id: String,
-    pub data: Box<crate::models::Subscription>,
+    pub data: serde_json::Value,
     pub timestamp: String,
     pub r#type: String,
 }
@@ -2580,7 +2677,7 @@ pub struct SubscriptionExpiredWebhookEvent {
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct SubscriptionFailedWebhookEvent {
     pub business_id: String,
-    pub data: Box<crate::models::Subscription>,
+    pub data: serde_json::Value,
     pub timestamp: String,
     pub r#type: String,
 }
@@ -2588,7 +2685,15 @@ pub struct SubscriptionFailedWebhookEvent {
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct SubscriptionOnHoldWebhookEvent {
     pub business_id: String,
-    pub data: Box<crate::models::Subscription>,
+    pub data: serde_json::Value,
+    pub timestamp: String,
+    pub r#type: String,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub struct SubscriptionPastDueWebhookEvent {
+    pub business_id: String,
+    pub data: serde_json::Value,
     pub timestamp: String,
     pub r#type: String,
 }
@@ -2596,7 +2701,7 @@ pub struct SubscriptionOnHoldWebhookEvent {
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct SubscriptionPausedWebhookEvent {
     pub business_id: String,
-    pub data: Box<crate::models::Subscription>,
+    pub data: serde_json::Value,
     pub timestamp: String,
     pub r#type: String,
 }
@@ -2604,7 +2709,7 @@ pub struct SubscriptionPausedWebhookEvent {
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct SubscriptionPlanChangedWebhookEvent {
     pub business_id: String,
-    pub data: Box<crate::models::Subscription>,
+    pub data: serde_json::Value,
     pub timestamp: String,
     pub r#type: String,
 }
@@ -2612,7 +2717,7 @@ pub struct SubscriptionPlanChangedWebhookEvent {
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct SubscriptionRenewedWebhookEvent {
     pub business_id: String,
-    pub data: Box<crate::models::Subscription>,
+    pub data: serde_json::Value,
     pub timestamp: String,
     pub r#type: String,
 }
@@ -2620,7 +2725,7 @@ pub struct SubscriptionRenewedWebhookEvent {
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct SubscriptionUnpausedWebhookEvent {
     pub business_id: String,
-    pub data: Box<crate::models::Subscription>,
+    pub data: serde_json::Value,
     pub timestamp: String,
     pub r#type: String,
 }
@@ -2628,7 +2733,7 @@ pub struct SubscriptionUnpausedWebhookEvent {
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct SubscriptionUpdatePaymentMethodWebhookEvent {
     pub business_id: String,
-    pub data: Box<crate::models::Subscription>,
+    pub data: serde_json::Value,
     pub timestamp: String,
     pub r#type: String,
 }
@@ -2636,7 +2741,7 @@ pub struct SubscriptionUpdatePaymentMethodWebhookEvent {
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct SubscriptionUpdatedWebhookEvent {
     pub business_id: String,
-    pub data: Box<crate::models::Subscription>,
+    pub data: serde_json::Value,
     pub timestamp: String,
     pub r#type: String,
 }
@@ -2691,6 +2796,7 @@ pub enum UnsafeUnwrapWebhookEvent {
     SubscriptionExpiredWebhookEvent(Box<crate::models::SubscriptionExpiredWebhookEvent>),
     SubscriptionFailedWebhookEvent(Box<crate::models::SubscriptionFailedWebhookEvent>),
     SubscriptionOnHoldWebhookEvent(Box<crate::models::SubscriptionOnHoldWebhookEvent>),
+    SubscriptionPastDueWebhookEvent(Box<crate::models::SubscriptionPastDueWebhookEvent>),
     SubscriptionPausedWebhookEvent(Box<crate::models::SubscriptionPausedWebhookEvent>),
     SubscriptionPlanChangedWebhookEvent(Box<crate::models::SubscriptionPlanChangedWebhookEvent>),
     SubscriptionRenewedWebhookEvent(Box<crate::models::SubscriptionRenewedWebhookEvent>),
@@ -2751,6 +2857,7 @@ pub enum UnwrapWebhookEvent {
     SubscriptionExpiredWebhookEvent(Box<crate::models::SubscriptionExpiredWebhookEvent>),
     SubscriptionFailedWebhookEvent(Box<crate::models::SubscriptionFailedWebhookEvent>),
     SubscriptionOnHoldWebhookEvent(Box<crate::models::SubscriptionOnHoldWebhookEvent>),
+    SubscriptionPastDueWebhookEvent(Box<crate::models::SubscriptionPastDueWebhookEvent>),
     SubscriptionPausedWebhookEvent(Box<crate::models::SubscriptionPausedWebhookEvent>),
     SubscriptionPlanChangedWebhookEvent(Box<crate::models::SubscriptionPlanChangedWebhookEvent>),
     SubscriptionRenewedWebhookEvent(Box<crate::models::SubscriptionRenewedWebhookEvent>),
@@ -2801,6 +2908,8 @@ pub enum WebhookEventType {
     SubscriptionRenewed,
     #[serde(rename = "subscription.on_hold")]
     SubscriptionOnHold,
+    #[serde(rename = "subscription.past_due")]
+    SubscriptionPastDue,
     #[serde(rename = "subscription.paused")]
     SubscriptionPaused,
     #[serde(rename = "subscription.unpaused")]
@@ -2977,6 +3086,7 @@ pub struct BalanceLedgerEntry {
     pub after_balance: Option<i64>,
     pub before_balance: Option<i64>,
     pub description: Option<String>,
+    pub payout_id: Option<String>,
     pub reference_object_id: Option<String>,
 }
 
@@ -3785,6 +3895,12 @@ pub struct CustomersWalletsLedgerEntriesCreateParams {
     pub idempotency_key: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub reason: Option<String>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct BlocklistCustomersNotesCreateParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub note: Option<String>,
 }
 
 #[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]

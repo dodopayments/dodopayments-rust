@@ -77,6 +77,28 @@ async fn payments_retrieve_line_items() {
 }
 
 #[tokio::test]
+async fn payments_retrieve_retry_state() {
+    let Some(client) = make_client() else {
+        return;
+    };
+    let payment_id = "payment_id";
+    let _ = client
+        .payments()
+        .retrieve_retry_state()
+        .payment_id(payment_id)
+        .await;
+}
+
+#[tokio::test]
+async fn payments_retry() {
+    let Some(client) = make_client() else {
+        return;
+    };
+    let payment_id = "payment_id";
+    let _ = client.payments().retry().payment_id(payment_id).await;
+}
+
+#[tokio::test]
 async fn subscriptions_create() {
     let Some(client) = make_client() else {
         return;
@@ -540,6 +562,94 @@ async fn customers_wallets_ledger_entries_list() {
         .list()
         .customer_id(customer_id)
         .query(serde_json::json!({}))
+        .await;
+}
+
+#[tokio::test]
+async fn blocklist_customers_create() {
+    let Some(client) = make_client() else {
+        return;
+    };
+    let _ = client
+        .blocklist()
+        .customers()
+        .create()
+        .body(serde_json::json!({}))
+        .await;
+}
+
+#[tokio::test]
+async fn blocklist_customers_retrieve() {
+    let Some(client) = make_client() else {
+        return;
+    };
+    let entry_id = "entry_id";
+    let _ = client
+        .blocklist()
+        .customers()
+        .retrieve()
+        .entry_id(entry_id)
+        .await;
+}
+
+#[tokio::test]
+async fn blocklist_customers_list() {
+    let Some(client) = make_client() else {
+        return;
+    };
+    let _ = client
+        .blocklist()
+        .customers()
+        .list()
+        .query(serde_json::json!({}))
+        .await;
+}
+
+#[tokio::test]
+async fn blocklist_customers_delete() {
+    let Some(client) = make_client() else {
+        return;
+    };
+    let entry_id = "entry_id";
+    let _ = client
+        .blocklist()
+        .customers()
+        .delete()
+        .entry_id(entry_id)
+        .await;
+}
+
+#[tokio::test]
+async fn blocklist_customers_notes_create() {
+    let Some(client) = make_client() else {
+        return;
+    };
+    let entry_id = "entry_id";
+    let _ = client
+        .blocklist()
+        .customers()
+        .notes()
+        .create()
+        .entry_id(entry_id)
+        .body(Default::default())
+        .await;
+}
+
+#[tokio::test]
+async fn blocklist_customers_notes_update() {
+    let Some(client) = make_client() else {
+        return;
+    };
+    let entry_id = "entry_id";
+    let note_id = "note_id";
+    let _ = client
+        .blocklist()
+        .customers()
+        .notes()
+        .update()
+        .entry_id(entry_id)
+        .note_id(note_id)
+        .body(Default::default())
         .await;
 }
 
