@@ -566,6 +566,37 @@ async fn customers_wallets_ledger_entries_list() {
 }
 
 #[tokio::test]
+async fn customers_emails_list() {
+    let Some(client) = make_client() else {
+        return;
+    };
+    let customer_id = "customer_id";
+    let _ = client
+        .customers()
+        .emails()
+        .list()
+        .customer_id(customer_id)
+        .query(serde_json::json!({}))
+        .await;
+}
+
+#[tokio::test]
+async fn customers_emails_retrieve_body() {
+    let Some(client) = make_client() else {
+        return;
+    };
+    let customer_id = "customer_id";
+    let email_log_id = "email_log_id";
+    let _ = client
+        .customers()
+        .emails()
+        .retrieve_body()
+        .customer_id(customer_id)
+        .email_log_id(email_log_id)
+        .await;
+}
+
+#[tokio::test]
 async fn blocklist_customers_create() {
     let Some(client) = make_client() else {
         return;

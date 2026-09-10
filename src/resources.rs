@@ -2171,6 +2171,13 @@ impl CustomersResource {
         }
     }
 
+    #[must_use = "resource accessors do nothing unless chained to a request"]
+    pub fn emails(&self) -> CustomersEmailsResource {
+        CustomersEmailsResource {
+            client: self.client.clone(),
+        }
+    }
+
     #[must_use = "request builders do nothing until you send or await them"]
     pub fn create(&self) -> CustomersCreateBuilder {
         CustomersCreateBuilder {
@@ -3020,6 +3027,165 @@ impl std::future::IntoFuture for CustomersWalletsLedgerEntriesListBuilder {
                         >,
                     >,
                 > + Send
+                + 'static,
+        >,
+    >;
+
+    fn into_future(self) -> Self::IntoFuture {
+        Box::pin(self.send())
+    }
+}
+
+#[derive(Clone, Debug)]
+pub struct CustomersEmailsResource {
+    client: crate::Client,
+}
+
+impl CustomersEmailsResource {
+    #[must_use = "request builders do nothing until you send or await them"]
+    pub fn list(&self) -> CustomersEmailsListBuilder {
+        CustomersEmailsListBuilder {
+            client: self.client.clone(),
+            customer_id: None,
+            query: None,
+        }
+    }
+
+    #[must_use = "request builders do nothing until you send or await them"]
+    pub fn retrieve_body(&self) -> CustomersEmailsRetrieveBodyBuilder {
+        CustomersEmailsRetrieveBodyBuilder {
+            client: self.client.clone(),
+            customer_id: None,
+            email_log_id: None,
+        }
+    }
+}
+
+#[must_use = "request builders do nothing until you send or await them"]
+#[derive(Clone, Debug)]
+pub struct CustomersEmailsListBuilder {
+    client: crate::Client,
+    customer_id: Option<String>,
+    query: Option<serde_json::Value>,
+}
+
+impl CustomersEmailsListBuilder {
+    #[must_use = "setters return an updated request builder"]
+    pub fn customer_id(mut self, customer_id: impl Into<String>) -> Self {
+        self.customer_id = Some(customer_id.into());
+        self
+    }
+
+    #[must_use = "setters return an updated request builder"]
+    pub fn query(mut self, query: serde_json::Value) -> Self {
+        self.query = Some(query);
+        self
+    }
+
+    pub async fn send(
+        self,
+    ) -> crate::error::Result<crate::models::DefaultPageNumberPagination<crate::models::EmailLogItem>>
+    {
+        let client = self.client;
+        let customer_id = self
+            .customer_id
+            .ok_or(crate::error::Error::MissingPathParam {
+                operation: "customers.emails.list",
+                param: "customer_id",
+            })?;
+        let query = self.query;
+        let path = build_path(
+            "/customers/{customer_id}/emails",
+            &[("customer_id", customer_id.as_str())],
+        );
+        let mut request = client.request(reqwest::Method::GET, &path);
+        if let Some(query) = &query {
+            request = request.query(query);
+        }
+        let mut page = client.handle_response::<crate::models::DefaultPageNumberPagination<crate::models::EmailLogItem>>(request).await?;
+        page.set_pagination_context(crate::client::PaginationContext::new(
+            client.clone(),
+            reqwest::Method::GET,
+            path,
+            query.unwrap_or_else(|| serde_json::json!({})),
+        ));
+        Ok(page)
+    }
+}
+
+impl std::future::IntoFuture for CustomersEmailsListBuilder {
+    type Output = crate::error::Result<
+        crate::models::DefaultPageNumberPagination<crate::models::EmailLogItem>,
+    >;
+    type IntoFuture = std::pin::Pin<
+        Box<
+            dyn std::future::Future<
+                    Output = crate::error::Result<
+                        crate::models::DefaultPageNumberPagination<crate::models::EmailLogItem>,
+                    >,
+                > + Send
+                + 'static,
+        >,
+    >;
+
+    fn into_future(self) -> Self::IntoFuture {
+        Box::pin(self.send())
+    }
+}
+
+#[must_use = "request builders do nothing until you send or await them"]
+#[derive(Clone, Debug)]
+pub struct CustomersEmailsRetrieveBodyBuilder {
+    client: crate::Client,
+    customer_id: Option<String>,
+    email_log_id: Option<String>,
+}
+
+impl CustomersEmailsRetrieveBodyBuilder {
+    #[must_use = "setters return an updated request builder"]
+    pub fn customer_id(mut self, customer_id: impl Into<String>) -> Self {
+        self.customer_id = Some(customer_id.into());
+        self
+    }
+
+    #[must_use = "setters return an updated request builder"]
+    pub fn email_log_id(mut self, email_log_id: impl Into<String>) -> Self {
+        self.email_log_id = Some(email_log_id.into());
+        self
+    }
+
+    pub async fn send(self) -> crate::error::Result<crate::models::EmailBody> {
+        let client = self.client;
+        let customer_id = self
+            .customer_id
+            .ok_or(crate::error::Error::MissingPathParam {
+                operation: "customers.emails.retrieve_body",
+                param: "customer_id",
+            })?;
+        let email_log_id = self
+            .email_log_id
+            .ok_or(crate::error::Error::MissingPathParam {
+                operation: "customers.emails.retrieve_body",
+                param: "email_log_id",
+            })?;
+        let path = build_path(
+            "/customers/{customer_id}/emails/{email_log_id}/body",
+            &[
+                ("customer_id", customer_id.as_str()),
+                ("email_log_id", email_log_id.as_str()),
+            ],
+        );
+        let request = client.request(reqwest::Method::GET, &path);
+        client.handle_response(request).await
+    }
+}
+
+impl std::future::IntoFuture for CustomersEmailsRetrieveBodyBuilder {
+    type Output = crate::error::Result<crate::models::EmailBody>;
+    type IntoFuture = std::pin::Pin<
+        Box<
+            dyn std::future::Future<Output = crate::error::Result<crate::models::EmailBody>>
+                + Send
                 + 'static,
         >,
     >;
