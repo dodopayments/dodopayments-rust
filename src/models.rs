@@ -148,6 +148,7 @@ pub struct CheckoutSessionPreviewResponse {
     pub currency: Box<crate::models::Currency>,
     pub current_breakup: serde_json::Value,
     pub is_byop: bool,
+    pub payment_method_required: bool,
     pub product_cart: Vec<serde_json::Value>,
     pub total_price: i64,
     pub next_billing_date: Option<String>,
@@ -701,6 +702,7 @@ pub struct Subscription {
     pub credit_entitlement_cart: Vec<crate::models::CreditEntitlementCartResponse>,
     pub currency: Box<crate::models::Currency>,
     pub customer: Box<crate::models::CustomerLimitedDetails>,
+    pub has_payment_method: bool,
     pub metadata: Box<crate::models::Metadata>,
     pub meter_credit_entitlement_cart: Vec<crate::models::MeterCreditEntitlementCartResponse>,
     pub meters: Vec<crate::models::MeterCartResponseItem>,
@@ -788,6 +790,7 @@ pub struct SubscriptionCreateResponse {
     pub customer: Box<crate::models::CustomerLimitedDetails>,
     pub metadata: Box<crate::models::Metadata>,
     pub payment_id: String,
+    pub payment_method_required: bool,
     pub recurring_pre_tax_amount: i64,
     pub subscription_id: String,
     pub client_secret: Option<String>,
@@ -807,6 +810,7 @@ pub struct SubscriptionListResponse {
     pub currency: Box<crate::models::Currency>,
     pub customer: Box<crate::models::CustomerLimitedDetails>,
     pub discounts: Vec<serde_json::Value>,
+    pub has_payment_method: bool,
     pub metadata: Box<crate::models::Metadata>,
     pub next_billing_date: String,
     pub on_demand: bool,
@@ -991,6 +995,78 @@ pub struct CustomerWalletTransaction {
     pub is_credit: bool,
     pub reason: Option<String>,
     pub reference_object_id: Option<String>,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub struct EmailBody {
+    pub merchant_authored: bool,
+    pub failure_code: Option<Box<crate::models::EmailFailureCode>>,
+    pub failure_reason: Option<String>,
+    pub html: Option<String>,
+    pub text: Option<String>,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub enum EmailFailureCode {
+    #[serde(rename = "mailbox_not_found")]
+    MailboxNotFound,
+    #[serde(rename = "address_rejected")]
+    AddressRejected,
+    #[serde(rename = "address_suppressed")]
+    AddressSuppressed,
+    #[serde(rename = "mailbox_full")]
+    MailboxFull,
+    #[serde(rename = "temporary_failure")]
+    TemporaryFailure,
+    #[serde(rename = "message_too_large")]
+    MessageTooLarge,
+    #[serde(rename = "marked_as_spam")]
+    MarkedAsSpam,
+    #[serde(rename = "send_failed")]
+    SendFailed,
+    #[serde(other)]
+    Unknown,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub struct EmailLogItem {
+    pub category: String,
+    pub created_at: String,
+    pub email_log_id: String,
+    pub email_type: String,
+    pub has_preview: bool,
+    pub policies: Box<crate::models::EmailPolicies>,
+    pub status: Box<crate::models::EmailLogStatus>,
+    pub failure_code: Option<Box<crate::models::EmailFailureCode>>,
+    pub failure_reason: Option<String>,
+    pub from: Option<String>,
+    pub intended_recipient: Option<String>,
+    pub recipient: Option<String>,
+    pub subject: Option<String>,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub enum EmailLogStatus {
+    #[serde(rename = "sent")]
+    Sent,
+    #[serde(rename = "delivered")]
+    Delivered,
+    #[serde(rename = "failed")]
+    Failed,
+    #[serde(rename = "complained")]
+    Complained,
+    #[serde(rename = "blocked")]
+    Blocked,
+    #[serde(other)]
+    Unknown,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub struct EmailPolicies {
+    pub requires_different_address: bool,
+    pub resend_allowed: bool,
+    pub resends_remaining: i64,
+    pub retry_allowed: bool,
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
@@ -3182,6 +3258,7 @@ pub struct BalanceCreateLedgerEntryResponse {
     pub customer_id: String,
     pub entry_type: Box<crate::models::LedgerEntryType>,
     pub is_credit: bool,
+    pub metadata: Box<crate::models::Metadata>,
     pub overage_after: String,
     pub overage_before: String,
     pub grant_id: Option<String>,
