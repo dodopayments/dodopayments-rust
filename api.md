@@ -103,6 +103,13 @@ Methods:
 - <code title="post /customers/{customer_id}/wallets/ledger-entries">client.customers().wallets().ledger_entries().create().customer_id(customer_id: impl Into&lt;String&gt;).body(body: CustomersWalletsLedgerEntriesCreateParams) -&gt; Result&lt;CustomerWallet&gt;</code>
 - <code title="get /customers/{customer_id}/wallets/ledger-entries">client.customers().wallets().ledger_entries().list().customer_id(customer_id: impl Into&lt;String&gt;).query(query: serde_json::Value) -&gt; Result&lt;DefaultPageNumberPagination&lt;CustomerWalletTransaction&gt;&gt;</code>
 
+## Emails
+
+Methods:
+
+- <code title="get /customers/{customer_id}/emails">client.customers().emails().list().customer_id(customer_id: impl Into&lt;String&gt;).query(query: serde_json::Value) -&gt; Result&lt;DefaultPageNumberPagination&lt;EmailLogItem&gt;&gt;</code>
+- <code title="get /customers/{customer_id}/emails/{email_log_id}/body">client.customers().emails().retrieve_body().customer_id(customer_id: impl Into&lt;String&gt;).email_log_id(email_log_id: impl Into&lt;String&gt;) -&gt; Result&lt;EmailBody&gt;</code>
+
 # Blocklist
 
 ## Customers
