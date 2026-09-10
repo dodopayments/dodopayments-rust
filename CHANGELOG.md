@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.117.0](https://github.com/dodopayments/dodopayments-rust/compare/v1.116.0...v1.117.0) (2026-09-10)
+
+
+### Features
+
+* **api:** add customer email logs ([83a8260](https://github.com/dodopayments/dodopayments-rust/commit/83a8260b09b9faf8894ddd61b99ff4e5d52e2e15))
+* **api:** add customer email logs ([f28b132](https://github.com/dodopayments/dodopayments-rust/commit/f28b13213c04afb8a86087768412e5366402f778))
+
 ## [1.116.0](https://github.com/dodopayments/dodopayments-rust/compare/v1.115.0...v1.116.0) (2026-09-01)
 
 
