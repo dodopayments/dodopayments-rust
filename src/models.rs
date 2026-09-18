@@ -35,6 +35,7 @@ pub struct CheckoutSessionFlags {
     pub always_create_new_customer: Option<bool>,
     pub redirect_immediately: Option<bool>,
     pub require_phone_number: Option<bool>,
+    pub require_tax_id: Option<bool>,
     pub single_page: Option<bool>,
 }
 
@@ -1024,6 +1025,8 @@ pub enum EmailFailureCode {
     MarkedAsSpam,
     #[serde(rename = "send_failed")]
     SendFailed,
+    #[serde(rename = "test_mode_quota_spent")]
+    TestModeQuotaSpent,
     #[serde(other)]
     Unknown,
 }
@@ -1040,7 +1043,6 @@ pub struct EmailLogItem {
     pub failure_code: Option<Box<crate::models::EmailFailureCode>>,
     pub failure_reason: Option<String>,
     pub from: Option<String>,
-    pub intended_recipient: Option<String>,
     pub recipient: Option<String>,
     pub subject: Option<String>,
 }
@@ -1067,6 +1069,7 @@ pub struct EmailPolicies {
     pub resend_allowed: bool,
     pub resends_remaining: i64,
     pub retry_allowed: bool,
+    pub superseded: bool,
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
