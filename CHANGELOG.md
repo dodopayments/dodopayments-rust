@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.118.0](https://github.com/dodopayments/dodopayments-rust/compare/v1.117.0...v1.118.0) (2026-09-18)
+
+
+### Features
+
+* **api:** tax id checkout flag, ledger event types, email policy fields ([9d1afe4](https://github.com/dodopayments/dodopayments-rust/commit/9d1afe45bfbfacd949eceda6f7196a0bad52e81c))
+* **api:** tax id checkout flag, ledger event types, email policy fields ([329185d](https://github.com/dodopayments/dodopayments-rust/commit/329185d8edbca62b9195ae2827fb7776b004e86c))
+
+
+### Chores
+
+* add Dependabot config for GitHub Actions ([#54](https://github.com/dodopayments/dodopayments-rust/issues/54)) ([0cc6a09](https://github.com/dodopayments/dodopayments-rust/commit/0cc6a0981a5365dc4942544da2c8acb5a5f802b8))
+
 ## [1.117.0](https://github.com/dodopayments/dodopayments-rust/compare/v1.116.0...v1.117.0) (2026-09-10)
 
 
