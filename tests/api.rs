@@ -1781,3 +1781,19 @@ async fn product_collections_groups_items_delete() {
         .item_id(item_id)
         .await;
 }
+
+#[tokio::test]
+async fn moderation_retrieve_usage() {
+    let Some(client) = make_client() else {
+        return;
+    };
+    let _ = client.moderation().retrieve_usage().await;
+}
+
+#[tokio::test]
+async fn moderation_screen() {
+    let Some(client) = make_client() else {
+        return;
+    };
+    let _ = client.moderation().screen().body(Default::default()).await;
+}
