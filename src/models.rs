@@ -34,6 +34,7 @@ pub struct CheckoutSessionFlags {
     pub allow_tax_id: Option<bool>,
     pub always_create_new_customer: Option<bool>,
     pub redirect_immediately: Option<bool>,
+    pub require_cardholder_name: Option<bool>,
     pub require_phone_number: Option<bool>,
     pub require_tax_id: Option<bool>,
     pub single_page: Option<bool>,
@@ -154,6 +155,7 @@ pub struct CheckoutSessionPreviewResponse {
     pub total_price: i64,
     pub next_billing_date: Option<String>,
     pub recurring_breakup: Option<serde_json::Value>,
+    pub subscriptions: Option<Vec<serde_json::Value>>,
     pub tax_id_business_name: Option<String>,
     pub tax_id_err_msg: Option<String>,
     pub tax_id_format_name: Option<String>,
@@ -279,6 +281,7 @@ pub struct Payment {
     pub customer: Box<crate::models::CustomerLimitedDetails>,
     pub digital_products_delivered: bool,
     pub disputes: Vec<crate::models::Dispute>,
+    pub is_multi_subscription: bool,
     pub is_update_payment_method: bool,
     pub metadata: Box<crate::models::Metadata>,
     pub payment_id: String,
@@ -287,6 +290,7 @@ pub struct Payment {
     pub retry_attempt: i64,
     pub settlement_amount: i64,
     pub settlement_currency: Box<crate::models::Currency>,
+    pub subscription_ids: Vec<String>,
     pub total_amount: i64,
     pub card_holder_name: Option<String>,
     pub card_issuing_country: Option<Box<crate::models::CountryCode>>,
@@ -575,9 +579,11 @@ pub struct PaymentListResponse {
     pub customer: Box<crate::models::CustomerLimitedDetails>,
     pub digital_products_delivered: bool,
     pub has_license_key: bool,
+    pub is_multi_subscription: bool,
     pub metadata: Box<crate::models::Metadata>,
     pub payment_id: String,
     pub payment_provider: String,
+    pub subscription_ids: Vec<String>,
     pub total_amount: i64,
     pub card_last_four: Option<String>,
     pub card_network: Option<String>,
@@ -3509,6 +3515,131 @@ pub struct ProductCollectionProduct {
 pub type ItemCreateResponse = Vec<crate::models::ProductCollectionProduct>;
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub enum ModerationCategory {
+    #[serde(rename = "violent_crimes")]
+    ViolentCrimes,
+    #[serde(rename = "sex_related_crimes")]
+    SexRelatedCrimes,
+    #[serde(rename = "child_sexual_exploitation")]
+    ChildSexualExploitation,
+    #[serde(rename = "suicide_and_self_harm")]
+    SuicideAndSelfHarm,
+    #[serde(rename = "indiscriminate_weapons")]
+    IndiscriminateWeapons,
+    #[serde(rename = "intellectual_property")]
+    IntellectualProperty,
+    #[serde(rename = "defamation")]
+    Defamation,
+    #[serde(rename = "non_violent_crimes")]
+    NonViolentCrimes,
+    #[serde(rename = "hate")]
+    Hate,
+    #[serde(rename = "privacy")]
+    Privacy,
+    #[serde(rename = "specialized_advice")]
+    SpecializedAdvice,
+    #[serde(rename = "sexual_content")]
+    SexualContent,
+    #[serde(rename = "non_consensual_intimate_imagery")]
+    NonConsensualIntimateImagery,
+    #[serde(rename = "minor_coded_language")]
+    MinorCodedLanguage,
+    #[serde(rename = "real_person_likeness")]
+    RealPersonLikeness,
+    #[serde(rename = "living_artist_style")]
+    LivingArtistStyle,
+    #[serde(rename = "prompt_injection")]
+    PromptInjection,
+    #[serde(other)]
+    Unknown,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub struct ModerationCategoryProvenance {
+    pub child_sexual_exploitation: Box<crate::models::ModerationProvenance>,
+    pub defamation: Box<crate::models::ModerationProvenance>,
+    pub hate: Box<crate::models::ModerationProvenance>,
+    pub indiscriminate_weapons: Box<crate::models::ModerationProvenance>,
+    pub intellectual_property: Box<crate::models::ModerationProvenance>,
+    pub living_artist_style: Box<crate::models::ModerationProvenance>,
+    pub minor_coded_language: Box<crate::models::ModerationProvenance>,
+    pub non_consensual_intimate_imagery: Box<crate::models::ModerationProvenance>,
+    pub non_violent_crimes: Box<crate::models::ModerationProvenance>,
+    pub privacy: Box<crate::models::ModerationProvenance>,
+    pub prompt_injection: Box<crate::models::ModerationProvenance>,
+    pub real_person_likeness: Box<crate::models::ModerationProvenance>,
+    pub sex_related_crimes: Box<crate::models::ModerationProvenance>,
+    pub sexual_content: Box<crate::models::ModerationProvenance>,
+    pub specialized_advice: Box<crate::models::ModerationProvenance>,
+    pub suicide_and_self_harm: Box<crate::models::ModerationProvenance>,
+    pub violent_crimes: Box<crate::models::ModerationProvenance>,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub struct ModerationCategoryScores {
+    pub child_sexual_exploitation: f64,
+    pub defamation: f64,
+    pub hate: f64,
+    pub indiscriminate_weapons: f64,
+    pub intellectual_property: f64,
+    pub living_artist_style: f64,
+    pub minor_coded_language: f64,
+    pub non_consensual_intimate_imagery: f64,
+    pub non_violent_crimes: f64,
+    pub privacy: f64,
+    pub prompt_injection: f64,
+    pub real_person_likeness: f64,
+    pub sex_related_crimes: f64,
+    pub sexual_content: f64,
+    pub specialized_advice: f64,
+    pub suicide_and_self_harm: f64,
+    pub violent_crimes: f64,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub enum ModerationDecision {
+    #[serde(rename = "allow")]
+    Allow,
+    #[serde(rename = "flag")]
+    Flag,
+    #[serde(rename = "deny")]
+    Deny,
+    #[serde(other)]
+    Unknown,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub enum ModerationProvenance {
+    #[serde(rename = "targeted")]
+    Targeted,
+    #[serde(rename = "broad")]
+    Broad,
+    #[serde(other)]
+    Unknown,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub struct ModerationRetrieveUsageResponse {
+    pub daily: Vec<serde_json::Value>,
+    pub screens_to_next_block: i64,
+    pub unbilled_screens: i64,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub struct ModerationScreenResponse {
+    pub categories: Box<crate::models::ModerationCategoryScores>,
+    pub compound_triggered: bool,
+    pub decision: Box<crate::models::ModerationDecision>,
+    pub latency_ms: i64,
+    pub normalized_applied: bool,
+    pub notes: Vec<String>,
+    pub passes: i64,
+    pub provenance: Box<crate::models::ModerationCategoryProvenance>,
+    pub request_id: Option<String>,
+    pub triggered: Vec<crate::models::ModerationCategory>,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct DefaultPageNumberPagination<T> {
     pub items: Vec<T>,
     #[serde(flatten)]
@@ -4537,4 +4668,14 @@ pub struct ProductCollectionsGroupsItemsCreateParams {
 pub struct ProductCollectionsGroupsItemsUpdateParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub status: Option<bool>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct ModerationScreenParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub image: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub request_id: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub text: Option<String>,
 }

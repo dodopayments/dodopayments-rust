@@ -350,3 +350,10 @@ Methods:
 - <code title="post /product-collections/{id}/groups/{group_id}/items">client.product_collections().groups().items().create().id(id: impl Into&lt;String&gt;).group_id(group_id: impl Into&lt;String&gt;).body(body: ProductCollectionsGroupsItemsCreateParams) -&gt; Result&lt;ItemCreateResponse&gt;</code>
 - <code title="patch /product-collections/{id}/groups/{group_id}/items/{item_id}">client.product_collections().groups().items().update().id(id: impl Into&lt;String&gt;).group_id(group_id: impl Into&lt;String&gt;).item_id(item_id: impl Into&lt;String&gt;).body(body: ProductCollectionsGroupsItemsUpdateParams) -&gt; Result&lt;()&gt;</code>
 - <code title="delete /product-collections/{id}/groups/{group_id}/items/{item_id}">client.product_collections().groups().items().delete().id(id: impl Into&lt;String&gt;).group_id(group_id: impl Into&lt;String&gt;).item_id(item_id: impl Into&lt;String&gt;) -&gt; Result&lt;()&gt;</code>
+
+# Moderation
+
+Methods:
+
+- <code title="get /moderation/usage">client.moderation().retrieve_usage() -&gt; Result&lt;ModerationRetrieveUsageResponse&gt;</code>
+- <code title="post /moderation/screen">client.moderation().screen().body(body: ModerationScreenParams) -&gt; Result&lt;ModerationScreenResponse&gt;</code>
