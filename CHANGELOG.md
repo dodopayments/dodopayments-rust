@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.119.0](https://github.com/dodopayments/dodopayments-rust/compare/v1.118.0...v1.119.0) (2026-09-25)
+
+
+### Features
+
+* **api:** add moderation API and multi-subscription payments ([df83dc1](https://github.com/dodopayments/dodopayments-rust/commit/df83dc16d9eb81fd453d81a30e3766d7a7ec7bfb))
+* **api:** add moderation API and multi-subscription payments ([bed0550](https://github.com/dodopayments/dodopayments-rust/commit/bed05504923601c3d904a38da377cb8d13b21a0d))
+
 ## [1.118.0](https://github.com/dodopayments/dodopayments-rust/compare/v1.117.0...v1.118.0) (2026-09-18)
 
 
