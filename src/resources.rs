@@ -205,6 +205,13 @@ impl crate::Client {
             client: self.clone(),
         }
     }
+
+    #[must_use = "resource accessors do nothing unless chained to a request"]
+    pub fn moderation(&self) -> ModerationResource {
+        ModerationResource {
+            client: self.clone(),
+        }
+    }
 }
 
 #[derive(Clone, Debug)]
@@ -9337,6 +9344,102 @@ impl std::future::IntoFuture for ProductCollectionsGroupsItemsDeleteBuilder {
     type Output = crate::error::Result<()>;
     type IntoFuture = std::pin::Pin<
         Box<dyn std::future::Future<Output = crate::error::Result<()>> + Send + 'static>,
+    >;
+
+    fn into_future(self) -> Self::IntoFuture {
+        Box::pin(self.send())
+    }
+}
+
+#[derive(Clone, Debug)]
+pub struct ModerationResource {
+    client: crate::Client,
+}
+
+impl ModerationResource {
+    #[must_use = "request builders do nothing until you send or await them"]
+    pub fn retrieve_usage(&self) -> ModerationRetrieveUsageBuilder {
+        ModerationRetrieveUsageBuilder {
+            client: self.client.clone(),
+        }
+    }
+
+    #[must_use = "request builders do nothing until you send or await them"]
+    pub fn screen(&self) -> ModerationScreenBuilder {
+        ModerationScreenBuilder {
+            client: self.client.clone(),
+            body: None,
+        }
+    }
+}
+
+#[must_use = "request builders do nothing until you send or await them"]
+#[derive(Clone, Debug)]
+pub struct ModerationRetrieveUsageBuilder {
+    client: crate::Client,
+}
+
+impl ModerationRetrieveUsageBuilder {
+    pub async fn send(
+        self,
+    ) -> crate::error::Result<crate::models::ModerationRetrieveUsageResponse> {
+        let client = self.client;
+        let path = "/moderation/usage".to_string();
+        let request = client.request(reqwest::Method::GET, &path);
+        client.handle_response(request).await
+    }
+}
+
+impl std::future::IntoFuture for ModerationRetrieveUsageBuilder {
+    type Output = crate::error::Result<crate::models::ModerationRetrieveUsageResponse>;
+    type IntoFuture = std::pin::Pin<
+        Box<
+            dyn std::future::Future<
+                    Output = crate::error::Result<crate::models::ModerationRetrieveUsageResponse>,
+                > + Send
+                + 'static,
+        >,
+    >;
+
+    fn into_future(self) -> Self::IntoFuture {
+        Box::pin(self.send())
+    }
+}
+
+#[must_use = "request builders do nothing until you send or await them"]
+#[derive(Clone, Debug)]
+pub struct ModerationScreenBuilder {
+    client: crate::Client,
+    body: Option<crate::models::ModerationScreenParams>,
+}
+
+impl ModerationScreenBuilder {
+    #[must_use = "setters return an updated request builder"]
+    pub fn body(mut self, body: crate::models::ModerationScreenParams) -> Self {
+        self.body = Some(body);
+        self
+    }
+
+    pub async fn send(self) -> crate::error::Result<crate::models::ModerationScreenResponse> {
+        let client = self.client;
+        let body = self.body.ok_or(crate::error::Error::MissingBody {
+            operation: "moderation.screen",
+        })?;
+        let path = "/moderation/screen".to_string();
+        let request = client.request(reqwest::Method::POST, &path).json(&body);
+        client.handle_response(request).await
+    }
+}
+
+impl std::future::IntoFuture for ModerationScreenBuilder {
+    type Output = crate::error::Result<crate::models::ModerationScreenResponse>;
+    type IntoFuture = std::pin::Pin<
+        Box<
+            dyn std::future::Future<
+                    Output = crate::error::Result<crate::models::ModerationScreenResponse>,
+                > + Send
+                + 'static,
+        >,
     >;
 
     fn into_future(self) -> Self::IntoFuture {
