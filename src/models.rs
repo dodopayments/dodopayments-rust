@@ -554,6 +554,8 @@ pub struct RefundListItem {
     pub status: Box<crate::models::RefundStatus>,
     pub amount: Option<i64>,
     pub currency: Option<Box<crate::models::Currency>>,
+    pub network_reference: Option<String>,
+    pub network_reference_type: Option<Box<crate::models::RefundNetworkReferenceType>>,
     pub reason: Option<String>,
 }
 
@@ -730,6 +732,7 @@ pub struct Subscription {
     pub cancellation_comment: Option<String>,
     pub cancellation_feedback: Option<Box<crate::models::CancellationFeedback>>,
     pub cancelled_at: Option<String>,
+    pub cancelled_by: Option<Box<crate::models::SubscriptionCancelledBy>>,
     pub custom_field_responses: Option<Vec<crate::models::CustomFieldResponse>>,
     pub customer_business_name: Option<String>,
     pub discount_cycles_remaining: Option<i64>,
@@ -741,6 +744,13 @@ pub struct Subscription {
     pub scheduled_change: Option<Box<crate::models::ScheduledPlanChange>>,
     pub tax_id: Option<String>,
     pub trial_amount: Option<i64>,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub struct SubscriptionCancelledBy {
+    pub actor_type: String,
+    pub email: Option<String>,
+    pub name: Option<String>,
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
@@ -834,6 +844,7 @@ pub struct SubscriptionListResponse {
     pub tax_inclusive: bool,
     pub trial_period_days: i64,
     pub cancelled_at: Option<String>,
+    pub cancelled_by: Option<Box<crate::models::SubscriptionCancelledBy>>,
     pub customer_business_name: Option<String>,
     pub discount_cycles_remaining: Option<i64>,
     pub discount_id: Option<String>,
@@ -1163,7 +1174,23 @@ pub struct Refund {
     pub status: Box<crate::models::RefundStatus>,
     pub amount: Option<i64>,
     pub currency: Option<Box<crate::models::Currency>>,
+    pub network_reference: Option<String>,
+    pub network_reference_type: Option<Box<crate::models::RefundNetworkReferenceType>>,
     pub reason: Option<String>,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub enum RefundNetworkReferenceType {
+    #[serde(rename = "acquirer_reference_number")]
+    AcquirerReferenceNumber,
+    #[serde(rename = "system_trace_audit_number")]
+    SystemTraceAuditNumber,
+    #[serde(rename = "retrieval_reference_number")]
+    RetrievalReferenceNumber,
+    #[serde(rename = "other")]
+    Other,
+    #[serde(other)]
+    Unknown,
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
