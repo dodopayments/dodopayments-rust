@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.120.0](https://github.com/dodopayments/dodopayments-rust/compare/v1.119.0...v1.120.0) (2026-10-05)
+
+
+### Features
+
+* **api:** refund network references and subscription cancelled_by ([1148a54](https://github.com/dodopayments/dodopayments-rust/commit/1148a54fa8893f24f68db28158014f12425da187))
+* **api:** refund network references and subscription cancelled_by ([d9d7e50](https://github.com/dodopayments/dodopayments-rust/commit/d9d7e506417b4cb6d458c1a653481c5d95cc092b))
+
 ## [1.119.0](https://github.com/dodopayments/dodopayments-rust/compare/v1.118.0...v1.119.0) (2026-09-25)
 
 
