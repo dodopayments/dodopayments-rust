@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.121.0](https://github.com/dodopayments/dodopayments-rust/compare/v1.120.0...v1.121.0) (2026-10-06)
+
+
+### Features
+
+* **api:** change-plan cancel_older_payment_link and return_url ([6d55b97](https://github.com/dodopayments/dodopayments-rust/commit/6d55b970346c6bf6d3e4098ca6057b892c20ef2b))
+* **api:** change-plan cancel_older_payment_link and return_url ([d9e0a97](https://github.com/dodopayments/dodopayments-rust/commit/d9e0a97a9e7fc030edc31c44a7045e1001997425))
+
 ## [1.120.0](https://github.com/dodopayments/dodopayments-rust/compare/v1.119.0...v1.120.0) (2026-10-05)
 
 
