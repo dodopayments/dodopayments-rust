@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.121.1](https://github.com/dodopayments/dodopayments-rust/compare/v1.121.0...v1.121.1) (2026-10-09)
+
+
+### Bug Fixes
+
+* **deps:** refresh generated SDK dependencies and CI action pins ([2ba0df5](https://github.com/dodopayments/dodopayments-rust/commit/2ba0df52246dc51d06e3bd83116c49910bd8b2ec))
+* **deps:** refresh generated SDK dependencies and CI action pins ([e852b28](https://github.com/dodopayments/dodopayments-rust/commit/e852b2805edffb9326e11ab08eff896721483ea6))
+
 ## [1.121.0](https://github.com/dodopayments/dodopayments-rust/compare/v1.120.0...v1.121.0) (2026-10-06)
 
 
