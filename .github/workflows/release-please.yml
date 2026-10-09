@@ -13,7 +13,7 @@ jobs:
   release-please:
     runs-on: ubuntu-latest
     steps:
-      - uses: googleapis/release-please-action@v4
+      - uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5.0.0
         id: release
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -23,11 +23,13 @@ jobs:
       # Publish in this same run when a release was just cut: a release created
       # with GITHUB_TOKEN does not trigger `on: release` workflows, so a separate
       # publish workflow would never fire automatically.
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         if: ${{ steps.release.outputs.release_created }}
 
-      - uses: dtolnay/rust-toolchain@stable
+      - uses: dtolnay/rust-toolchain@e2a55d2ffb04f378e9626c28d38b36d230d1e12f # master
         if: ${{ steps.release.outputs.release_created }}
+        with:
+          toolchain: stable
 
       - name: Publish to crates.io
         if: ${{ steps.release.outputs.release_created }}

@@ -167,8 +167,7 @@ fn random_below(ceiling: Duration) -> Duration {
     if nanos == 0 {
         return Duration::ZERO;
     }
-    use rand::Rng;
-    Duration::from_nanos(rand::thread_rng().gen_range(0..nanos))
+    Duration::from_nanos(rand::random_range(0..nanos))
 }
 
 /// Carries the client and original request shape so a page can fetch its successor.
