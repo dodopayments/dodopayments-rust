@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.121.2](https://github.com/dodopayments/dodopayments-rust/compare/v1.121.1...v1.121.2) (2026-10-09)
+
+
+### Bug Fixes
+
+* **deps:** upgrade SDK toolchains (pnpm, uv, TypeScript 7, Gradle 9, okhttp 5, zod 4) and stop cursor pagination on done ([ca504d5](https://github.com/dodopayments/dodopayments-rust/commit/ca504d5edd34c30a471b643c3d816d59c103cca9))
+* **deps:** upgrade SDK toolchains (pnpm, uv, TypeScript 7, Gradle 9, okhttp 5, zod 4) and stop cursor pagination on done ([2b2b3fb](https://github.com/dodopayments/dodopayments-rust/commit/2b2b3fbbaaa19884903f1719d0a03c3773c93582))
+
 ## [1.121.1](https://github.com/dodopayments/dodopayments-rust/compare/v1.121.0...v1.121.1) (2026-10-09)
 
 
