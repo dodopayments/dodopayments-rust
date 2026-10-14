@@ -253,6 +253,9 @@ pub struct ManualRetryState {
     pub can_retry: bool,
     pub sends_allowed: i64,
     pub sends_used: i64,
+    pub automatic_retry_number: Option<i64>,
+    pub automatic_retry_total: Option<i64>,
+    pub next_automatic_retry_at: Option<String>,
     pub reason: Option<String>,
     pub retry_available_at: Option<String>,
 }
@@ -288,6 +291,7 @@ pub struct Payment {
     pub payment_provider: String,
     pub refunds: Vec<crate::models::RefundListItem>,
     pub retry_attempt: i64,
+    pub service_periods: Vec<crate::models::SubscriptionServicePeriod>,
     pub settlement_amount: i64,
     pub settlement_currency: Box<crate::models::Currency>,
     pub subscription_ids: Vec<String>,
@@ -556,7 +560,15 @@ pub struct RefundListItem {
     pub currency: Option<Box<crate::models::Currency>>,
     pub network_reference: Option<String>,
     pub network_reference_type: Option<Box<crate::models::RefundNetworkReferenceType>>,
+    pub network_reference_updated_at: Option<String>,
     pub reason: Option<String>,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub struct SubscriptionServicePeriod {
+    pub ends_at: String,
+    pub starts_at: String,
+    pub subscription_id: String,
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
@@ -585,10 +597,13 @@ pub struct PaymentListResponse {
     pub metadata: Box<crate::models::Metadata>,
     pub payment_id: String,
     pub payment_provider: String,
+    pub retry_attempt: i64,
+    pub service_periods: Vec<crate::models::SubscriptionServicePeriod>,
     pub subscription_ids: Vec<String>,
     pub total_amount: i64,
     pub card_last_four: Option<String>,
     pub card_network: Option<String>,
+    pub checkout_session_id: Option<String>,
     pub dispute_status: Option<Box<crate::models::DisputeStatus>>,
     pub invoice_id: Option<String>,
     pub invoice_url: Option<String>,
@@ -1178,6 +1193,7 @@ pub struct Refund {
     pub currency: Option<Box<crate::models::Currency>>,
     pub network_reference: Option<String>,
     pub network_reference_type: Option<Box<crate::models::RefundNetworkReferenceType>>,
+    pub network_reference_updated_at: Option<String>,
     pub reason: Option<String>,
 }
 
