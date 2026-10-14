@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.122.0](https://github.com/dodopayments/dodopayments-rust/compare/v1.121.2...v1.122.0) (2026-10-14)
+
+
+### Features
+
+* **api:** payment service periods, retry attempts and subscription renewal payment_id ([e77a164](https://github.com/dodopayments/dodopayments-rust/commit/e77a1646791d02beb52782151723410d9ba3b297))
+* **api:** payment service periods, retry attempts and subscription renewal payment_id ([ba439ec](https://github.com/dodopayments/dodopayments-rust/commit/ba439ecc5e043ad3afbe84f18f250ecd713e2dfa))
+
 ## [1.121.2](https://github.com/dodopayments/dodopayments-rust/compare/v1.121.1...v1.121.2) (2026-10-09)
 
 
