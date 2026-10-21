@@ -41,9 +41,9 @@ Methods:
 
 Methods:
 
-- <code title="get /invoices/payments/{payment_id}">client.invoices().payments().retrieve().payment_id(payment_id: impl Into&lt;String&gt;) -&gt; Result&lt;Vec&lt;u8&gt;&gt;</code>
-- <code title="get /invoices/payouts/{payout_id}">client.invoices().payments().retrieve_payout().payout_id(payout_id: impl Into&lt;String&gt;) -&gt; Result&lt;Vec&lt;u8&gt;&gt;</code>
-- <code title="get /invoices/refunds/{refund_id}">client.invoices().payments().retrieve_refund().refund_id(refund_id: impl Into&lt;String&gt;) -&gt; Result&lt;Vec&lt;u8&gt;&gt;</code>
+- <code title="get /invoices/payments/{payment_id}">client.invoices().payments().retrieve().payment_id(payment_id: impl Into&lt;String&gt;).query(query: serde_json::Value) -&gt; Result&lt;Vec&lt;u8&gt;&gt;</code>
+- <code title="get /invoices/payouts/{payout_id}">client.invoices().payments().retrieve_payout().payout_id(payout_id: impl Into&lt;String&gt;).query(query: serde_json::Value) -&gt; Result&lt;Vec&lt;u8&gt;&gt;</code>
+- <code title="get /invoices/refunds/{refund_id}">client.invoices().payments().retrieve_refund().refund_id(refund_id: impl Into&lt;String&gt;).query(query: serde_json::Value) -&gt; Result&lt;Vec&lt;u8&gt;&gt;</code>
 
 # Licenses
 
