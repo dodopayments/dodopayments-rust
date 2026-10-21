@@ -179,6 +179,20 @@ pub struct BillingAddress {
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub enum ChargeType {
+    #[serde(rename = "new")]
+    New,
+    #[serde(rename = "renewal")]
+    Renewal,
+    #[serde(rename = "plan_change")]
+    PlanChange,
+    #[serde(rename = "on_demand")]
+    OnDemand,
+    #[serde(other)]
+    Unknown,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct CreateNewCustomer {
     pub email: String,
     pub name: String,
@@ -284,6 +298,7 @@ pub struct Payment {
     pub customer: Box<crate::models::CustomerLimitedDetails>,
     pub digital_products_delivered: bool,
     pub disputes: Vec<crate::models::Dispute>,
+    pub includes_usage: bool,
     pub is_multi_subscription: bool,
     pub is_update_payment_method: bool,
     pub metadata: Box<crate::models::Metadata>,
@@ -296,11 +311,14 @@ pub struct Payment {
     pub settlement_currency: Box<crate::models::Currency>,
     pub subscription_ids: Vec<String>,
     pub total_amount: i64,
+    pub card_exp_month: Option<String>,
+    pub card_exp_year: Option<String>,
     pub card_holder_name: Option<String>,
     pub card_issuing_country: Option<Box<crate::models::CountryCode>>,
     pub card_last_four: Option<String>,
     pub card_network: Option<String>,
     pub card_type: Option<String>,
+    pub charge_type: Option<Box<crate::models::ChargeType>>,
     pub checkout_session_id: Option<String>,
     pub custom_field_responses: Option<Vec<crate::models::CustomFieldResponse>>,
     pub discount_id: Option<String>,
@@ -567,6 +585,7 @@ pub struct RefundListItem {
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct SubscriptionServicePeriod {
     pub ends_at: String,
+    pub proration_factor: String,
     pub starts_at: String,
     pub subscription_id: String,
 }
@@ -593,6 +612,7 @@ pub struct PaymentListResponse {
     pub customer: Box<crate::models::CustomerLimitedDetails>,
     pub digital_products_delivered: bool,
     pub has_license_key: bool,
+    pub includes_usage: bool,
     pub is_multi_subscription: bool,
     pub metadata: Box<crate::models::Metadata>,
     pub payment_id: String,
@@ -601,8 +621,12 @@ pub struct PaymentListResponse {
     pub service_periods: Vec<crate::models::SubscriptionServicePeriod>,
     pub subscription_ids: Vec<String>,
     pub total_amount: i64,
+    pub card_exp_month: Option<String>,
+    pub card_exp_year: Option<String>,
     pub card_last_four: Option<String>,
     pub card_network: Option<String>,
+    pub card_type: Option<String>,
+    pub charge_type: Option<Box<crate::models::ChargeType>>,
     pub checkout_session_id: Option<String>,
     pub dispute_status: Option<Box<crate::models::DisputeStatus>>,
     pub invoice_id: Option<String>,
