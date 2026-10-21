@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.123.0](https://github.com/dodopayments/dodopayments-rust/compare/v1.122.0...v1.123.0) (2026-10-21)
+
+
+### Features
+
+* **api:** payment charge type, usage flag and card details, signed invoice link tokens ([10afada](https://github.com/dodopayments/dodopayments-rust/commit/10afada1f1c105b8b67dbd040f7d0112cb0c0b8a))
+* **api:** payment charge type, usage flag and card details, signed invoice link tokens ([d50e46c](https://github.com/dodopayments/dodopayments-rust/commit/d50e46cee73ab3610e1a9faac39ba87b2f275759))
+
 ## [1.122.0](https://github.com/dodopayments/dodopayments-rust/compare/v1.121.2...v1.122.0) (2026-10-14)
 
 
