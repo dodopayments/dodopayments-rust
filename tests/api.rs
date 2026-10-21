@@ -256,6 +256,7 @@ async fn invoices_payments_retrieve() {
         .payments()
         .retrieve()
         .payment_id(payment_id)
+        .query(serde_json::json!({}))
         .await;
 }
 
@@ -270,6 +271,7 @@ async fn invoices_payments_retrieve_payout() {
         .payments()
         .retrieve_payout()
         .payout_id(payout_id)
+        .query(serde_json::json!({}))
         .await;
 }
 
@@ -284,6 +286,7 @@ async fn invoices_payments_retrieve_refund() {
         .payments()
         .retrieve_refund()
         .refund_id(refund_id)
+        .query(serde_json::json!({}))
         .await;
 }
 

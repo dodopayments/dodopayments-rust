@@ -1451,6 +1451,7 @@ impl InvoicesPaymentsResource {
         InvoicesPaymentsRetrieveBuilder {
             client: self.client.clone(),
             payment_id: None,
+            query: None,
         }
     }
 
@@ -1459,6 +1460,7 @@ impl InvoicesPaymentsResource {
         InvoicesPaymentsRetrievePayoutBuilder {
             client: self.client.clone(),
             payout_id: None,
+            query: None,
         }
     }
 
@@ -1467,6 +1469,7 @@ impl InvoicesPaymentsResource {
         InvoicesPaymentsRetrieveRefundBuilder {
             client: self.client.clone(),
             refund_id: None,
+            query: None,
         }
     }
 }
@@ -1476,12 +1479,19 @@ impl InvoicesPaymentsResource {
 pub struct InvoicesPaymentsRetrieveBuilder {
     client: crate::Client,
     payment_id: Option<String>,
+    query: Option<serde_json::Value>,
 }
 
 impl InvoicesPaymentsRetrieveBuilder {
     #[must_use = "setters return an updated request builder"]
     pub fn payment_id(mut self, payment_id: impl Into<String>) -> Self {
         self.payment_id = Some(payment_id.into());
+        self
+    }
+
+    #[must_use = "setters return an updated request builder"]
+    pub fn query(mut self, query: serde_json::Value) -> Self {
+        self.query = Some(query);
         self
     }
 
@@ -1493,11 +1503,15 @@ impl InvoicesPaymentsRetrieveBuilder {
                 operation: "invoices.payments.retrieve",
                 param: "payment_id",
             })?;
+        let query = self.query;
         let path = build_path(
             "/invoices/payments/{payment_id}",
             &[("payment_id", payment_id.as_str())],
         );
-        let request = client.request(reqwest::Method::GET, &path);
+        let mut request = client.request(reqwest::Method::GET, &path);
+        if let Some(query) = &query {
+            request = request.query(query);
+        }
         client.handle_bytes(request).await
     }
 }
@@ -1518,12 +1532,19 @@ impl std::future::IntoFuture for InvoicesPaymentsRetrieveBuilder {
 pub struct InvoicesPaymentsRetrievePayoutBuilder {
     client: crate::Client,
     payout_id: Option<String>,
+    query: Option<serde_json::Value>,
 }
 
 impl InvoicesPaymentsRetrievePayoutBuilder {
     #[must_use = "setters return an updated request builder"]
     pub fn payout_id(mut self, payout_id: impl Into<String>) -> Self {
         self.payout_id = Some(payout_id.into());
+        self
+    }
+
+    #[must_use = "setters return an updated request builder"]
+    pub fn query(mut self, query: serde_json::Value) -> Self {
+        self.query = Some(query);
         self
     }
 
@@ -1535,11 +1556,15 @@ impl InvoicesPaymentsRetrievePayoutBuilder {
                 operation: "invoices.payments.retrieve_payout",
                 param: "payout_id",
             })?;
+        let query = self.query;
         let path = build_path(
             "/invoices/payouts/{payout_id}",
             &[("payout_id", payout_id.as_str())],
         );
-        let request = client.request(reqwest::Method::GET, &path);
+        let mut request = client.request(reqwest::Method::GET, &path);
+        if let Some(query) = &query {
+            request = request.query(query);
+        }
         client.handle_bytes(request).await
     }
 }
@@ -1560,12 +1585,19 @@ impl std::future::IntoFuture for InvoicesPaymentsRetrievePayoutBuilder {
 pub struct InvoicesPaymentsRetrieveRefundBuilder {
     client: crate::Client,
     refund_id: Option<String>,
+    query: Option<serde_json::Value>,
 }
 
 impl InvoicesPaymentsRetrieveRefundBuilder {
     #[must_use = "setters return an updated request builder"]
     pub fn refund_id(mut self, refund_id: impl Into<String>) -> Self {
         self.refund_id = Some(refund_id.into());
+        self
+    }
+
+    #[must_use = "setters return an updated request builder"]
+    pub fn query(mut self, query: serde_json::Value) -> Self {
+        self.query = Some(query);
         self
     }
 
@@ -1577,11 +1609,15 @@ impl InvoicesPaymentsRetrieveRefundBuilder {
                 operation: "invoices.payments.retrieve_refund",
                 param: "refund_id",
             })?;
+        let query = self.query;
         let path = build_path(
             "/invoices/refunds/{refund_id}",
             &[("refund_id", refund_id.as_str())],
         );
-        let request = client.request(reqwest::Method::GET, &path);
+        let mut request = client.request(reqwest::Method::GET, &path);
+        if let Some(query) = &query {
+            request = request.query(query);
+        }
         client.handle_bytes(request).await
     }
 }
