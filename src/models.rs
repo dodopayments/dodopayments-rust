@@ -198,6 +198,7 @@ pub struct CreateNewCustomer {
     pub name: String,
     pub create_new_customer: Option<bool>,
     pub phone_number: Option<String>,
+    pub preferred_locale: Option<Box<crate::models::Locale>>,
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
@@ -337,6 +338,9 @@ pub struct Payment {
     pub status: Option<Box<crate::models::IntentStatus>>,
     pub subscription_id: Option<String>,
     pub tax: Option<i64>,
+    pub three_ds_flow: Option<Box<crate::models::ThreeDSFlow>>,
+    pub three_ds_status: Option<Box<crate::models::ThreeDSStatus>>,
+    pub three_ds_version: Option<String>,
     pub updated_at: Option<String>,
 }
 
@@ -591,6 +595,34 @@ pub struct SubscriptionServicePeriod {
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub enum ThreeDSFlow {
+    #[serde(rename = "challenge")]
+    Challenge,
+    #[serde(rename = "frictionless")]
+    Frictionless,
+    #[serde(other)]
+    Unknown,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub enum ThreeDSStatus {
+    #[serde(rename = "authenticated")]
+    Authenticated,
+    #[serde(rename = "attempt_acknowledged")]
+    AttemptAcknowledged,
+    #[serde(rename = "exempted")]
+    Exempted,
+    #[serde(rename = "failed")]
+    Failed,
+    #[serde(rename = "not_supported")]
+    NotSupported,
+    #[serde(rename = "processing_error")]
+    ProcessingError,
+    #[serde(other)]
+    Unknown,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct PaymentCreateResponse {
     pub client_secret: String,
     pub customer: Box<crate::models::CustomerLimitedDetails>,
@@ -636,12 +668,16 @@ pub struct PaymentListResponse {
     pub refund_status: Option<Box<crate::models::PaymentRefundStatus>>,
     pub status: Option<Box<crate::models::IntentStatus>>,
     pub subscription_id: Option<String>,
+    pub three_ds_flow: Option<Box<crate::models::ThreeDSFlow>>,
+    pub three_ds_status: Option<Box<crate::models::ThreeDSStatus>>,
+    pub three_ds_version: Option<String>,
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct PaymentRetrieveLineItemsResponse {
     pub currency: Box<crate::models::Currency>,
     pub items: Vec<serde_json::Value>,
+    pub partial_refund_allowed: bool,
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
@@ -1003,6 +1039,7 @@ pub struct Customer {
     pub blocklist_entry_id: Option<String>,
     pub metadata: Option<Box<crate::models::Metadata>>,
     pub phone_number: Option<String>,
+    pub preferred_locale: Option<Box<crate::models::Locale>>,
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
@@ -1523,6 +1560,19 @@ pub struct ProductListResponse {
 pub struct ProductUpdateFilesResponse {
     pub file_id: String,
     pub url: String,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub struct Translation {
+    pub locale: Box<crate::models::Locale>,
+    pub updated_at: String,
+    pub description: Option<String>,
+    pub name: Option<String>,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub struct TranslationsListResponse {
+    pub items: Vec<crate::models::Translation>,
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
@@ -2368,6 +2418,63 @@ pub enum Currency {
     Unknown,
 }
 
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub enum Locale {
+    #[serde(rename = "ar")]
+    Ar,
+    #[serde(rename = "ca")]
+    Ca,
+    #[serde(rename = "zh")]
+    Zh,
+    #[serde(rename = "nl")]
+    Nl,
+    #[serde(rename = "en")]
+    En,
+    #[serde(rename = "fr")]
+    Fr,
+    #[serde(rename = "de")]
+    De,
+    #[serde(rename = "he")]
+    He,
+    #[serde(rename = "id")]
+    ID,
+    #[serde(rename = "it")]
+    It,
+    #[serde(rename = "ja")]
+    Ja,
+    #[serde(rename = "ka")]
+    Ka,
+    #[serde(rename = "ko")]
+    Ko,
+    #[serde(rename = "ms")]
+    Ms,
+    #[serde(rename = "pl")]
+    Pl,
+    #[serde(rename = "pt")]
+    Pt,
+    #[serde(rename = "ro")]
+    Ro,
+    #[serde(rename = "ru")]
+    Ru,
+    #[serde(rename = "es")]
+    Es,
+    #[serde(rename = "sv")]
+    Sv,
+    #[serde(rename = "th")]
+    Th,
+    #[serde(rename = "tr")]
+    Tr,
+    #[serde(other)]
+    Unknown,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub struct LocaleInfo {
+    pub code: Box<crate::models::Locale>,
+    pub name: String,
+    pub native_name: String,
+}
+
 pub type Metadata = std::collections::HashMap<String, serde_json::Value>;
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
@@ -2385,6 +2492,8 @@ pub enum TaxCategory {
     #[serde(other)]
     Unknown,
 }
+
+pub type MiscListLocalesResponse = Vec<crate::models::LocaleInfo>;
 
 pub type MiscListSupportedCountriesResponse = Vec<crate::models::CountryCode>;
 
@@ -3282,6 +3391,19 @@ pub struct CreditEntitlement {
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub struct CreditEntitlementTranslation {
+    pub locale: Box<crate::models::Locale>,
+    pub updated_at: String,
+    pub name: Option<String>,
+    pub unit: Option<String>,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub struct CreditEntitlementTranslationsListResponse {
+    pub items: Vec<crate::models::CreditEntitlementTranslation>,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct CreditLedgerEntry {
     pub id: String,
     pub amount: String,
@@ -3456,6 +3578,21 @@ pub enum IntegrationConfigResponse {
     Variant6(serde_json::Value),
     Variant7(serde_json::Value),
     Variant8(serde_json::Value),
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub struct EntitlementTranslation {
+    pub locale: Box<crate::models::Locale>,
+    pub updated_at: String,
+    pub activation_message: Option<String>,
+    pub description: Option<String>,
+    pub instructions: Option<String>,
+    pub name: Option<String>,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub struct EntitlementTranslationsListResponse {
+    pub items: Vec<crate::models::EntitlementTranslation>,
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
@@ -4156,6 +4293,8 @@ pub struct CustomersCreateParams {
     pub metadata: Option<Box<crate::models::Metadata>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub phone_number: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub preferred_locale: Option<Box<crate::models::Locale>>,
 }
 
 #[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
@@ -4168,6 +4307,8 @@ pub struct CustomersUpdateParams {
     pub name: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub phone_number: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub preferred_locale: Option<Box<crate::models::Locale>>,
 }
 
 #[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
@@ -4204,6 +4345,8 @@ pub struct RefundsCreateParamsItemsItem {
 pub struct RefundsCreateParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub payment_id: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub currency: Option<Box<crate::models::Currency>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub items: Option<Vec<crate::models::RefundsCreateParamsItemsItem>>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -4306,6 +4449,14 @@ pub struct ProductsUpdateParams {
 pub struct ProductsUpdateFilesParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub file_name: Option<String>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct ProductsTranslationsUpdateParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub description: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
 }
 
 #[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
@@ -4451,6 +4602,14 @@ pub struct AddonsUpdateParams {
 }
 
 #[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct AddonsTranslationsUpdateParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub description: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
 pub struct BrandsCreateParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
@@ -4551,6 +4710,24 @@ pub struct MetersCreateParams {
 }
 
 #[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct MetersUpdateParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub description: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub measurement_unit: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct MetersTranslationsUpdateParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub description: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
 pub struct CreditEntitlementsCreateParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
@@ -4617,6 +4794,14 @@ pub struct CreditEntitlementsUpdateParams {
 }
 
 #[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct CreditEntitlementsTranslationsUpdateParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub unit: Option<String>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
 pub struct CreditEntitlementsBalancesCreateLedgerEntryParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub amount: Option<String>,
@@ -4654,6 +4839,18 @@ pub struct EntitlementsUpdateParams {
     pub integration_config: Option<Box<crate::models::IntegrationConfig>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub metadata: Option<Box<crate::models::Metadata>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct EntitlementsTranslationsUpdateParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub activation_message: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub description: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub instructions: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
 }
@@ -4712,6 +4909,14 @@ pub struct ProductCollectionsUpdateParams {
     pub proration_billing_mode_on_downgrade: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub proration_billing_mode_on_upgrade: Option<String>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct ProductCollectionsTranslationsUpdateParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub description: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
 }
 
 #[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
