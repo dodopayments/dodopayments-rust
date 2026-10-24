@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.124.0](https://github.com/dodopayments/dodopayments-rust/compare/v1.123.0...v1.124.0) (2026-10-24)
+
+
+### Features
+
+* **api:** translations and locales, addon delete/unarchive, meter update, 3DS payment details ([e956e1f](https://github.com/dodopayments/dodopayments-rust/commit/e956e1f597fd5a6a54dc4bf2131f43c21747e76e))
+* **api:** translations and locales, addon delete/unarchive, meter update, 3DS payment details ([a4a8966](https://github.com/dodopayments/dodopayments-rust/commit/a4a89665f0d4d6f37d5135ce021b87498216877d))
+
 ## [1.123.0](https://github.com/dodopayments/dodopayments-rust/compare/v1.122.0...v1.123.0) (2026-10-21)
 
 
