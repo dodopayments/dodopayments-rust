@@ -241,6 +241,7 @@ impl CheckoutSessionsResource {
         CheckoutSessionsPreviewBuilder {
             client: self.client.clone(),
             body: None,
+            query: None,
         }
     }
 }
@@ -333,6 +334,7 @@ impl std::future::IntoFuture for CheckoutSessionsRetrieveBuilder {
 pub struct CheckoutSessionsPreviewBuilder {
     client: crate::Client,
     body: Option<crate::models::CheckoutSessionsCreateParams>,
+    query: Option<serde_json::Value>,
 }
 
 impl CheckoutSessionsPreviewBuilder {
@@ -342,13 +344,23 @@ impl CheckoutSessionsPreviewBuilder {
         self
     }
 
+    #[must_use = "setters return an updated request builder"]
+    pub fn query(mut self, query: serde_json::Value) -> Self {
+        self.query = Some(query);
+        self
+    }
+
     pub async fn send(self) -> crate::error::Result<crate::models::CheckoutSessionPreviewResponse> {
         let client = self.client;
         let body = self.body.ok_or(crate::error::Error::MissingBody {
             operation: "checkout_sessions.preview",
         })?;
+        let query = self.query;
         let path = "/checkouts/preview".to_string();
-        let request = client.request(reqwest::Method::POST, &path).json(&body);
+        let mut request = client.request(reqwest::Method::POST, &path).json(&body);
+        if let Some(query) = &query {
+            request = request.query(query);
+        }
         client.handle_response(request).await
     }
 }
@@ -404,6 +416,7 @@ impl PaymentsResource {
         PaymentsRetrieveLineItemsBuilder {
             client: self.client.clone(),
             payment_id: None,
+            query: None,
         }
     }
 
@@ -575,12 +588,19 @@ impl std::future::IntoFuture for PaymentsListBuilder {
 pub struct PaymentsRetrieveLineItemsBuilder {
     client: crate::Client,
     payment_id: Option<String>,
+    query: Option<serde_json::Value>,
 }
 
 impl PaymentsRetrieveLineItemsBuilder {
     #[must_use = "setters return an updated request builder"]
     pub fn payment_id(mut self, payment_id: impl Into<String>) -> Self {
         self.payment_id = Some(payment_id.into());
+        self
+    }
+
+    #[must_use = "setters return an updated request builder"]
+    pub fn query(mut self, query: serde_json::Value) -> Self {
+        self.query = Some(query);
         self
     }
 
@@ -594,11 +614,15 @@ impl PaymentsRetrieveLineItemsBuilder {
                 operation: "payments.retrieve_line_items",
                 param: "payment_id",
             })?;
+        let query = self.query;
         let path = build_path(
             "/payments/{payment_id}/line-items",
             &[("payment_id", payment_id.as_str())],
         );
-        let request = client.request(reqwest::Method::GET, &path);
+        let mut request = client.request(reqwest::Method::GET, &path);
+        if let Some(query) = &query {
+            request = request.query(query);
+        }
         client.handle_response(request).await
     }
 }
@@ -730,6 +754,7 @@ impl SubscriptionsResource {
         SubscriptionsRetrieveBuilder {
             client: self.client.clone(),
             subscription_id: None,
+            query: None,
         }
     }
 
@@ -858,12 +883,19 @@ impl std::future::IntoFuture for SubscriptionsCreateBuilder {
 pub struct SubscriptionsRetrieveBuilder {
     client: crate::Client,
     subscription_id: Option<String>,
+    query: Option<serde_json::Value>,
 }
 
 impl SubscriptionsRetrieveBuilder {
     #[must_use = "setters return an updated request builder"]
     pub fn subscription_id(mut self, subscription_id: impl Into<String>) -> Self {
         self.subscription_id = Some(subscription_id.into());
+        self
+    }
+
+    #[must_use = "setters return an updated request builder"]
+    pub fn query(mut self, query: serde_json::Value) -> Self {
+        self.query = Some(query);
         self
     }
 
@@ -875,11 +907,15 @@ impl SubscriptionsRetrieveBuilder {
                     operation: "subscriptions.retrieve",
                     param: "subscription_id",
                 })?;
+        let query = self.query;
         let path = build_path(
             "/subscriptions/{subscription_id}",
             &[("subscription_id", subscription_id.as_str())],
         );
-        let request = client.request(reqwest::Method::GET, &path);
+        let mut request = client.request(reqwest::Method::GET, &path);
+        if let Some(query) = &query {
+            request = request.query(query);
+        }
         client.handle_response(request).await
     }
 }
@@ -4226,6 +4262,13 @@ pub struct ProductsResource {
 
 impl ProductsResource {
     #[must_use = "resource accessors do nothing unless chained to a request"]
+    pub fn translations(&self) -> ProductsTranslationsResource {
+        ProductsTranslationsResource {
+            client: self.client.clone(),
+        }
+    }
+
+    #[must_use = "resource accessors do nothing unless chained to a request"]
     pub fn images(&self) -> ProductsImagesResource {
         ProductsImagesResource {
             client: self.client.clone(),
@@ -4259,6 +4302,7 @@ impl ProductsResource {
         ProductsRetrieveBuilder {
             client: self.client.clone(),
             id: None,
+            query: None,
         }
     }
 
@@ -4350,6 +4394,7 @@ impl std::future::IntoFuture for ProductsCreateBuilder {
 pub struct ProductsRetrieveBuilder {
     client: crate::Client,
     id: Option<String>,
+    query: Option<serde_json::Value>,
 }
 
 impl ProductsRetrieveBuilder {
@@ -4359,14 +4404,24 @@ impl ProductsRetrieveBuilder {
         self
     }
 
+    #[must_use = "setters return an updated request builder"]
+    pub fn query(mut self, query: serde_json::Value) -> Self {
+        self.query = Some(query);
+        self
+    }
+
     pub async fn send(self) -> crate::error::Result<crate::models::Product> {
         let client = self.client;
         let id = self.id.ok_or(crate::error::Error::MissingPathParam {
             operation: "products.retrieve",
             param: "id",
         })?;
+        let query = self.query;
         let path = build_path("/products/{id}", &[("id", id.as_str())]);
-        let request = client.request(reqwest::Method::GET, &path);
+        let mut request = client.request(reqwest::Method::GET, &path);
+        if let Some(query) = &query {
+            request = request.query(query);
+        }
         client.handle_response(request).await
     }
 }
@@ -4611,6 +4666,210 @@ impl std::future::IntoFuture for ProductsUpdateFilesBuilder {
                 > + Send
                 + 'static,
         >,
+    >;
+
+    fn into_future(self) -> Self::IntoFuture {
+        Box::pin(self.send())
+    }
+}
+
+#[derive(Clone, Debug)]
+pub struct ProductsTranslationsResource {
+    client: crate::Client,
+}
+
+impl ProductsTranslationsResource {
+    #[must_use = "request builders do nothing until you send or await them"]
+    pub fn update(&self) -> ProductsTranslationsUpdateBuilder {
+        ProductsTranslationsUpdateBuilder {
+            client: self.client.clone(),
+            id: None,
+            locale: None,
+            body: None,
+        }
+    }
+
+    #[must_use = "request builders do nothing until you send or await them"]
+    pub fn list(&self) -> ProductsTranslationsListBuilder {
+        ProductsTranslationsListBuilder {
+            client: self.client.clone(),
+            id: None,
+            query: None,
+        }
+    }
+
+    #[must_use = "request builders do nothing until you send or await them"]
+    pub fn delete(&self) -> ProductsTranslationsDeleteBuilder {
+        ProductsTranslationsDeleteBuilder {
+            client: self.client.clone(),
+            id: None,
+            locale: None,
+        }
+    }
+}
+
+#[must_use = "request builders do nothing until you send or await them"]
+#[derive(Clone, Debug)]
+pub struct ProductsTranslationsUpdateBuilder {
+    client: crate::Client,
+    id: Option<String>,
+    locale: Option<String>,
+    body: Option<crate::models::ProductsTranslationsUpdateParams>,
+}
+
+impl ProductsTranslationsUpdateBuilder {
+    #[must_use = "setters return an updated request builder"]
+    pub fn id(mut self, id: impl Into<String>) -> Self {
+        self.id = Some(id.into());
+        self
+    }
+
+    #[must_use = "setters return an updated request builder"]
+    pub fn locale(mut self, locale: impl Into<String>) -> Self {
+        self.locale = Some(locale.into());
+        self
+    }
+
+    #[must_use = "setters return an updated request builder"]
+    pub fn body(mut self, body: crate::models::ProductsTranslationsUpdateParams) -> Self {
+        self.body = Some(body);
+        self
+    }
+
+    pub async fn send(self) -> crate::error::Result<crate::models::Translation> {
+        let client = self.client;
+        let id = self.id.ok_or(crate::error::Error::MissingPathParam {
+            operation: "products.translations.update",
+            param: "id",
+        })?;
+        let locale = self.locale.ok_or(crate::error::Error::MissingPathParam {
+            operation: "products.translations.update",
+            param: "locale",
+        })?;
+        let body = self.body.ok_or(crate::error::Error::MissingBody {
+            operation: "products.translations.update",
+        })?;
+        let path = build_path(
+            "/products/{id}/translations/{locale}",
+            &[("id", id.as_str()), ("locale", locale.as_str())],
+        );
+        let request = client.request(reqwest::Method::PUT, &path).json(&body);
+        client.handle_response(request).await
+    }
+}
+
+impl std::future::IntoFuture for ProductsTranslationsUpdateBuilder {
+    type Output = crate::error::Result<crate::models::Translation>;
+    type IntoFuture = std::pin::Pin<
+        Box<
+            dyn std::future::Future<Output = crate::error::Result<crate::models::Translation>>
+                + Send
+                + 'static,
+        >,
+    >;
+
+    fn into_future(self) -> Self::IntoFuture {
+        Box::pin(self.send())
+    }
+}
+
+#[must_use = "request builders do nothing until you send or await them"]
+#[derive(Clone, Debug)]
+pub struct ProductsTranslationsListBuilder {
+    client: crate::Client,
+    id: Option<String>,
+    query: Option<serde_json::Value>,
+}
+
+impl ProductsTranslationsListBuilder {
+    #[must_use = "setters return an updated request builder"]
+    pub fn id(mut self, id: impl Into<String>) -> Self {
+        self.id = Some(id.into());
+        self
+    }
+
+    #[must_use = "setters return an updated request builder"]
+    pub fn query(mut self, query: serde_json::Value) -> Self {
+        self.query = Some(query);
+        self
+    }
+
+    pub async fn send(self) -> crate::error::Result<crate::models::TranslationsListResponse> {
+        let client = self.client;
+        let id = self.id.ok_or(crate::error::Error::MissingPathParam {
+            operation: "products.translations.list",
+            param: "id",
+        })?;
+        let query = self.query;
+        let path = build_path("/products/{id}/translations", &[("id", id.as_str())]);
+        let mut request = client.request(reqwest::Method::GET, &path);
+        if let Some(query) = &query {
+            request = request.query(query);
+        }
+        client.handle_response(request).await
+    }
+}
+
+impl std::future::IntoFuture for ProductsTranslationsListBuilder {
+    type Output = crate::error::Result<crate::models::TranslationsListResponse>;
+    type IntoFuture = std::pin::Pin<
+        Box<
+            dyn std::future::Future<
+                    Output = crate::error::Result<crate::models::TranslationsListResponse>,
+                > + Send
+                + 'static,
+        >,
+    >;
+
+    fn into_future(self) -> Self::IntoFuture {
+        Box::pin(self.send())
+    }
+}
+
+#[must_use = "request builders do nothing until you send or await them"]
+#[derive(Clone, Debug)]
+pub struct ProductsTranslationsDeleteBuilder {
+    client: crate::Client,
+    id: Option<String>,
+    locale: Option<String>,
+}
+
+impl ProductsTranslationsDeleteBuilder {
+    #[must_use = "setters return an updated request builder"]
+    pub fn id(mut self, id: impl Into<String>) -> Self {
+        self.id = Some(id.into());
+        self
+    }
+
+    #[must_use = "setters return an updated request builder"]
+    pub fn locale(mut self, locale: impl Into<String>) -> Self {
+        self.locale = Some(locale.into());
+        self
+    }
+
+    pub async fn send(self) -> crate::error::Result<()> {
+        let client = self.client;
+        let id = self.id.ok_or(crate::error::Error::MissingPathParam {
+            operation: "products.translations.delete",
+            param: "id",
+        })?;
+        let locale = self.locale.ok_or(crate::error::Error::MissingPathParam {
+            operation: "products.translations.delete",
+            param: "locale",
+        })?;
+        let path = build_path(
+            "/products/{id}/translations/{locale}",
+            &[("id", id.as_str()), ("locale", locale.as_str())],
+        );
+        let request = client.request(reqwest::Method::DELETE, &path);
+        client.handle_empty(request).await
+    }
+}
+
+impl std::future::IntoFuture for ProductsTranslationsDeleteBuilder {
+    type Output = crate::error::Result<()>;
+    type IntoFuture = std::pin::Pin<
+        Box<dyn std::future::Future<Output = crate::error::Result<()>> + Send + 'static>,
     >;
 
     fn into_future(self) -> Self::IntoFuture {
@@ -5161,10 +5420,48 @@ pub struct MiscResource {
 
 impl MiscResource {
     #[must_use = "request builders do nothing until you send or await them"]
+    pub fn list_locales(&self) -> MiscListLocalesBuilder {
+        MiscListLocalesBuilder {
+            client: self.client.clone(),
+        }
+    }
+
+    #[must_use = "request builders do nothing until you send or await them"]
     pub fn list_supported_countries(&self) -> MiscListSupportedCountriesBuilder {
         MiscListSupportedCountriesBuilder {
             client: self.client.clone(),
         }
+    }
+}
+
+#[must_use = "request builders do nothing until you send or await them"]
+#[derive(Clone, Debug)]
+pub struct MiscListLocalesBuilder {
+    client: crate::Client,
+}
+
+impl MiscListLocalesBuilder {
+    pub async fn send(self) -> crate::error::Result<crate::models::MiscListLocalesResponse> {
+        let client = self.client;
+        let path = "/locales".to_string();
+        let request = client.request(reqwest::Method::GET, &path);
+        client.handle_response(request).await
+    }
+}
+
+impl std::future::IntoFuture for MiscListLocalesBuilder {
+    type Output = crate::error::Result<crate::models::MiscListLocalesResponse>;
+    type IntoFuture = std::pin::Pin<
+        Box<
+            dyn std::future::Future<
+                    Output = crate::error::Result<crate::models::MiscListLocalesResponse>,
+                > + Send
+                + 'static,
+        >,
+    >;
+
+    fn into_future(self) -> Self::IntoFuture {
+        Box::pin(self.send())
     }
 }
 
@@ -5549,6 +5846,13 @@ pub struct AddonsResource {
 }
 
 impl AddonsResource {
+    #[must_use = "resource accessors do nothing unless chained to a request"]
+    pub fn translations(&self) -> AddonsTranslationsResource {
+        AddonsTranslationsResource {
+            client: self.client.clone(),
+        }
+    }
+
     #[must_use = "request builders do nothing until you send or await them"]
     pub fn create(&self) -> AddonsCreateBuilder {
         AddonsCreateBuilder {
@@ -5562,6 +5866,7 @@ impl AddonsResource {
         AddonsRetrieveBuilder {
             client: self.client.clone(),
             id: None,
+            query: None,
         }
     }
 
@@ -5579,6 +5884,22 @@ impl AddonsResource {
         AddonsListBuilder {
             client: self.client.clone(),
             query: None,
+        }
+    }
+
+    #[must_use = "request builders do nothing until you send or await them"]
+    pub fn delete(&self) -> AddonsDeleteBuilder {
+        AddonsDeleteBuilder {
+            client: self.client.clone(),
+            id: None,
+        }
+    }
+
+    #[must_use = "request builders do nothing until you send or await them"]
+    pub fn unarchive(&self) -> AddonsUnarchiveBuilder {
+        AddonsUnarchiveBuilder {
+            client: self.client.clone(),
+            id: None,
         }
     }
 
@@ -5636,6 +5957,7 @@ impl std::future::IntoFuture for AddonsCreateBuilder {
 pub struct AddonsRetrieveBuilder {
     client: crate::Client,
     id: Option<String>,
+    query: Option<serde_json::Value>,
 }
 
 impl AddonsRetrieveBuilder {
@@ -5645,14 +5967,24 @@ impl AddonsRetrieveBuilder {
         self
     }
 
+    #[must_use = "setters return an updated request builder"]
+    pub fn query(mut self, query: serde_json::Value) -> Self {
+        self.query = Some(query);
+        self
+    }
+
     pub async fn send(self) -> crate::error::Result<crate::models::AddonResponse> {
         let client = self.client;
         let id = self.id.ok_or(crate::error::Error::MissingPathParam {
             operation: "addons.retrieve",
             param: "id",
         })?;
+        let query = self.query;
         let path = build_path("/addons/{id}", &[("id", id.as_str())]);
-        let request = client.request(reqwest::Method::GET, &path);
+        let mut request = client.request(reqwest::Method::GET, &path);
+        if let Some(query) = &query {
+            request = request.query(query);
+        }
         client.handle_response(request).await
     }
 }
@@ -5782,6 +6114,80 @@ impl std::future::IntoFuture for AddonsListBuilder {
 
 #[must_use = "request builders do nothing until you send or await them"]
 #[derive(Clone, Debug)]
+pub struct AddonsDeleteBuilder {
+    client: crate::Client,
+    id: Option<String>,
+}
+
+impl AddonsDeleteBuilder {
+    #[must_use = "setters return an updated request builder"]
+    pub fn id(mut self, id: impl Into<String>) -> Self {
+        self.id = Some(id.into());
+        self
+    }
+
+    pub async fn send(self) -> crate::error::Result<()> {
+        let client = self.client;
+        let id = self.id.ok_or(crate::error::Error::MissingPathParam {
+            operation: "addons.delete",
+            param: "id",
+        })?;
+        let path = build_path("/addons/{id}", &[("id", id.as_str())]);
+        let request = client.request(reqwest::Method::DELETE, &path);
+        client.handle_empty(request).await
+    }
+}
+
+impl std::future::IntoFuture for AddonsDeleteBuilder {
+    type Output = crate::error::Result<()>;
+    type IntoFuture = std::pin::Pin<
+        Box<dyn std::future::Future<Output = crate::error::Result<()>> + Send + 'static>,
+    >;
+
+    fn into_future(self) -> Self::IntoFuture {
+        Box::pin(self.send())
+    }
+}
+
+#[must_use = "request builders do nothing until you send or await them"]
+#[derive(Clone, Debug)]
+pub struct AddonsUnarchiveBuilder {
+    client: crate::Client,
+    id: Option<String>,
+}
+
+impl AddonsUnarchiveBuilder {
+    #[must_use = "setters return an updated request builder"]
+    pub fn id(mut self, id: impl Into<String>) -> Self {
+        self.id = Some(id.into());
+        self
+    }
+
+    pub async fn send(self) -> crate::error::Result<()> {
+        let client = self.client;
+        let id = self.id.ok_or(crate::error::Error::MissingPathParam {
+            operation: "addons.unarchive",
+            param: "id",
+        })?;
+        let path = build_path("/addons/{id}/unarchive", &[("id", id.as_str())]);
+        let request = client.request(reqwest::Method::POST, &path);
+        client.handle_empty(request).await
+    }
+}
+
+impl std::future::IntoFuture for AddonsUnarchiveBuilder {
+    type Output = crate::error::Result<()>;
+    type IntoFuture = std::pin::Pin<
+        Box<dyn std::future::Future<Output = crate::error::Result<()>> + Send + 'static>,
+    >;
+
+    fn into_future(self) -> Self::IntoFuture {
+        Box::pin(self.send())
+    }
+}
+
+#[must_use = "request builders do nothing until you send or await them"]
+#[derive(Clone, Debug)]
 pub struct AddonsUpdateImagesBuilder {
     client: crate::Client,
     id: Option<String>,
@@ -5815,6 +6221,210 @@ impl std::future::IntoFuture for AddonsUpdateImagesBuilder {
                 > + Send
                 + 'static,
         >,
+    >;
+
+    fn into_future(self) -> Self::IntoFuture {
+        Box::pin(self.send())
+    }
+}
+
+#[derive(Clone, Debug)]
+pub struct AddonsTranslationsResource {
+    client: crate::Client,
+}
+
+impl AddonsTranslationsResource {
+    #[must_use = "request builders do nothing until you send or await them"]
+    pub fn update(&self) -> AddonsTranslationsUpdateBuilder {
+        AddonsTranslationsUpdateBuilder {
+            client: self.client.clone(),
+            id: None,
+            locale: None,
+            body: None,
+        }
+    }
+
+    #[must_use = "request builders do nothing until you send or await them"]
+    pub fn list(&self) -> AddonsTranslationsListBuilder {
+        AddonsTranslationsListBuilder {
+            client: self.client.clone(),
+            id: None,
+            query: None,
+        }
+    }
+
+    #[must_use = "request builders do nothing until you send or await them"]
+    pub fn delete(&self) -> AddonsTranslationsDeleteBuilder {
+        AddonsTranslationsDeleteBuilder {
+            client: self.client.clone(),
+            id: None,
+            locale: None,
+        }
+    }
+}
+
+#[must_use = "request builders do nothing until you send or await them"]
+#[derive(Clone, Debug)]
+pub struct AddonsTranslationsUpdateBuilder {
+    client: crate::Client,
+    id: Option<String>,
+    locale: Option<String>,
+    body: Option<crate::models::AddonsTranslationsUpdateParams>,
+}
+
+impl AddonsTranslationsUpdateBuilder {
+    #[must_use = "setters return an updated request builder"]
+    pub fn id(mut self, id: impl Into<String>) -> Self {
+        self.id = Some(id.into());
+        self
+    }
+
+    #[must_use = "setters return an updated request builder"]
+    pub fn locale(mut self, locale: impl Into<String>) -> Self {
+        self.locale = Some(locale.into());
+        self
+    }
+
+    #[must_use = "setters return an updated request builder"]
+    pub fn body(mut self, body: crate::models::AddonsTranslationsUpdateParams) -> Self {
+        self.body = Some(body);
+        self
+    }
+
+    pub async fn send(self) -> crate::error::Result<crate::models::Translation> {
+        let client = self.client;
+        let id = self.id.ok_or(crate::error::Error::MissingPathParam {
+            operation: "addons.translations.update",
+            param: "id",
+        })?;
+        let locale = self.locale.ok_or(crate::error::Error::MissingPathParam {
+            operation: "addons.translations.update",
+            param: "locale",
+        })?;
+        let body = self.body.ok_or(crate::error::Error::MissingBody {
+            operation: "addons.translations.update",
+        })?;
+        let path = build_path(
+            "/addons/{id}/translations/{locale}",
+            &[("id", id.as_str()), ("locale", locale.as_str())],
+        );
+        let request = client.request(reqwest::Method::PUT, &path).json(&body);
+        client.handle_response(request).await
+    }
+}
+
+impl std::future::IntoFuture for AddonsTranslationsUpdateBuilder {
+    type Output = crate::error::Result<crate::models::Translation>;
+    type IntoFuture = std::pin::Pin<
+        Box<
+            dyn std::future::Future<Output = crate::error::Result<crate::models::Translation>>
+                + Send
+                + 'static,
+        >,
+    >;
+
+    fn into_future(self) -> Self::IntoFuture {
+        Box::pin(self.send())
+    }
+}
+
+#[must_use = "request builders do nothing until you send or await them"]
+#[derive(Clone, Debug)]
+pub struct AddonsTranslationsListBuilder {
+    client: crate::Client,
+    id: Option<String>,
+    query: Option<serde_json::Value>,
+}
+
+impl AddonsTranslationsListBuilder {
+    #[must_use = "setters return an updated request builder"]
+    pub fn id(mut self, id: impl Into<String>) -> Self {
+        self.id = Some(id.into());
+        self
+    }
+
+    #[must_use = "setters return an updated request builder"]
+    pub fn query(mut self, query: serde_json::Value) -> Self {
+        self.query = Some(query);
+        self
+    }
+
+    pub async fn send(self) -> crate::error::Result<crate::models::TranslationsListResponse> {
+        let client = self.client;
+        let id = self.id.ok_or(crate::error::Error::MissingPathParam {
+            operation: "addons.translations.list",
+            param: "id",
+        })?;
+        let query = self.query;
+        let path = build_path("/addons/{id}/translations", &[("id", id.as_str())]);
+        let mut request = client.request(reqwest::Method::GET, &path);
+        if let Some(query) = &query {
+            request = request.query(query);
+        }
+        client.handle_response(request).await
+    }
+}
+
+impl std::future::IntoFuture for AddonsTranslationsListBuilder {
+    type Output = crate::error::Result<crate::models::TranslationsListResponse>;
+    type IntoFuture = std::pin::Pin<
+        Box<
+            dyn std::future::Future<
+                    Output = crate::error::Result<crate::models::TranslationsListResponse>,
+                > + Send
+                + 'static,
+        >,
+    >;
+
+    fn into_future(self) -> Self::IntoFuture {
+        Box::pin(self.send())
+    }
+}
+
+#[must_use = "request builders do nothing until you send or await them"]
+#[derive(Clone, Debug)]
+pub struct AddonsTranslationsDeleteBuilder {
+    client: crate::Client,
+    id: Option<String>,
+    locale: Option<String>,
+}
+
+impl AddonsTranslationsDeleteBuilder {
+    #[must_use = "setters return an updated request builder"]
+    pub fn id(mut self, id: impl Into<String>) -> Self {
+        self.id = Some(id.into());
+        self
+    }
+
+    #[must_use = "setters return an updated request builder"]
+    pub fn locale(mut self, locale: impl Into<String>) -> Self {
+        self.locale = Some(locale.into());
+        self
+    }
+
+    pub async fn send(self) -> crate::error::Result<()> {
+        let client = self.client;
+        let id = self.id.ok_or(crate::error::Error::MissingPathParam {
+            operation: "addons.translations.delete",
+            param: "id",
+        })?;
+        let locale = self.locale.ok_or(crate::error::Error::MissingPathParam {
+            operation: "addons.translations.delete",
+            param: "locale",
+        })?;
+        let path = build_path(
+            "/addons/{id}/translations/{locale}",
+            &[("id", id.as_str()), ("locale", locale.as_str())],
+        );
+        let request = client.request(reqwest::Method::DELETE, &path);
+        client.handle_empty(request).await
+    }
+}
+
+impl std::future::IntoFuture for AddonsTranslationsDeleteBuilder {
+    type Output = crate::error::Result<()>;
+    type IntoFuture = std::pin::Pin<
+        Box<dyn std::future::Future<Output = crate::error::Result<()>> + Send + 'static>,
     >;
 
     fn into_future(self) -> Self::IntoFuture {
@@ -6807,6 +7417,13 @@ pub struct MetersResource {
 }
 
 impl MetersResource {
+    #[must_use = "resource accessors do nothing unless chained to a request"]
+    pub fn translations(&self) -> MetersTranslationsResource {
+        MetersTranslationsResource {
+            client: self.client.clone(),
+        }
+    }
+
     #[must_use = "request builders do nothing until you send or await them"]
     pub fn create(&self) -> MetersCreateBuilder {
         MetersCreateBuilder {
@@ -6820,6 +7437,16 @@ impl MetersResource {
         MetersRetrieveBuilder {
             client: self.client.clone(),
             id: None,
+            query: None,
+        }
+    }
+
+    #[must_use = "request builders do nothing until you send or await them"]
+    pub fn update(&self) -> MetersUpdateBuilder {
+        MetersUpdateBuilder {
+            client: self.client.clone(),
+            id: None,
+            body: None,
         }
     }
 
@@ -6893,6 +7520,7 @@ impl std::future::IntoFuture for MetersCreateBuilder {
 pub struct MetersRetrieveBuilder {
     client: crate::Client,
     id: Option<String>,
+    query: Option<serde_json::Value>,
 }
 
 impl MetersRetrieveBuilder {
@@ -6902,19 +7530,80 @@ impl MetersRetrieveBuilder {
         self
     }
 
+    #[must_use = "setters return an updated request builder"]
+    pub fn query(mut self, query: serde_json::Value) -> Self {
+        self.query = Some(query);
+        self
+    }
+
     pub async fn send(self) -> crate::error::Result<crate::models::Meter> {
         let client = self.client;
         let id = self.id.ok_or(crate::error::Error::MissingPathParam {
             operation: "meters.retrieve",
             param: "id",
         })?;
+        let query = self.query;
         let path = build_path("/meters/{id}", &[("id", id.as_str())]);
-        let request = client.request(reqwest::Method::GET, &path);
+        let mut request = client.request(reqwest::Method::GET, &path);
+        if let Some(query) = &query {
+            request = request.query(query);
+        }
         client.handle_response(request).await
     }
 }
 
 impl std::future::IntoFuture for MetersRetrieveBuilder {
+    type Output = crate::error::Result<crate::models::Meter>;
+    type IntoFuture = std::pin::Pin<
+        Box<
+            dyn std::future::Future<Output = crate::error::Result<crate::models::Meter>>
+                + Send
+                + 'static,
+        >,
+    >;
+
+    fn into_future(self) -> Self::IntoFuture {
+        Box::pin(self.send())
+    }
+}
+
+#[must_use = "request builders do nothing until you send or await them"]
+#[derive(Clone, Debug)]
+pub struct MetersUpdateBuilder {
+    client: crate::Client,
+    id: Option<String>,
+    body: Option<crate::models::MetersUpdateParams>,
+}
+
+impl MetersUpdateBuilder {
+    #[must_use = "setters return an updated request builder"]
+    pub fn id(mut self, id: impl Into<String>) -> Self {
+        self.id = Some(id.into());
+        self
+    }
+
+    #[must_use = "setters return an updated request builder"]
+    pub fn body(mut self, body: crate::models::MetersUpdateParams) -> Self {
+        self.body = Some(body);
+        self
+    }
+
+    pub async fn send(self) -> crate::error::Result<crate::models::Meter> {
+        let client = self.client;
+        let id = self.id.ok_or(crate::error::Error::MissingPathParam {
+            operation: "meters.update",
+            param: "id",
+        })?;
+        let body = self.body.ok_or(crate::error::Error::MissingBody {
+            operation: "meters.update",
+        })?;
+        let path = build_path("/meters/{id}", &[("id", id.as_str())]);
+        let request = client.request(reqwest::Method::PATCH, &path).json(&body);
+        client.handle_response(request).await
+    }
+}
+
+impl std::future::IntoFuture for MetersUpdateBuilder {
     type Output = crate::error::Result<crate::models::Meter>;
     type IntoFuture = std::pin::Pin<
         Box<
@@ -7063,6 +7752,210 @@ impl std::future::IntoFuture for MetersUnarchiveBuilder {
 }
 
 #[derive(Clone, Debug)]
+pub struct MetersTranslationsResource {
+    client: crate::Client,
+}
+
+impl MetersTranslationsResource {
+    #[must_use = "request builders do nothing until you send or await them"]
+    pub fn update(&self) -> MetersTranslationsUpdateBuilder {
+        MetersTranslationsUpdateBuilder {
+            client: self.client.clone(),
+            id: None,
+            locale: None,
+            body: None,
+        }
+    }
+
+    #[must_use = "request builders do nothing until you send or await them"]
+    pub fn list(&self) -> MetersTranslationsListBuilder {
+        MetersTranslationsListBuilder {
+            client: self.client.clone(),
+            id: None,
+            query: None,
+        }
+    }
+
+    #[must_use = "request builders do nothing until you send or await them"]
+    pub fn delete(&self) -> MetersTranslationsDeleteBuilder {
+        MetersTranslationsDeleteBuilder {
+            client: self.client.clone(),
+            id: None,
+            locale: None,
+        }
+    }
+}
+
+#[must_use = "request builders do nothing until you send or await them"]
+#[derive(Clone, Debug)]
+pub struct MetersTranslationsUpdateBuilder {
+    client: crate::Client,
+    id: Option<String>,
+    locale: Option<String>,
+    body: Option<crate::models::MetersTranslationsUpdateParams>,
+}
+
+impl MetersTranslationsUpdateBuilder {
+    #[must_use = "setters return an updated request builder"]
+    pub fn id(mut self, id: impl Into<String>) -> Self {
+        self.id = Some(id.into());
+        self
+    }
+
+    #[must_use = "setters return an updated request builder"]
+    pub fn locale(mut self, locale: impl Into<String>) -> Self {
+        self.locale = Some(locale.into());
+        self
+    }
+
+    #[must_use = "setters return an updated request builder"]
+    pub fn body(mut self, body: crate::models::MetersTranslationsUpdateParams) -> Self {
+        self.body = Some(body);
+        self
+    }
+
+    pub async fn send(self) -> crate::error::Result<crate::models::Translation> {
+        let client = self.client;
+        let id = self.id.ok_or(crate::error::Error::MissingPathParam {
+            operation: "meters.translations.update",
+            param: "id",
+        })?;
+        let locale = self.locale.ok_or(crate::error::Error::MissingPathParam {
+            operation: "meters.translations.update",
+            param: "locale",
+        })?;
+        let body = self.body.ok_or(crate::error::Error::MissingBody {
+            operation: "meters.translations.update",
+        })?;
+        let path = build_path(
+            "/meters/{id}/translations/{locale}",
+            &[("id", id.as_str()), ("locale", locale.as_str())],
+        );
+        let request = client.request(reqwest::Method::PUT, &path).json(&body);
+        client.handle_response(request).await
+    }
+}
+
+impl std::future::IntoFuture for MetersTranslationsUpdateBuilder {
+    type Output = crate::error::Result<crate::models::Translation>;
+    type IntoFuture = std::pin::Pin<
+        Box<
+            dyn std::future::Future<Output = crate::error::Result<crate::models::Translation>>
+                + Send
+                + 'static,
+        >,
+    >;
+
+    fn into_future(self) -> Self::IntoFuture {
+        Box::pin(self.send())
+    }
+}
+
+#[must_use = "request builders do nothing until you send or await them"]
+#[derive(Clone, Debug)]
+pub struct MetersTranslationsListBuilder {
+    client: crate::Client,
+    id: Option<String>,
+    query: Option<serde_json::Value>,
+}
+
+impl MetersTranslationsListBuilder {
+    #[must_use = "setters return an updated request builder"]
+    pub fn id(mut self, id: impl Into<String>) -> Self {
+        self.id = Some(id.into());
+        self
+    }
+
+    #[must_use = "setters return an updated request builder"]
+    pub fn query(mut self, query: serde_json::Value) -> Self {
+        self.query = Some(query);
+        self
+    }
+
+    pub async fn send(self) -> crate::error::Result<crate::models::TranslationsListResponse> {
+        let client = self.client;
+        let id = self.id.ok_or(crate::error::Error::MissingPathParam {
+            operation: "meters.translations.list",
+            param: "id",
+        })?;
+        let query = self.query;
+        let path = build_path("/meters/{id}/translations", &[("id", id.as_str())]);
+        let mut request = client.request(reqwest::Method::GET, &path);
+        if let Some(query) = &query {
+            request = request.query(query);
+        }
+        client.handle_response(request).await
+    }
+}
+
+impl std::future::IntoFuture for MetersTranslationsListBuilder {
+    type Output = crate::error::Result<crate::models::TranslationsListResponse>;
+    type IntoFuture = std::pin::Pin<
+        Box<
+            dyn std::future::Future<
+                    Output = crate::error::Result<crate::models::TranslationsListResponse>,
+                > + Send
+                + 'static,
+        >,
+    >;
+
+    fn into_future(self) -> Self::IntoFuture {
+        Box::pin(self.send())
+    }
+}
+
+#[must_use = "request builders do nothing until you send or await them"]
+#[derive(Clone, Debug)]
+pub struct MetersTranslationsDeleteBuilder {
+    client: crate::Client,
+    id: Option<String>,
+    locale: Option<String>,
+}
+
+impl MetersTranslationsDeleteBuilder {
+    #[must_use = "setters return an updated request builder"]
+    pub fn id(mut self, id: impl Into<String>) -> Self {
+        self.id = Some(id.into());
+        self
+    }
+
+    #[must_use = "setters return an updated request builder"]
+    pub fn locale(mut self, locale: impl Into<String>) -> Self {
+        self.locale = Some(locale.into());
+        self
+    }
+
+    pub async fn send(self) -> crate::error::Result<()> {
+        let client = self.client;
+        let id = self.id.ok_or(crate::error::Error::MissingPathParam {
+            operation: "meters.translations.delete",
+            param: "id",
+        })?;
+        let locale = self.locale.ok_or(crate::error::Error::MissingPathParam {
+            operation: "meters.translations.delete",
+            param: "locale",
+        })?;
+        let path = build_path(
+            "/meters/{id}/translations/{locale}",
+            &[("id", id.as_str()), ("locale", locale.as_str())],
+        );
+        let request = client.request(reqwest::Method::DELETE, &path);
+        client.handle_empty(request).await
+    }
+}
+
+impl std::future::IntoFuture for MetersTranslationsDeleteBuilder {
+    type Output = crate::error::Result<()>;
+    type IntoFuture = std::pin::Pin<
+        Box<dyn std::future::Future<Output = crate::error::Result<()>> + Send + 'static>,
+    >;
+
+    fn into_future(self) -> Self::IntoFuture {
+        Box::pin(self.send())
+    }
+}
+
+#[derive(Clone, Debug)]
 pub struct BalancesResource {
     client: crate::Client,
 }
@@ -7143,6 +8036,13 @@ pub struct CreditEntitlementsResource {
 
 impl CreditEntitlementsResource {
     #[must_use = "resource accessors do nothing unless chained to a request"]
+    pub fn translations(&self) -> CreditEntitlementsTranslationsResource {
+        CreditEntitlementsTranslationsResource {
+            client: self.client.clone(),
+        }
+    }
+
+    #[must_use = "resource accessors do nothing unless chained to a request"]
     pub fn balances(&self) -> CreditEntitlementsBalancesResource {
         CreditEntitlementsBalancesResource {
             client: self.client.clone(),
@@ -7162,6 +8062,7 @@ impl CreditEntitlementsResource {
         CreditEntitlementsRetrieveBuilder {
             client: self.client.clone(),
             id: None,
+            query: None,
         }
     }
 
@@ -7244,6 +8145,7 @@ impl std::future::IntoFuture for CreditEntitlementsCreateBuilder {
 pub struct CreditEntitlementsRetrieveBuilder {
     client: crate::Client,
     id: Option<String>,
+    query: Option<serde_json::Value>,
 }
 
 impl CreditEntitlementsRetrieveBuilder {
@@ -7253,14 +8155,24 @@ impl CreditEntitlementsRetrieveBuilder {
         self
     }
 
+    #[must_use = "setters return an updated request builder"]
+    pub fn query(mut self, query: serde_json::Value) -> Self {
+        self.query = Some(query);
+        self
+    }
+
     pub async fn send(self) -> crate::error::Result<crate::models::CreditEntitlement> {
         let client = self.client;
         let id = self.id.ok_or(crate::error::Error::MissingPathParam {
             operation: "credit_entitlements.retrieve",
             param: "id",
         })?;
+        let query = self.query;
         let path = build_path("/credit-entitlements/{id}", &[("id", id.as_str())]);
-        let request = client.request(reqwest::Method::GET, &path);
+        let mut request = client.request(reqwest::Method::GET, &path);
+        if let Some(query) = &query {
+            request = request.query(query);
+        }
         client.handle_response(request).await
     }
 }
@@ -7450,6 +8362,218 @@ impl CreditEntitlementsUndeleteBuilder {
 }
 
 impl std::future::IntoFuture for CreditEntitlementsUndeleteBuilder {
+    type Output = crate::error::Result<()>;
+    type IntoFuture = std::pin::Pin<
+        Box<dyn std::future::Future<Output = crate::error::Result<()>> + Send + 'static>,
+    >;
+
+    fn into_future(self) -> Self::IntoFuture {
+        Box::pin(self.send())
+    }
+}
+
+#[derive(Clone, Debug)]
+pub struct CreditEntitlementsTranslationsResource {
+    client: crate::Client,
+}
+
+impl CreditEntitlementsTranslationsResource {
+    #[must_use = "request builders do nothing until you send or await them"]
+    pub fn update(&self) -> CreditEntitlementsTranslationsUpdateBuilder {
+        CreditEntitlementsTranslationsUpdateBuilder {
+            client: self.client.clone(),
+            id: None,
+            locale: None,
+            body: None,
+        }
+    }
+
+    #[must_use = "request builders do nothing until you send or await them"]
+    pub fn list(&self) -> CreditEntitlementsTranslationsListBuilder {
+        CreditEntitlementsTranslationsListBuilder {
+            client: self.client.clone(),
+            id: None,
+            query: None,
+        }
+    }
+
+    #[must_use = "request builders do nothing until you send or await them"]
+    pub fn delete(&self) -> CreditEntitlementsTranslationsDeleteBuilder {
+        CreditEntitlementsTranslationsDeleteBuilder {
+            client: self.client.clone(),
+            id: None,
+            locale: None,
+        }
+    }
+}
+
+#[must_use = "request builders do nothing until you send or await them"]
+#[derive(Clone, Debug)]
+pub struct CreditEntitlementsTranslationsUpdateBuilder {
+    client: crate::Client,
+    id: Option<String>,
+    locale: Option<String>,
+    body: Option<crate::models::CreditEntitlementsTranslationsUpdateParams>,
+}
+
+impl CreditEntitlementsTranslationsUpdateBuilder {
+    #[must_use = "setters return an updated request builder"]
+    pub fn id(mut self, id: impl Into<String>) -> Self {
+        self.id = Some(id.into());
+        self
+    }
+
+    #[must_use = "setters return an updated request builder"]
+    pub fn locale(mut self, locale: impl Into<String>) -> Self {
+        self.locale = Some(locale.into());
+        self
+    }
+
+    #[must_use = "setters return an updated request builder"]
+    pub fn body(mut self, body: crate::models::CreditEntitlementsTranslationsUpdateParams) -> Self {
+        self.body = Some(body);
+        self
+    }
+
+    pub async fn send(self) -> crate::error::Result<crate::models::CreditEntitlementTranslation> {
+        let client = self.client;
+        let id = self.id.ok_or(crate::error::Error::MissingPathParam {
+            operation: "credit_entitlements.translations.update",
+            param: "id",
+        })?;
+        let locale = self.locale.ok_or(crate::error::Error::MissingPathParam {
+            operation: "credit_entitlements.translations.update",
+            param: "locale",
+        })?;
+        let body = self.body.ok_or(crate::error::Error::MissingBody {
+            operation: "credit_entitlements.translations.update",
+        })?;
+        let path = build_path(
+            "/credit-entitlements/{id}/translations/{locale}",
+            &[("id", id.as_str()), ("locale", locale.as_str())],
+        );
+        let request = client.request(reqwest::Method::PUT, &path).json(&body);
+        client.handle_response(request).await
+    }
+}
+
+impl std::future::IntoFuture for CreditEntitlementsTranslationsUpdateBuilder {
+    type Output = crate::error::Result<crate::models::CreditEntitlementTranslation>;
+    type IntoFuture = std::pin::Pin<
+        Box<
+            dyn std::future::Future<
+                    Output = crate::error::Result<crate::models::CreditEntitlementTranslation>,
+                > + Send
+                + 'static,
+        >,
+    >;
+
+    fn into_future(self) -> Self::IntoFuture {
+        Box::pin(self.send())
+    }
+}
+
+#[must_use = "request builders do nothing until you send or await them"]
+#[derive(Clone, Debug)]
+pub struct CreditEntitlementsTranslationsListBuilder {
+    client: crate::Client,
+    id: Option<String>,
+    query: Option<serde_json::Value>,
+}
+
+impl CreditEntitlementsTranslationsListBuilder {
+    #[must_use = "setters return an updated request builder"]
+    pub fn id(mut self, id: impl Into<String>) -> Self {
+        self.id = Some(id.into());
+        self
+    }
+
+    #[must_use = "setters return an updated request builder"]
+    pub fn query(mut self, query: serde_json::Value) -> Self {
+        self.query = Some(query);
+        self
+    }
+
+    pub async fn send(
+        self,
+    ) -> crate::error::Result<crate::models::CreditEntitlementTranslationsListResponse> {
+        let client = self.client;
+        let id = self.id.ok_or(crate::error::Error::MissingPathParam {
+            operation: "credit_entitlements.translations.list",
+            param: "id",
+        })?;
+        let query = self.query;
+        let path = build_path(
+            "/credit-entitlements/{id}/translations",
+            &[("id", id.as_str())],
+        );
+        let mut request = client.request(reqwest::Method::GET, &path);
+        if let Some(query) = &query {
+            request = request.query(query);
+        }
+        client.handle_response(request).await
+    }
+}
+
+impl std::future::IntoFuture for CreditEntitlementsTranslationsListBuilder {
+    type Output = crate::error::Result<crate::models::CreditEntitlementTranslationsListResponse>;
+    type IntoFuture = std::pin::Pin<
+        Box<
+            dyn std::future::Future<
+                    Output = crate::error::Result<
+                        crate::models::CreditEntitlementTranslationsListResponse,
+                    >,
+                > + Send
+                + 'static,
+        >,
+    >;
+
+    fn into_future(self) -> Self::IntoFuture {
+        Box::pin(self.send())
+    }
+}
+
+#[must_use = "request builders do nothing until you send or await them"]
+#[derive(Clone, Debug)]
+pub struct CreditEntitlementsTranslationsDeleteBuilder {
+    client: crate::Client,
+    id: Option<String>,
+    locale: Option<String>,
+}
+
+impl CreditEntitlementsTranslationsDeleteBuilder {
+    #[must_use = "setters return an updated request builder"]
+    pub fn id(mut self, id: impl Into<String>) -> Self {
+        self.id = Some(id.into());
+        self
+    }
+
+    #[must_use = "setters return an updated request builder"]
+    pub fn locale(mut self, locale: impl Into<String>) -> Self {
+        self.locale = Some(locale.into());
+        self
+    }
+
+    pub async fn send(self) -> crate::error::Result<()> {
+        let client = self.client;
+        let id = self.id.ok_or(crate::error::Error::MissingPathParam {
+            operation: "credit_entitlements.translations.delete",
+            param: "id",
+        })?;
+        let locale = self.locale.ok_or(crate::error::Error::MissingPathParam {
+            operation: "credit_entitlements.translations.delete",
+            param: "locale",
+        })?;
+        let path = build_path(
+            "/credit-entitlements/{id}/translations/{locale}",
+            &[("id", id.as_str()), ("locale", locale.as_str())],
+        );
+        let request = client.request(reqwest::Method::DELETE, &path);
+        client.handle_empty(request).await
+    }
+}
+
+impl std::future::IntoFuture for CreditEntitlementsTranslationsDeleteBuilder {
     type Output = crate::error::Result<()>;
     type IntoFuture = std::pin::Pin<
         Box<dyn std::future::Future<Output = crate::error::Result<()>> + Send + 'static>,
@@ -7920,6 +9044,13 @@ pub struct EntitlementsResource {
 
 impl EntitlementsResource {
     #[must_use = "resource accessors do nothing unless chained to a request"]
+    pub fn translations(&self) -> EntitlementsTranslationsResource {
+        EntitlementsTranslationsResource {
+            client: self.client.clone(),
+        }
+    }
+
+    #[must_use = "resource accessors do nothing unless chained to a request"]
     pub fn files(&self) -> EntitlementsFilesResource {
         EntitlementsFilesResource {
             client: self.client.clone(),
@@ -7946,6 +9077,7 @@ impl EntitlementsResource {
         EntitlementsRetrieveBuilder {
             client: self.client.clone(),
             id: None,
+            query: None,
         }
     }
 
@@ -8020,6 +9152,7 @@ impl std::future::IntoFuture for EntitlementsCreateBuilder {
 pub struct EntitlementsRetrieveBuilder {
     client: crate::Client,
     id: Option<String>,
+    query: Option<serde_json::Value>,
 }
 
 impl EntitlementsRetrieveBuilder {
@@ -8029,14 +9162,24 @@ impl EntitlementsRetrieveBuilder {
         self
     }
 
+    #[must_use = "setters return an updated request builder"]
+    pub fn query(mut self, query: serde_json::Value) -> Self {
+        self.query = Some(query);
+        self
+    }
+
     pub async fn send(self) -> crate::error::Result<crate::models::Entitlement> {
         let client = self.client;
         let id = self.id.ok_or(crate::error::Error::MissingPathParam {
             operation: "entitlements.retrieve",
             param: "id",
         })?;
+        let query = self.query;
         let path = build_path("/entitlements/{id}", &[("id", id.as_str())]);
-        let request = client.request(reqwest::Method::GET, &path);
+        let mut request = client.request(reqwest::Method::GET, &path);
+        if let Some(query) = &query {
+            request = request.query(query);
+        }
         client.handle_response(request).await
     }
 }
@@ -8190,6 +9333,215 @@ impl EntitlementsDeleteBuilder {
 }
 
 impl std::future::IntoFuture for EntitlementsDeleteBuilder {
+    type Output = crate::error::Result<()>;
+    type IntoFuture = std::pin::Pin<
+        Box<dyn std::future::Future<Output = crate::error::Result<()>> + Send + 'static>,
+    >;
+
+    fn into_future(self) -> Self::IntoFuture {
+        Box::pin(self.send())
+    }
+}
+
+#[derive(Clone, Debug)]
+pub struct EntitlementsTranslationsResource {
+    client: crate::Client,
+}
+
+impl EntitlementsTranslationsResource {
+    #[must_use = "request builders do nothing until you send or await them"]
+    pub fn update(&self) -> EntitlementsTranslationsUpdateBuilder {
+        EntitlementsTranslationsUpdateBuilder {
+            client: self.client.clone(),
+            id: None,
+            locale: None,
+            body: None,
+        }
+    }
+
+    #[must_use = "request builders do nothing until you send or await them"]
+    pub fn list(&self) -> EntitlementsTranslationsListBuilder {
+        EntitlementsTranslationsListBuilder {
+            client: self.client.clone(),
+            id: None,
+            query: None,
+        }
+    }
+
+    #[must_use = "request builders do nothing until you send or await them"]
+    pub fn delete(&self) -> EntitlementsTranslationsDeleteBuilder {
+        EntitlementsTranslationsDeleteBuilder {
+            client: self.client.clone(),
+            id: None,
+            locale: None,
+        }
+    }
+}
+
+#[must_use = "request builders do nothing until you send or await them"]
+#[derive(Clone, Debug)]
+pub struct EntitlementsTranslationsUpdateBuilder {
+    client: crate::Client,
+    id: Option<String>,
+    locale: Option<String>,
+    body: Option<crate::models::EntitlementsTranslationsUpdateParams>,
+}
+
+impl EntitlementsTranslationsUpdateBuilder {
+    #[must_use = "setters return an updated request builder"]
+    pub fn id(mut self, id: impl Into<String>) -> Self {
+        self.id = Some(id.into());
+        self
+    }
+
+    #[must_use = "setters return an updated request builder"]
+    pub fn locale(mut self, locale: impl Into<String>) -> Self {
+        self.locale = Some(locale.into());
+        self
+    }
+
+    #[must_use = "setters return an updated request builder"]
+    pub fn body(mut self, body: crate::models::EntitlementsTranslationsUpdateParams) -> Self {
+        self.body = Some(body);
+        self
+    }
+
+    pub async fn send(self) -> crate::error::Result<crate::models::EntitlementTranslation> {
+        let client = self.client;
+        let id = self.id.ok_or(crate::error::Error::MissingPathParam {
+            operation: "entitlements.translations.update",
+            param: "id",
+        })?;
+        let locale = self.locale.ok_or(crate::error::Error::MissingPathParam {
+            operation: "entitlements.translations.update",
+            param: "locale",
+        })?;
+        let body = self.body.ok_or(crate::error::Error::MissingBody {
+            operation: "entitlements.translations.update",
+        })?;
+        let path = build_path(
+            "/entitlements/{id}/translations/{locale}",
+            &[("id", id.as_str()), ("locale", locale.as_str())],
+        );
+        let request = client.request(reqwest::Method::PUT, &path).json(&body);
+        client.handle_response(request).await
+    }
+}
+
+impl std::future::IntoFuture for EntitlementsTranslationsUpdateBuilder {
+    type Output = crate::error::Result<crate::models::EntitlementTranslation>;
+    type IntoFuture = std::pin::Pin<
+        Box<
+            dyn std::future::Future<
+                    Output = crate::error::Result<crate::models::EntitlementTranslation>,
+                > + Send
+                + 'static,
+        >,
+    >;
+
+    fn into_future(self) -> Self::IntoFuture {
+        Box::pin(self.send())
+    }
+}
+
+#[must_use = "request builders do nothing until you send or await them"]
+#[derive(Clone, Debug)]
+pub struct EntitlementsTranslationsListBuilder {
+    client: crate::Client,
+    id: Option<String>,
+    query: Option<serde_json::Value>,
+}
+
+impl EntitlementsTranslationsListBuilder {
+    #[must_use = "setters return an updated request builder"]
+    pub fn id(mut self, id: impl Into<String>) -> Self {
+        self.id = Some(id.into());
+        self
+    }
+
+    #[must_use = "setters return an updated request builder"]
+    pub fn query(mut self, query: serde_json::Value) -> Self {
+        self.query = Some(query);
+        self
+    }
+
+    pub async fn send(
+        self,
+    ) -> crate::error::Result<crate::models::EntitlementTranslationsListResponse> {
+        let client = self.client;
+        let id = self.id.ok_or(crate::error::Error::MissingPathParam {
+            operation: "entitlements.translations.list",
+            param: "id",
+        })?;
+        let query = self.query;
+        let path = build_path("/entitlements/{id}/translations", &[("id", id.as_str())]);
+        let mut request = client.request(reqwest::Method::GET, &path);
+        if let Some(query) = &query {
+            request = request.query(query);
+        }
+        client.handle_response(request).await
+    }
+}
+
+impl std::future::IntoFuture for EntitlementsTranslationsListBuilder {
+    type Output = crate::error::Result<crate::models::EntitlementTranslationsListResponse>;
+    type IntoFuture = std::pin::Pin<
+        Box<
+            dyn std::future::Future<
+                    Output = crate::error::Result<
+                        crate::models::EntitlementTranslationsListResponse,
+                    >,
+                > + Send
+                + 'static,
+        >,
+    >;
+
+    fn into_future(self) -> Self::IntoFuture {
+        Box::pin(self.send())
+    }
+}
+
+#[must_use = "request builders do nothing until you send or await them"]
+#[derive(Clone, Debug)]
+pub struct EntitlementsTranslationsDeleteBuilder {
+    client: crate::Client,
+    id: Option<String>,
+    locale: Option<String>,
+}
+
+impl EntitlementsTranslationsDeleteBuilder {
+    #[must_use = "setters return an updated request builder"]
+    pub fn id(mut self, id: impl Into<String>) -> Self {
+        self.id = Some(id.into());
+        self
+    }
+
+    #[must_use = "setters return an updated request builder"]
+    pub fn locale(mut self, locale: impl Into<String>) -> Self {
+        self.locale = Some(locale.into());
+        self
+    }
+
+    pub async fn send(self) -> crate::error::Result<()> {
+        let client = self.client;
+        let id = self.id.ok_or(crate::error::Error::MissingPathParam {
+            operation: "entitlements.translations.delete",
+            param: "id",
+        })?;
+        let locale = self.locale.ok_or(crate::error::Error::MissingPathParam {
+            operation: "entitlements.translations.delete",
+            param: "locale",
+        })?;
+        let path = build_path(
+            "/entitlements/{id}/translations/{locale}",
+            &[("id", id.as_str()), ("locale", locale.as_str())],
+        );
+        let request = client.request(reqwest::Method::DELETE, &path);
+        client.handle_empty(request).await
+    }
+}
+
+impl std::future::IntoFuture for EntitlementsTranslationsDeleteBuilder {
     type Output = crate::error::Result<()>;
     type IntoFuture = std::pin::Pin<
         Box<dyn std::future::Future<Output = crate::error::Result<()>> + Send + 'static>,
@@ -8535,6 +9887,13 @@ pub struct ProductCollectionsResource {
 
 impl ProductCollectionsResource {
     #[must_use = "resource accessors do nothing unless chained to a request"]
+    pub fn translations(&self) -> ProductCollectionsTranslationsResource {
+        ProductCollectionsTranslationsResource {
+            client: self.client.clone(),
+        }
+    }
+
+    #[must_use = "resource accessors do nothing unless chained to a request"]
     pub fn groups(&self) -> ProductCollectionsGroupsResource {
         ProductCollectionsGroupsResource {
             client: self.client.clone(),
@@ -8554,6 +9913,7 @@ impl ProductCollectionsResource {
         ProductCollectionsRetrieveBuilder {
             client: self.client.clone(),
             id: None,
+            query: None,
         }
     }
 
@@ -8645,6 +10005,7 @@ impl std::future::IntoFuture for ProductCollectionsCreateBuilder {
 pub struct ProductCollectionsRetrieveBuilder {
     client: crate::Client,
     id: Option<String>,
+    query: Option<serde_json::Value>,
 }
 
 impl ProductCollectionsRetrieveBuilder {
@@ -8654,14 +10015,24 @@ impl ProductCollectionsRetrieveBuilder {
         self
     }
 
+    #[must_use = "setters return an updated request builder"]
+    pub fn query(mut self, query: serde_json::Value) -> Self {
+        self.query = Some(query);
+        self
+    }
+
     pub async fn send(self) -> crate::error::Result<crate::models::ProductCollection> {
         let client = self.client;
         let id = self.id.ok_or(crate::error::Error::MissingPathParam {
             operation: "product_collections.retrieve",
             param: "id",
         })?;
+        let query = self.query;
         let path = build_path("/product-collections/{id}", &[("id", id.as_str())]);
-        let request = client.request(reqwest::Method::GET, &path);
+        let mut request = client.request(reqwest::Method::GET, &path);
+        if let Some(query) = &query {
+            request = request.query(query);
+        }
         client.handle_response(request).await
     }
 }
@@ -8928,6 +10299,213 @@ impl std::future::IntoFuture for ProductCollectionsUpdateImagesBuilder {
                 > + Send
                 + 'static,
         >,
+    >;
+
+    fn into_future(self) -> Self::IntoFuture {
+        Box::pin(self.send())
+    }
+}
+
+#[derive(Clone, Debug)]
+pub struct ProductCollectionsTranslationsResource {
+    client: crate::Client,
+}
+
+impl ProductCollectionsTranslationsResource {
+    #[must_use = "request builders do nothing until you send or await them"]
+    pub fn update(&self) -> ProductCollectionsTranslationsUpdateBuilder {
+        ProductCollectionsTranslationsUpdateBuilder {
+            client: self.client.clone(),
+            id: None,
+            locale: None,
+            body: None,
+        }
+    }
+
+    #[must_use = "request builders do nothing until you send or await them"]
+    pub fn list(&self) -> ProductCollectionsTranslationsListBuilder {
+        ProductCollectionsTranslationsListBuilder {
+            client: self.client.clone(),
+            id: None,
+            query: None,
+        }
+    }
+
+    #[must_use = "request builders do nothing until you send or await them"]
+    pub fn delete(&self) -> ProductCollectionsTranslationsDeleteBuilder {
+        ProductCollectionsTranslationsDeleteBuilder {
+            client: self.client.clone(),
+            id: None,
+            locale: None,
+        }
+    }
+}
+
+#[must_use = "request builders do nothing until you send or await them"]
+#[derive(Clone, Debug)]
+pub struct ProductCollectionsTranslationsUpdateBuilder {
+    client: crate::Client,
+    id: Option<String>,
+    locale: Option<String>,
+    body: Option<crate::models::ProductCollectionsTranslationsUpdateParams>,
+}
+
+impl ProductCollectionsTranslationsUpdateBuilder {
+    #[must_use = "setters return an updated request builder"]
+    pub fn id(mut self, id: impl Into<String>) -> Self {
+        self.id = Some(id.into());
+        self
+    }
+
+    #[must_use = "setters return an updated request builder"]
+    pub fn locale(mut self, locale: impl Into<String>) -> Self {
+        self.locale = Some(locale.into());
+        self
+    }
+
+    #[must_use = "setters return an updated request builder"]
+    pub fn body(mut self, body: crate::models::ProductCollectionsTranslationsUpdateParams) -> Self {
+        self.body = Some(body);
+        self
+    }
+
+    pub async fn send(self) -> crate::error::Result<crate::models::Translation> {
+        let client = self.client;
+        let id = self.id.ok_or(crate::error::Error::MissingPathParam {
+            operation: "product_collections.translations.update",
+            param: "id",
+        })?;
+        let locale = self.locale.ok_or(crate::error::Error::MissingPathParam {
+            operation: "product_collections.translations.update",
+            param: "locale",
+        })?;
+        let body = self.body.ok_or(crate::error::Error::MissingBody {
+            operation: "product_collections.translations.update",
+        })?;
+        let path = build_path(
+            "/product-collections/{id}/translations/{locale}",
+            &[("id", id.as_str()), ("locale", locale.as_str())],
+        );
+        let request = client.request(reqwest::Method::PUT, &path).json(&body);
+        client.handle_response(request).await
+    }
+}
+
+impl std::future::IntoFuture for ProductCollectionsTranslationsUpdateBuilder {
+    type Output = crate::error::Result<crate::models::Translation>;
+    type IntoFuture = std::pin::Pin<
+        Box<
+            dyn std::future::Future<Output = crate::error::Result<crate::models::Translation>>
+                + Send
+                + 'static,
+        >,
+    >;
+
+    fn into_future(self) -> Self::IntoFuture {
+        Box::pin(self.send())
+    }
+}
+
+#[must_use = "request builders do nothing until you send or await them"]
+#[derive(Clone, Debug)]
+pub struct ProductCollectionsTranslationsListBuilder {
+    client: crate::Client,
+    id: Option<String>,
+    query: Option<serde_json::Value>,
+}
+
+impl ProductCollectionsTranslationsListBuilder {
+    #[must_use = "setters return an updated request builder"]
+    pub fn id(mut self, id: impl Into<String>) -> Self {
+        self.id = Some(id.into());
+        self
+    }
+
+    #[must_use = "setters return an updated request builder"]
+    pub fn query(mut self, query: serde_json::Value) -> Self {
+        self.query = Some(query);
+        self
+    }
+
+    pub async fn send(self) -> crate::error::Result<crate::models::TranslationsListResponse> {
+        let client = self.client;
+        let id = self.id.ok_or(crate::error::Error::MissingPathParam {
+            operation: "product_collections.translations.list",
+            param: "id",
+        })?;
+        let query = self.query;
+        let path = build_path(
+            "/product-collections/{id}/translations",
+            &[("id", id.as_str())],
+        );
+        let mut request = client.request(reqwest::Method::GET, &path);
+        if let Some(query) = &query {
+            request = request.query(query);
+        }
+        client.handle_response(request).await
+    }
+}
+
+impl std::future::IntoFuture for ProductCollectionsTranslationsListBuilder {
+    type Output = crate::error::Result<crate::models::TranslationsListResponse>;
+    type IntoFuture = std::pin::Pin<
+        Box<
+            dyn std::future::Future<
+                    Output = crate::error::Result<crate::models::TranslationsListResponse>,
+                > + Send
+                + 'static,
+        >,
+    >;
+
+    fn into_future(self) -> Self::IntoFuture {
+        Box::pin(self.send())
+    }
+}
+
+#[must_use = "request builders do nothing until you send or await them"]
+#[derive(Clone, Debug)]
+pub struct ProductCollectionsTranslationsDeleteBuilder {
+    client: crate::Client,
+    id: Option<String>,
+    locale: Option<String>,
+}
+
+impl ProductCollectionsTranslationsDeleteBuilder {
+    #[must_use = "setters return an updated request builder"]
+    pub fn id(mut self, id: impl Into<String>) -> Self {
+        self.id = Some(id.into());
+        self
+    }
+
+    #[must_use = "setters return an updated request builder"]
+    pub fn locale(mut self, locale: impl Into<String>) -> Self {
+        self.locale = Some(locale.into());
+        self
+    }
+
+    pub async fn send(self) -> crate::error::Result<()> {
+        let client = self.client;
+        let id = self.id.ok_or(crate::error::Error::MissingPathParam {
+            operation: "product_collections.translations.delete",
+            param: "id",
+        })?;
+        let locale = self.locale.ok_or(crate::error::Error::MissingPathParam {
+            operation: "product_collections.translations.delete",
+            param: "locale",
+        })?;
+        let path = build_path(
+            "/product-collections/{id}/translations/{locale}",
+            &[("id", id.as_str()), ("locale", locale.as_str())],
+        );
+        let request = client.request(reqwest::Method::DELETE, &path);
+        client.handle_empty(request).await
+    }
+}
+
+impl std::future::IntoFuture for ProductCollectionsTranslationsDeleteBuilder {
+    type Output = crate::error::Result<()>;
+    type IntoFuture = std::pin::Pin<
+        Box<dyn std::future::Future<Output = crate::error::Result<()>> + Send + 'static>,
     >;
 
     fn into_future(self) -> Self::IntoFuture {
