@@ -6,7 +6,7 @@ Methods:
 
 - <code title="post /checkouts">client.checkout_sessions().create().body(body: CheckoutSessionsCreateParams) -&gt; Result&lt;CheckoutSessionResponse&gt;</code>
 - <code title="get /checkouts/{id}">client.checkout_sessions().retrieve().id(id: impl Into&lt;String&gt;) -&gt; Result&lt;CheckoutSessionStatus&gt;</code>
-- <code title="post /checkouts/preview">client.checkout_sessions().preview().body(body: CheckoutSessionsCreateParams) -&gt; Result&lt;CheckoutSessionPreviewResponse&gt;</code>
+- <code title="post /checkouts/preview">client.checkout_sessions().preview().body(body: CheckoutSessionsCreateParams).query(query: serde_json::Value) -&gt; Result&lt;CheckoutSessionPreviewResponse&gt;</code>
 
 # Payments
 
@@ -15,7 +15,7 @@ Methods:
 - <code title="post /payments">client.payments().create().body(body: PaymentsCreateParams) -&gt; Result&lt;PaymentCreateResponse&gt;</code>
 - <code title="get /payments/{payment_id}">client.payments().retrieve().payment_id(payment_id: impl Into&lt;String&gt;) -&gt; Result&lt;Payment&gt;</code>
 - <code title="get /payments">client.payments().list().query(query: serde_json::Value) -&gt; Result&lt;DefaultPageNumberPagination&lt;PaymentListResponse&gt;&gt;</code>
-- <code title="get /payments/{payment_id}/line-items">client.payments().retrieve_line_items().payment_id(payment_id: impl Into&lt;String&gt;) -&gt; Result&lt;PaymentRetrieveLineItemsResponse&gt;</code>
+- <code title="get /payments/{payment_id}/line-items">client.payments().retrieve_line_items().payment_id(payment_id: impl Into&lt;String&gt;).query(query: serde_json::Value) -&gt; Result&lt;PaymentRetrieveLineItemsResponse&gt;</code>
 - <code title="get /payments/{payment_id}/retry">client.payments().retrieve_retry_state().payment_id(payment_id: impl Into&lt;String&gt;) -&gt; Result&lt;ManualRetryState&gt;</code>
 - <code title="post /payments/{payment_id}/retry">client.payments().retry().payment_id(payment_id: impl Into&lt;String&gt;) -&gt; Result&lt;ManualRetry&gt;</code>
 
@@ -24,7 +24,7 @@ Methods:
 Methods:
 
 - <code title="post /subscriptions">client.subscriptions().create().body(body: SubscriptionsCreateParams) -&gt; Result&lt;SubscriptionCreateResponse&gt;</code>
-- <code title="get /subscriptions/{subscription_id}">client.subscriptions().retrieve().subscription_id(subscription_id: impl Into&lt;String&gt;) -&gt; Result&lt;Subscription&gt;</code>
+- <code title="get /subscriptions/{subscription_id}">client.subscriptions().retrieve().subscription_id(subscription_id: impl Into&lt;String&gt;).query(query: serde_json::Value) -&gt; Result&lt;Subscription&gt;</code>
 - <code title="patch /subscriptions/{subscription_id}">client.subscriptions().update().subscription_id(subscription_id: impl Into&lt;String&gt;).body(body: SubscriptionsUpdateParams) -&gt; Result&lt;Subscription&gt;</code>
 - <code title="get /subscriptions">client.subscriptions().list().query(query: serde_json::Value) -&gt; Result&lt;DefaultPageNumberPagination&lt;SubscriptionListResponse&gt;&gt;</code>
 - <code title="delete /subscriptions/{subscription_id}/change-plan/scheduled">client.subscriptions().cancel_change_plan().subscription_id(subscription_id: impl Into&lt;String&gt;) -&gt; Result&lt;()&gt;</code>
@@ -167,12 +167,20 @@ Methods:
 Methods:
 
 - <code title="post /products">client.products().create().body(body: ProductsCreateParams) -&gt; Result&lt;Product&gt;</code>
-- <code title="get /products/{id}">client.products().retrieve().id(id: impl Into&lt;String&gt;) -&gt; Result&lt;Product&gt;</code>
+- <code title="get /products/{id}">client.products().retrieve().id(id: impl Into&lt;String&gt;).query(query: serde_json::Value) -&gt; Result&lt;Product&gt;</code>
 - <code title="patch /products/{id}">client.products().update().id(id: impl Into&lt;String&gt;).body(body: ProductsUpdateParams) -&gt; Result&lt;()&gt;</code>
 - <code title="get /products">client.products().list().query(query: serde_json::Value) -&gt; Result&lt;DefaultPageNumberPagination&lt;ProductListResponse&gt;&gt;</code>
 - <code title="delete /products/{id}">client.products().archive().id(id: impl Into&lt;String&gt;) -&gt; Result&lt;()&gt;</code>
 - <code title="post /products/{id}/unarchive">client.products().unarchive().id(id: impl Into&lt;String&gt;) -&gt; Result&lt;()&gt;</code>
 - <code title="put /products/{id}/files">client.products().update_files().id(id: impl Into&lt;String&gt;).body(body: ProductsUpdateFilesParams) -&gt; Result&lt;ProductUpdateFilesResponse&gt;</code>
+
+## Translations
+
+Methods:
+
+- <code title="put /products/{id}/translations/{locale}">client.products().translations().update().id(id: impl Into&lt;String&gt;).locale(locale: impl Into&lt;String&gt;).body(body: ProductsTranslationsUpdateParams) -&gt; Result&lt;Translation&gt;</code>
+- <code title="get /products/{id}/translations">client.products().translations().list().id(id: impl Into&lt;String&gt;).query(query: serde_json::Value) -&gt; Result&lt;TranslationsListResponse&gt;</code>
+- <code title="delete /products/{id}/translations/{locale}">client.products().translations().delete().id(id: impl Into&lt;String&gt;).locale(locale: impl Into&lt;String&gt;) -&gt; Result&lt;()&gt;</code>
 
 ## Images
 
@@ -201,6 +209,7 @@ Methods:
 
 Methods:
 
+- <code title="get /locales">client.misc().list_locales() -&gt; Result&lt;MiscListLocalesResponse&gt;</code>
 - <code title="get /checkout/supported_countries">client.misc().list_supported_countries() -&gt; Result&lt;MiscListSupportedCountriesResponse&gt;</code>
 
 # Discounts
@@ -219,10 +228,20 @@ Methods:
 Methods:
 
 - <code title="post /addons">client.addons().create().body(body: AddonsCreateParams) -&gt; Result&lt;AddonResponse&gt;</code>
-- <code title="get /addons/{id}">client.addons().retrieve().id(id: impl Into&lt;String&gt;) -&gt; Result&lt;AddonResponse&gt;</code>
+- <code title="get /addons/{id}">client.addons().retrieve().id(id: impl Into&lt;String&gt;).query(query: serde_json::Value) -&gt; Result&lt;AddonResponse&gt;</code>
 - <code title="patch /addons/{id}">client.addons().update().id(id: impl Into&lt;String&gt;).body(body: AddonsUpdateParams) -&gt; Result&lt;AddonResponse&gt;</code>
 - <code title="get /addons">client.addons().list().query(query: serde_json::Value) -&gt; Result&lt;DefaultPageNumberPagination&lt;AddonResponse&gt;&gt;</code>
+- <code title="delete /addons/{id}">client.addons().delete().id(id: impl Into&lt;String&gt;) -&gt; Result&lt;()&gt;</code>
+- <code title="post /addons/{id}/unarchive">client.addons().unarchive().id(id: impl Into&lt;String&gt;) -&gt; Result&lt;()&gt;</code>
 - <code title="put /addons/{id}/images">client.addons().update_images().id(id: impl Into&lt;String&gt;) -&gt; Result&lt;AddonUpdateImagesResponse&gt;</code>
+
+## Translations
+
+Methods:
+
+- <code title="put /addons/{id}/translations/{locale}">client.addons().translations().update().id(id: impl Into&lt;String&gt;).locale(locale: impl Into&lt;String&gt;).body(body: AddonsTranslationsUpdateParams) -&gt; Result&lt;Translation&gt;</code>
+- <code title="get /addons/{id}/translations">client.addons().translations().list().id(id: impl Into&lt;String&gt;).query(query: serde_json::Value) -&gt; Result&lt;TranslationsListResponse&gt;</code>
+- <code title="delete /addons/{id}/translations/{locale}">client.addons().translations().delete().id(id: impl Into&lt;String&gt;).locale(locale: impl Into&lt;String&gt;) -&gt; Result&lt;()&gt;</code>
 
 # Brands
 
@@ -266,10 +285,19 @@ Methods:
 Methods:
 
 - <code title="post /meters">client.meters().create().body(body: MetersCreateParams) -&gt; Result&lt;Meter&gt;</code>
-- <code title="get /meters/{id}">client.meters().retrieve().id(id: impl Into&lt;String&gt;) -&gt; Result&lt;Meter&gt;</code>
+- <code title="get /meters/{id}">client.meters().retrieve().id(id: impl Into&lt;String&gt;).query(query: serde_json::Value) -&gt; Result&lt;Meter&gt;</code>
+- <code title="patch /meters/{id}">client.meters().update().id(id: impl Into&lt;String&gt;).body(body: MetersUpdateParams) -&gt; Result&lt;Meter&gt;</code>
 - <code title="get /meters">client.meters().list().query(query: serde_json::Value) -&gt; Result&lt;DefaultPageNumberPagination&lt;Meter&gt;&gt;</code>
 - <code title="delete /meters/{id}">client.meters().archive().id(id: impl Into&lt;String&gt;) -&gt; Result&lt;()&gt;</code>
 - <code title="post /meters/{id}/unarchive">client.meters().unarchive().id(id: impl Into&lt;String&gt;) -&gt; Result&lt;()&gt;</code>
+
+## Translations
+
+Methods:
+
+- <code title="put /meters/{id}/translations/{locale}">client.meters().translations().update().id(id: impl Into&lt;String&gt;).locale(locale: impl Into&lt;String&gt;).body(body: MetersTranslationsUpdateParams) -&gt; Result&lt;Translation&gt;</code>
+- <code title="get /meters/{id}/translations">client.meters().translations().list().id(id: impl Into&lt;String&gt;).query(query: serde_json::Value) -&gt; Result&lt;TranslationsListResponse&gt;</code>
+- <code title="delete /meters/{id}/translations/{locale}">client.meters().translations().delete().id(id: impl Into&lt;String&gt;).locale(locale: impl Into&lt;String&gt;) -&gt; Result&lt;()&gt;</code>
 
 # Balances
 
@@ -282,11 +310,19 @@ Methods:
 Methods:
 
 - <code title="post /credit-entitlements">client.credit_entitlements().create().body(body: CreditEntitlementsCreateParams) -&gt; Result&lt;CreditEntitlement&gt;</code>
-- <code title="get /credit-entitlements/{id}">client.credit_entitlements().retrieve().id(id: impl Into&lt;String&gt;) -&gt; Result&lt;CreditEntitlement&gt;</code>
+- <code title="get /credit-entitlements/{id}">client.credit_entitlements().retrieve().id(id: impl Into&lt;String&gt;).query(query: serde_json::Value) -&gt; Result&lt;CreditEntitlement&gt;</code>
 - <code title="patch /credit-entitlements/{id}">client.credit_entitlements().update().id(id: impl Into&lt;String&gt;).body(body: CreditEntitlementsUpdateParams) -&gt; Result&lt;()&gt;</code>
 - <code title="get /credit-entitlements">client.credit_entitlements().list().query(query: serde_json::Value) -&gt; Result&lt;DefaultPageNumberPagination&lt;CreditEntitlement&gt;&gt;</code>
 - <code title="delete /credit-entitlements/{id}">client.credit_entitlements().delete().id(id: impl Into&lt;String&gt;) -&gt; Result&lt;()&gt;</code>
 - <code title="post /credit-entitlements/{id}/undelete">client.credit_entitlements().undelete().id(id: impl Into&lt;String&gt;) -&gt; Result&lt;()&gt;</code>
+
+## Translations
+
+Methods:
+
+- <code title="put /credit-entitlements/{id}/translations/{locale}">client.credit_entitlements().translations().update().id(id: impl Into&lt;String&gt;).locale(locale: impl Into&lt;String&gt;).body(body: CreditEntitlementsTranslationsUpdateParams) -&gt; Result&lt;CreditEntitlementTranslation&gt;</code>
+- <code title="get /credit-entitlements/{id}/translations">client.credit_entitlements().translations().list().id(id: impl Into&lt;String&gt;).query(query: serde_json::Value) -&gt; Result&lt;CreditEntitlementTranslationsListResponse&gt;</code>
+- <code title="delete /credit-entitlements/{id}/translations/{locale}">client.credit_entitlements().translations().delete().id(id: impl Into&lt;String&gt;).locale(locale: impl Into&lt;String&gt;) -&gt; Result&lt;()&gt;</code>
 
 ## Balances
 
@@ -303,10 +339,18 @@ Methods:
 Methods:
 
 - <code title="post /entitlements">client.entitlements().create().body(body: EntitlementsCreateParams) -&gt; Result&lt;Entitlement&gt;</code>
-- <code title="get /entitlements/{id}">client.entitlements().retrieve().id(id: impl Into&lt;String&gt;) -&gt; Result&lt;Entitlement&gt;</code>
+- <code title="get /entitlements/{id}">client.entitlements().retrieve().id(id: impl Into&lt;String&gt;).query(query: serde_json::Value) -&gt; Result&lt;Entitlement&gt;</code>
 - <code title="patch /entitlements/{id}">client.entitlements().update().id(id: impl Into&lt;String&gt;).body(body: EntitlementsUpdateParams) -&gt; Result&lt;Entitlement&gt;</code>
 - <code title="get /entitlements">client.entitlements().list().query(query: serde_json::Value) -&gt; Result&lt;DefaultPageNumberPagination&lt;Entitlement&gt;&gt;</code>
 - <code title="delete /entitlements/{id}">client.entitlements().delete().id(id: impl Into&lt;String&gt;) -&gt; Result&lt;()&gt;</code>
+
+## Translations
+
+Methods:
+
+- <code title="put /entitlements/{id}/translations/{locale}">client.entitlements().translations().update().id(id: impl Into&lt;String&gt;).locale(locale: impl Into&lt;String&gt;).body(body: EntitlementsTranslationsUpdateParams) -&gt; Result&lt;EntitlementTranslation&gt;</code>
+- <code title="get /entitlements/{id}/translations">client.entitlements().translations().list().id(id: impl Into&lt;String&gt;).query(query: serde_json::Value) -&gt; Result&lt;EntitlementTranslationsListResponse&gt;</code>
+- <code title="delete /entitlements/{id}/translations/{locale}">client.entitlements().translations().delete().id(id: impl Into&lt;String&gt;).locale(locale: impl Into&lt;String&gt;) -&gt; Result&lt;()&gt;</code>
 
 ## Files
 
@@ -328,12 +372,20 @@ Methods:
 Methods:
 
 - <code title="post /product-collections">client.product_collections().create().body(body: ProductCollectionsCreateParams) -&gt; Result&lt;ProductCollection&gt;</code>
-- <code title="get /product-collections/{id}">client.product_collections().retrieve().id(id: impl Into&lt;String&gt;) -&gt; Result&lt;ProductCollection&gt;</code>
+- <code title="get /product-collections/{id}">client.product_collections().retrieve().id(id: impl Into&lt;String&gt;).query(query: serde_json::Value) -&gt; Result&lt;ProductCollection&gt;</code>
 - <code title="patch /product-collections/{id}">client.product_collections().update().id(id: impl Into&lt;String&gt;).body(body: ProductCollectionsUpdateParams) -&gt; Result&lt;()&gt;</code>
 - <code title="get /product-collections">client.product_collections().list().query(query: serde_json::Value) -&gt; Result&lt;DefaultPageNumberPagination&lt;ProductCollectionListResponse&gt;&gt;</code>
 - <code title="delete /product-collections/{id}">client.product_collections().delete().id(id: impl Into&lt;String&gt;) -&gt; Result&lt;()&gt;</code>
 - <code title="post /product-collections/{id}/unarchive">client.product_collections().unarchive().id(id: impl Into&lt;String&gt;) -&gt; Result&lt;ProductCollectionUnarchiveResponse&gt;</code>
 - <code title="put /product-collections/{id}/images">client.product_collections().update_images().id(id: impl Into&lt;String&gt;).query(query: serde_json::Value) -&gt; Result&lt;ProductCollectionUpdateImagesResponse&gt;</code>
+
+## Translations
+
+Methods:
+
+- <code title="put /product-collections/{id}/translations/{locale}">client.product_collections().translations().update().id(id: impl Into&lt;String&gt;).locale(locale: impl Into&lt;String&gt;).body(body: ProductCollectionsTranslationsUpdateParams) -&gt; Result&lt;Translation&gt;</code>
+- <code title="get /product-collections/{id}/translations">client.product_collections().translations().list().id(id: impl Into&lt;String&gt;).query(query: serde_json::Value) -&gt; Result&lt;TranslationsListResponse&gt;</code>
+- <code title="delete /product-collections/{id}/translations/{locale}">client.product_collections().translations().delete().id(id: impl Into&lt;String&gt;).locale(locale: impl Into&lt;String&gt;) -&gt; Result&lt;()&gt;</code>
 
 ## Groups
 
