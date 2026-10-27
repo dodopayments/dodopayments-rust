@@ -1,12 +1,5 @@
 # Changelog
 
-## [1.124.1](https://github.com/dodopayments/dodopayments-rust/compare/v1.124.0...v1.124.1) (2026-10-25)
-
-
-### Chores
-
-* sync generated version strings with the latest release ([#89](https://github.com/dodopayments/dodopayments-rust/issues/89)) ([27451ec](https://github.com/dodopayments/dodopayments-rust/commit/27451ecc9d2213e09c0e6e3c4635f0fa36e32808))
-
 ## [1.124.0](https://github.com/dodopayments/dodopayments-rust/compare/v1.123.0...v1.124.0) (2026-10-24)
 
 
