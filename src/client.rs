@@ -1,19 +1,37 @@
+use std::sync::Arc;
 use std::time::Duration;
 
 use crate::config::ClientConfig;
 use crate::error::{Error, Result};
+use crate::workload_identity::TokenCache;
 
 /// The top-level API client. Resource methods are generated onto this type.
 #[derive(Clone, Debug)]
 pub struct Client {
     config: ClientConfig,
     http: reqwest::Client,
+    workload_identity: Option<Arc<TokenCache>>,
 }
 
 impl Client {
     pub fn new(config: ClientConfig) -> Result<Self> {
+        if config.api_key.is_some() && config.workload_identity.is_some() {
+            return Err(Error::Config(
+                "set api_key or workload_identity, not both".to_string(),
+            ));
+        }
         let http = reqwest::Client::builder().timeout(config.timeout).build()?;
-        Ok(Self { config, http })
+        let workload_identity = config
+            .workload_identity
+            .as_ref()
+            .map(TokenCache::new)
+            .transpose()?
+            .map(Arc::new);
+        Ok(Self {
+            config,
+            http,
+            workload_identity,
+        })
     }
 
     pub fn from_env() -> Result<Self> {
@@ -25,17 +43,48 @@ impl Client {
     }
 
     /// Low-level escape hatch: build a request to an arbitrary path with auth applied.
+    /// With workload identity, send the request with [`Client::send`] to add the access token.
     pub fn request(&self, method: reqwest::Method, path: &str) -> reqwest::RequestBuilder {
-        let url = format!(
-            "{}/{}",
-            self.config.base_url.trim_end_matches('/'),
-            path.trim_start_matches('/')
-        );
-        let req = self.http.request(method, url);
+        let req = self.http.request(method, self.url(path));
         match &self.config.api_key {
             Some(api_key) => req.bearer_auth(api_key),
             None => req,
         }
+    }
+
+    /// Sends a request from [`Client::request`] with the retry policy and the
+    /// workload identity access token.
+    pub async fn send(&self, req: reqwest::RequestBuilder) -> Result<reqwest::Response> {
+        self.send_with_retry(req).await
+    }
+
+    /// Revokes the cached workload identity access token and clears the cache.
+    /// Does nothing if no token is cached.
+    pub async fn revoke_workload_identity(&self) -> Result<()> {
+        match &self.workload_identity {
+            Some(cache) => cache.revoke(self).await,
+            None => Ok(()),
+        }
+    }
+
+    pub(crate) fn url(&self, path: &str) -> String {
+        format!(
+            "{}/{}",
+            self.config.base_url.trim_end_matches('/'),
+            path.trim_start_matches('/')
+        )
+    }
+
+    pub(crate) fn http_client(&self) -> &reqwest::Client {
+        &self.http
+    }
+
+    /// Sends a token endpoint request. It retries only 5xx responses and connection errors.
+    pub(crate) async fn send_token_request(
+        &self,
+        req: reqwest::RequestBuilder,
+    ) -> Result<reqwest::Response> {
+        self.send_attempts(req, should_retry_token_request).await
     }
 
     pub(crate) async fn handle_response<T: serde::de::DeserializeOwned>(
@@ -78,6 +127,32 @@ impl Client {
     }
 
     async fn send_with_retry(&self, builder: reqwest::RequestBuilder) -> Result<reqwest::Response> {
+        let Some(cache) = &self.workload_identity else {
+            return self.send_attempts(builder, should_retry).await;
+        };
+        let replay = builder.try_clone();
+        let access_token = cache.access_token(self).await?;
+        let response = self
+            .send_attempts(builder.bearer_auth(&access_token), should_retry)
+            .await?;
+        if response.status() != reqwest::StatusCode::UNAUTHORIZED {
+            return Ok(response);
+        }
+        let Some(replay) = replay else {
+            return Ok(response);
+        };
+        let access_token = cache
+            .refresh_after_unauthorized(self, &access_token)
+            .await?;
+        self.send_attempts(replay.bearer_auth(access_token), should_retry)
+            .await
+    }
+
+    async fn send_attempts(
+        &self,
+        builder: reqwest::RequestBuilder,
+        retry: fn(u16, &reqwest::header::HeaderMap) -> bool,
+    ) -> Result<reqwest::Response> {
         let max_retries = self.config.max_retries;
         let mut attempt: u32 = 0;
         loop {
@@ -91,7 +166,7 @@ impl Client {
             match attempt_builder.send().await {
                 Ok(response) => {
                     if attempt < max_retries
-                        && should_retry(response.status().as_u16(), response.headers())
+                        && retry(response.status().as_u16(), response.headers())
                     {
                         tokio::time::sleep(retry_delay(Some(response.headers()), attempt)).await;
                         attempt += 1;
@@ -126,6 +201,10 @@ fn should_retry(status: u16, headers: &reqwest::header::HeaderMap) -> bool {
         }
     }
     status == 408 || status == 409 || status == 429 || status >= 500
+}
+
+fn should_retry_token_request(status: u16, headers: &reqwest::header::HeaderMap) -> bool {
+    status >= 500 && should_retry(status, headers)
 }
 
 fn retry_delay(headers: Option<&reqwest::header::HeaderMap>, attempt: u32) -> Duration {
@@ -261,6 +340,17 @@ mod tests {
         assert!(!should_retry(400, &empty));
         assert!(!should_retry(404, &empty));
         assert!(!should_retry(422, &empty));
+    }
+
+    #[test]
+    fn token_requests_retry_only_server_errors() {
+        let empty = HeaderMap::new();
+        assert!(should_retry_token_request(500, &empty));
+        assert!(should_retry_token_request(503, &empty));
+        assert!(!should_retry_token_request(400, &empty));
+        assert!(!should_retry_token_request(401, &empty));
+        assert!(!should_retry_token_request(403, &empty));
+        assert!(!should_retry_token_request(429, &empty));
     }
 
     #[test]
