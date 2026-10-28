@@ -189,7 +189,8 @@ let client = Client::new(
 )?;
 ```
 
-- Subject token sources in `workload_identity`: `github_actions`, `gitlab`, `terraform_cloud`, `gcp`, `vercel`, `kubernetes`, `file`, `aws` (your function), `static_token`, and `auto`. `SubjectTokenSource::from_fn` accepts any async function.
+- Subject token sources in `workload_identity`: `github_actions`, `gitlab`, `terraform_cloud`, `gcp`, `vercel`, `vercel_with_audience`, `kubernetes`, `file`, `aws` (your function), `static_token`, and `auto`. `SubjectTokenSource::from_fn` accepts any async function.
+- `vercel` reads `VERCEL_OIDC_TOKEN_FILE` or `VERCEL_OIDC_TOKEN`. It exchanges that token at Vercel for a token with the Dodo Payments audience. The Dodo Payments API accepts only that audience.
 - Without `with_identity_provider_id`, the client reads `DODO_PAYMENTS_IDENTITY_PROVIDER_ID`. If `DODO_PAYMENTS_API_KEY` is not set and `DODO_PAYMENTS_IDENTITY_PROVIDER_ID` is set, `Client::from_env()` uses workload identity with `auto()`.
 - The client gets a new access token when 5 minutes or less remain. Concurrent requests share one exchange. After a `401`, the client gets a new token and retries the request once.
 - `client.revoke_workload_identity().await?` revokes the cached access token and clears the cache.
