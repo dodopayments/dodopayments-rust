@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.127.0](https://github.com/dodopayments/dodopayments-rust/compare/v1.126.0...v1.127.0) (2026-10-28)
+
+
+### Features
+
+* **api:** regenerate SDK from latest OpenAPI spec ([bfafa8a](https://github.com/dodopayments/dodopayments-rust/commit/bfafa8af223576b7efa90e208d6a2df3e62a9a72))
+* **api:** regenerate SDK from latest OpenAPI spec ([b9f49f4](https://github.com/dodopayments/dodopayments-rust/commit/b9f49f41b88fb11731f7067b1717da5cd929037c))
+
 ## [1.126.0](https://github.com/dodopayments/dodopayments-rust/compare/v1.125.0...v1.126.0) (2026-10-28)
 
 
