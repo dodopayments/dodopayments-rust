@@ -173,6 +173,29 @@ let client = Client::new(ClientConfig::from_env()?.with_environment(Environment:
 
 Alternatively, `Client::from_env()` uses the default base URL unless you set the `DODO_PAYMENTS_BASE_URL` environment variable, e.g. `DODO_PAYMENTS_BASE_URL=https://test.dodopayments.com` to target `test_mode`.
 
+### Workload identity
+
+The client can exchange an OIDC token from the platform that runs your code for a short-lived access token, in place of an API key:
+
+```rust
+use dodopayments::workload_identity;
+use dodopayments::{Client, ClientConfig, WorkloadIdentity};
+
+let client = Client::new(
+    ClientConfig::new("https://live.dodopayments.com").with_workload_identity(
+        WorkloadIdentity::new(workload_identity::github_actions(None))
+            .with_identity_provider_id("wip_..."),
+    ),
+)?;
+```
+
+- Subject token sources in `workload_identity`: `github_actions`, `gitlab`, `terraform_cloud`, `gcp`, `vercel`, `kubernetes`, `file`, `aws` (your function), `static_token`, and `auto`. `SubjectTokenSource::from_fn` accepts any async function.
+- Without `with_identity_provider_id`, the client reads `DODO_PAYMENTS_IDENTITY_PROVIDER_ID`. If `DODO_PAYMENTS_API_KEY` is not set and `DODO_PAYMENTS_IDENTITY_PROVIDER_ID` is set, `Client::from_env()` uses workload identity with `auto()`.
+- The client gets a new access token when 5 minutes or less remain. Concurrent requests share one exchange. After a `401`, the client gets a new token and retries the request once.
+- `client.revoke_workload_identity().await?` revokes the cached access token and clears the cache.
+- Do not set `with_api_key` and `with_workload_identity` together. `Client::new` returns `Error::Config`.
+- `client.request(...)` does not add the access token. Send the request with `client.send(request).await?`.
+
 ### Undocumented endpoints
 
 To call an endpoint not yet exposed as a typed method, use the low-level `request` builder, which applies authentication and the base URL:
