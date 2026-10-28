@@ -483,7 +483,9 @@ impl TokenCache {
             .unwrap_or(Duration::ZERO);
         Ok(CachedToken {
             access_token: body.access_token,
-            refresh_at: Instant::now() + lifetime.saturating_sub(REFRESH_MARGIN),
+            refresh_at: Instant::now()
+                .checked_add(lifetime.saturating_sub(REFRESH_MARGIN))
+                .unwrap_or_else(Instant::now),
         })
     }
 }
