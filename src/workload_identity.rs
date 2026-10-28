@@ -26,6 +26,9 @@ const GITHUB_REQUEST_TOKEN_ENV: &str = "ACTIONS_ID_TOKEN_REQUEST_TOKEN";
 const TFC_TOKEN_ENV: &str = "TFC_WORKLOAD_IDENTITY_TOKEN";
 const TFC_DODO_TOKEN_ENV: &str = "TFC_WORKLOAD_IDENTITY_TOKEN_DODO";
 const VERCEL_TOKEN_ENV: &str = "VERCEL_OIDC_TOKEN";
+const VERCEL_TOKEN_FILE_ENV: &str = "VERCEL_OIDC_TOKEN_FILE";
+const VERCEL_EXCHANGE_URL: &str = "https://oidc.vercel.com/~token";
+const VERCEL_EXCHANGE_TIMEOUT: Duration = Duration::from_secs(10);
 
 /// Workload identity settings for [`crate::ClientConfig::with_workload_identity`].
 #[derive(Clone, Debug)]
@@ -215,12 +218,80 @@ pub fn gcp(audience: Option<&str>) -> SubjectTokenSource {
     })
 }
 
-/// Reads `VERCEL_OIDC_TOKEN`.
+/// Exchanges the Vercel OIDC token for a token with the Dodo Payments audience, for each
+/// exchange. Reads the token from the file in `VERCEL_OIDC_TOKEN_FILE` or from
+/// `VERCEL_OIDC_TOKEN`. The audience is the origin of the client base URL.
 pub fn vercel() -> SubjectTokenSource {
-    SubjectTokenSource::with_context("vercel", |_| {
-        let value = required_env(VERCEL_TOKEN_ENV);
-        async move { value }
+    vercel_source(None, VERCEL_EXCHANGE_URL.to_owned())
+}
+
+/// Is the same as [`vercel`], but uses `audience` when you supply it.
+pub fn vercel_with_audience(audience: Option<&str>) -> SubjectTokenSource {
+    vercel_source(audience.map(str::to_owned), VERCEL_EXCHANGE_URL.to_owned())
+}
+
+fn vercel_source(audience: Option<String>, exchange_url: String) -> SubjectTokenSource {
+    SubjectTokenSource::with_context("vercel", move |context| {
+        let audience = audience.clone();
+        let exchange_url = exchange_url.clone();
+        let base_token = vercel_base_token();
+        async move {
+            let base_token = base_token?;
+            let audience = audience.unwrap_or_else(|| context.default_audience());
+            let response = context
+                .http
+                .post(exchange_url)
+                .timeout(VERCEL_EXCHANGE_TIMEOUT)
+                .header(reqwest::header::ACCEPT, "application/json")
+                .json(&VercelExchangeRequest {
+                    token: &base_token,
+                    aud: &audience,
+                })
+                .send()
+                .await?;
+            let status = response.status().as_u16();
+            let body = response.text().await?;
+            if !(200..300).contains(&status) {
+                let excerpt: String = body
+                    .trim()
+                    .replace(&base_token, "[redacted]")
+                    .chars()
+                    .take(200)
+                    .collect();
+                return Err(Error::Api {
+                    status,
+                    message: format!("the Vercel OIDC token exchange failed: {excerpt}"),
+                });
+            }
+            serde_json::from_str::<VercelExchangeResponse>(&body)
+                .ok()
+                .and_then(|body| body.token)
+                .map(|token| token.trim().to_string())
+                .filter(|token| !token.is_empty())
+                .ok_or_else(|| Error::Api {
+                    status,
+                    message: "the Vercel OIDC token exchange response has no token".to_string(),
+                })
+        }
     })
+}
+
+fn vercel_base_token() -> Result<String> {
+    match env_value(VERCEL_TOKEN_FILE_ENV) {
+        Some(path) => read_token_file(path),
+        None => required_env(VERCEL_TOKEN_ENV),
+    }
+}
+
+#[derive(serde::Serialize)]
+struct VercelExchangeRequest<'a> {
+    token: &'a str,
+    aud: &'a str,
+}
+
+#[derive(serde::Deserialize)]
+struct VercelExchangeResponse {
+    token: Option<String>,
 }
 
 /// Reads a projected service account token from `path`
@@ -483,7 +554,9 @@ impl TokenCache {
             .unwrap_or(Duration::ZERO);
         Ok(CachedToken {
             access_token: body.access_token,
-            refresh_at: Instant::now() + lifetime.saturating_sub(REFRESH_MARGIN),
+            refresh_at: Instant::now()
+                .checked_add(lifetime.saturating_sub(REFRESH_MARGIN))
+                .unwrap_or_else(Instant::now),
         })
     }
 }
