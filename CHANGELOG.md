@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.125.0](https://github.com/dodopayments/dodopayments-rust/compare/v1.124.1...v1.125.0) (2026-10-28)
+
+
+### Features
+
+* **api:** workload identity federation ([#92](https://github.com/dodopayments/dodopayments-rust/issues/92)) ([7fcd7bf](https://github.com/dodopayments/dodopayments-rust/commit/7fcd7bf69cef3624e796f8cecaee0ba94515a04b))
+
 ## [1.124.1](https://github.com/dodopayments/dodopayments-rust/compare/v1.124.0...v1.124.1) (2026-10-25)
 
 
