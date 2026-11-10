@@ -35,7 +35,6 @@ async fn checkout_sessions_preview() {
         .checkout_sessions()
         .preview()
         .body(Default::default())
-        .query(serde_json::json!({}))
         .await;
 }
 
@@ -122,7 +121,6 @@ async fn subscriptions_retrieve() {
         .subscriptions()
         .retrieve()
         .subscription_id(subscription_id)
-        .query(serde_json::json!({}))
         .await;
 }
 
@@ -221,6 +219,19 @@ async fn subscriptions_retrieve_credit_usage() {
 }
 
 #[tokio::test]
+async fn subscriptions_retrieve_upcoming_invoice() {
+    let Some(client) = make_client() else {
+        return;
+    };
+    let subscription_id = "subscription_id";
+    let _ = client
+        .subscriptions()
+        .retrieve_upcoming_invoice()
+        .subscription_id(subscription_id)
+        .await;
+}
+
+#[tokio::test]
 async fn subscriptions_retrieve_usage_history() {
     let Some(client) = make_client() else {
         return;
@@ -246,6 +257,194 @@ async fn subscriptions_update_payment_method() {
         .subscription_id(subscription_id)
         .body(serde_json::json!({}))
         .await;
+}
+
+#[tokio::test]
+async fn invoices_create() {
+    let Some(client) = make_client() else {
+        return;
+    };
+    let _ = client.invoices().create().body(Default::default()).await;
+}
+
+#[tokio::test]
+async fn invoices_retrieve() {
+    let Some(client) = make_client() else {
+        return;
+    };
+    let invoice_id = "invoice_id";
+    let _ = client.invoices().retrieve().invoice_id(invoice_id).await;
+}
+
+#[tokio::test]
+async fn invoices_update() {
+    let Some(client) = make_client() else {
+        return;
+    };
+    let invoice_id = "invoice_id";
+    let _ = client
+        .invoices()
+        .update()
+        .invoice_id(invoice_id)
+        .body(Default::default())
+        .await;
+}
+
+#[tokio::test]
+async fn invoices_list() {
+    let Some(client) = make_client() else {
+        return;
+    };
+    let _ = client.invoices().list().query(serde_json::json!({})).await;
+}
+
+#[tokio::test]
+async fn invoices_delete() {
+    let Some(client) = make_client() else {
+        return;
+    };
+    let invoice_id = "invoice_id";
+    let _ = client.invoices().delete().invoice_id(invoice_id).await;
+}
+
+#[tokio::test]
+async fn invoices_add_note() {
+    let Some(client) = make_client() else {
+        return;
+    };
+    let invoice_id = "invoice_id";
+    let _ = client
+        .invoices()
+        .add_note()
+        .invoice_id(invoice_id)
+        .body(Default::default())
+        .await;
+}
+
+#[tokio::test]
+async fn invoices_create_hosted_link() {
+    let Some(client) = make_client() else {
+        return;
+    };
+    let invoice_id = "invoice_id";
+    let _ = client
+        .invoices()
+        .create_hosted_link()
+        .invoice_id(invoice_id)
+        .await;
+}
+
+#[tokio::test]
+async fn invoices_duplicate() {
+    let Some(client) = make_client() else {
+        return;
+    };
+    let invoice_id = "invoice_id";
+    let _ = client.invoices().duplicate().invoice_id(invoice_id).await;
+}
+
+#[tokio::test]
+async fn invoices_finalize() {
+    let Some(client) = make_client() else {
+        return;
+    };
+    let invoice_id = "invoice_id";
+    let _ = client
+        .invoices()
+        .finalize()
+        .invoice_id(invoice_id)
+        .body(Default::default())
+        .await;
+}
+
+#[tokio::test]
+async fn invoices_list_events() {
+    let Some(client) = make_client() else {
+        return;
+    };
+    let invoice_id = "invoice_id";
+    let _ = client.invoices().list_events().invoice_id(invoice_id).await;
+}
+
+#[tokio::test]
+async fn invoices_mark_uncollectable() {
+    let Some(client) = make_client() else {
+        return;
+    };
+    let invoice_id = "invoice_id";
+    let _ = client
+        .invoices()
+        .mark_uncollectable()
+        .invoice_id(invoice_id)
+        .await;
+}
+
+#[tokio::test]
+async fn invoices_preview() {
+    let Some(client) = make_client() else {
+        return;
+    };
+    let _ = client
+        .invoices()
+        .preview()
+        .body(Default::default())
+        .query(serde_json::json!({}))
+        .await;
+}
+
+#[tokio::test]
+async fn invoices_preview_existing() {
+    let Some(client) = make_client() else {
+        return;
+    };
+    let invoice_id = "invoice_id";
+    let _ = client
+        .invoices()
+        .preview_existing()
+        .invoice_id(invoice_id)
+        .query(serde_json::json!({}))
+        .await;
+}
+
+#[tokio::test]
+async fn invoices_retry() {
+    let Some(client) = make_client() else {
+        return;
+    };
+    let invoice_id = "invoice_id";
+    let _ = client.invoices().retry().invoice_id(invoice_id).await;
+}
+
+#[tokio::test]
+async fn invoices_send() {
+    let Some(client) = make_client() else {
+        return;
+    };
+    let invoice_id = "invoice_id";
+    let _ = client.invoices().send().invoice_id(invoice_id).await;
+}
+
+#[tokio::test]
+async fn invoices_update_dunning() {
+    let Some(client) = make_client() else {
+        return;
+    };
+    let invoice_id = "invoice_id";
+    let _ = client
+        .invoices()
+        .update_dunning()
+        .invoice_id(invoice_id)
+        .body(Default::default())
+        .await;
+}
+
+#[tokio::test]
+async fn invoices_void() {
+    let Some(client) = make_client() else {
+        return;
+    };
+    let invoice_id = "invoice_id";
+    let _ = client.invoices().void().invoice_id(invoice_id).await;
 }
 
 #[tokio::test]
@@ -799,12 +998,7 @@ async fn products_retrieve() {
         return;
     };
     let id = "id";
-    let _ = client
-        .products()
-        .retrieve()
-        .id(id)
-        .query(serde_json::json!({}))
-        .await;
+    let _ = client.products().retrieve().id(id).await;
 }
 
 #[tokio::test]
@@ -858,54 +1052,6 @@ async fn products_update_files() {
         .update_files()
         .id(id)
         .body(Default::default())
-        .await;
-}
-
-#[tokio::test]
-async fn products_translations_update() {
-    let Some(client) = make_client() else {
-        return;
-    };
-    let id = "id";
-    let locale = "locale";
-    let _ = client
-        .products()
-        .translations()
-        .update()
-        .id(id)
-        .locale(locale)
-        .body(Default::default())
-        .await;
-}
-
-#[tokio::test]
-async fn products_translations_list() {
-    let Some(client) = make_client() else {
-        return;
-    };
-    let id = "id";
-    let _ = client
-        .products()
-        .translations()
-        .list()
-        .id(id)
-        .query(serde_json::json!({}))
-        .await;
-}
-
-#[tokio::test]
-async fn products_translations_delete() {
-    let Some(client) = make_client() else {
-        return;
-    };
-    let id = "id";
-    let locale = "locale";
-    let _ = client
-        .products()
-        .translations()
-        .delete()
-        .id(id)
-        .locale(locale)
         .await;
 }
 
@@ -1031,14 +1177,6 @@ async fn products_localized_prices_archive() {
 }
 
 #[tokio::test]
-async fn misc_list_locales() {
-    let Some(client) = make_client() else {
-        return;
-    };
-    let _ = client.misc().list_locales().await;
-}
-
-#[tokio::test]
 async fn misc_list_supported_countries() {
     let Some(client) = make_client() else {
         return;
@@ -1117,12 +1255,7 @@ async fn addons_retrieve() {
         return;
     };
     let id = "id";
-    let _ = client
-        .addons()
-        .retrieve()
-        .id(id)
-        .query(serde_json::json!({}))
-        .await;
+    let _ = client.addons().retrieve().id(id).await;
 }
 
 #[tokio::test]
@@ -1172,54 +1305,6 @@ async fn addons_update_images() {
     };
     let id = "id";
     let _ = client.addons().update_images().id(id).await;
-}
-
-#[tokio::test]
-async fn addons_translations_update() {
-    let Some(client) = make_client() else {
-        return;
-    };
-    let id = "id";
-    let locale = "locale";
-    let _ = client
-        .addons()
-        .translations()
-        .update()
-        .id(id)
-        .locale(locale)
-        .body(Default::default())
-        .await;
-}
-
-#[tokio::test]
-async fn addons_translations_list() {
-    let Some(client) = make_client() else {
-        return;
-    };
-    let id = "id";
-    let _ = client
-        .addons()
-        .translations()
-        .list()
-        .id(id)
-        .query(serde_json::json!({}))
-        .await;
-}
-
-#[tokio::test]
-async fn addons_translations_delete() {
-    let Some(client) = make_client() else {
-        return;
-    };
-    let id = "id";
-    let locale = "locale";
-    let _ = client
-        .addons()
-        .translations()
-        .delete()
-        .id(id)
-        .locale(locale)
-        .await;
 }
 
 #[tokio::test]
@@ -1421,12 +1506,7 @@ async fn meters_retrieve() {
         return;
     };
     let id = "id";
-    let _ = client
-        .meters()
-        .retrieve()
-        .id(id)
-        .query(serde_json::json!({}))
-        .await;
+    let _ = client.meters().retrieve().id(id).await;
 }
 
 #[tokio::test]
@@ -1470,54 +1550,6 @@ async fn meters_unarchive() {
 }
 
 #[tokio::test]
-async fn meters_translations_update() {
-    let Some(client) = make_client() else {
-        return;
-    };
-    let id = "id";
-    let locale = "locale";
-    let _ = client
-        .meters()
-        .translations()
-        .update()
-        .id(id)
-        .locale(locale)
-        .body(Default::default())
-        .await;
-}
-
-#[tokio::test]
-async fn meters_translations_list() {
-    let Some(client) = make_client() else {
-        return;
-    };
-    let id = "id";
-    let _ = client
-        .meters()
-        .translations()
-        .list()
-        .id(id)
-        .query(serde_json::json!({}))
-        .await;
-}
-
-#[tokio::test]
-async fn meters_translations_delete() {
-    let Some(client) = make_client() else {
-        return;
-    };
-    let id = "id";
-    let locale = "locale";
-    let _ = client
-        .meters()
-        .translations()
-        .delete()
-        .id(id)
-        .locale(locale)
-        .await;
-}
-
-#[tokio::test]
 async fn balances_retrieve_ledger() {
     let Some(client) = make_client() else {
         return;
@@ -1547,12 +1579,7 @@ async fn credit_entitlements_retrieve() {
         return;
     };
     let id = "id";
-    let _ = client
-        .credit_entitlements()
-        .retrieve()
-        .id(id)
-        .query(serde_json::json!({}))
-        .await;
+    let _ = client.credit_entitlements().retrieve().id(id).await;
 }
 
 #[tokio::test]
@@ -1597,54 +1624,6 @@ async fn credit_entitlements_undelete() {
     };
     let id = "id";
     let _ = client.credit_entitlements().undelete().id(id).await;
-}
-
-#[tokio::test]
-async fn credit_entitlements_translations_update() {
-    let Some(client) = make_client() else {
-        return;
-    };
-    let id = "id";
-    let locale = "locale";
-    let _ = client
-        .credit_entitlements()
-        .translations()
-        .update()
-        .id(id)
-        .locale(locale)
-        .body(Default::default())
-        .await;
-}
-
-#[tokio::test]
-async fn credit_entitlements_translations_list() {
-    let Some(client) = make_client() else {
-        return;
-    };
-    let id = "id";
-    let _ = client
-        .credit_entitlements()
-        .translations()
-        .list()
-        .id(id)
-        .query(serde_json::json!({}))
-        .await;
-}
-
-#[tokio::test]
-async fn credit_entitlements_translations_delete() {
-    let Some(client) = make_client() else {
-        return;
-    };
-    let id = "id";
-    let locale = "locale";
-    let _ = client
-        .credit_entitlements()
-        .translations()
-        .delete()
-        .id(id)
-        .locale(locale)
-        .await;
 }
 
 #[tokio::test]
@@ -1747,12 +1726,7 @@ async fn entitlements_retrieve() {
         return;
     };
     let id = "id";
-    let _ = client
-        .entitlements()
-        .retrieve()
-        .id(id)
-        .query(serde_json::json!({}))
-        .await;
+    let _ = client.entitlements().retrieve().id(id).await;
 }
 
 #[tokio::test]
@@ -1788,54 +1762,6 @@ async fn entitlements_delete() {
     };
     let id = "id";
     let _ = client.entitlements().delete().id(id).await;
-}
-
-#[tokio::test]
-async fn entitlements_translations_update() {
-    let Some(client) = make_client() else {
-        return;
-    };
-    let id = "id";
-    let locale = "locale";
-    let _ = client
-        .entitlements()
-        .translations()
-        .update()
-        .id(id)
-        .locale(locale)
-        .body(Default::default())
-        .await;
-}
-
-#[tokio::test]
-async fn entitlements_translations_list() {
-    let Some(client) = make_client() else {
-        return;
-    };
-    let id = "id";
-    let _ = client
-        .entitlements()
-        .translations()
-        .list()
-        .id(id)
-        .query(serde_json::json!({}))
-        .await;
-}
-
-#[tokio::test]
-async fn entitlements_translations_delete() {
-    let Some(client) = make_client() else {
-        return;
-    };
-    let id = "id";
-    let locale = "locale";
-    let _ = client
-        .entitlements()
-        .translations()
-        .delete()
-        .id(id)
-        .locale(locale)
-        .await;
 }
 
 #[tokio::test]
@@ -1927,12 +1853,7 @@ async fn product_collections_retrieve() {
         return;
     };
     let id = "id";
-    let _ = client
-        .product_collections()
-        .retrieve()
-        .id(id)
-        .query(serde_json::json!({}))
-        .await;
+    let _ = client.product_collections().retrieve().id(id).await;
 }
 
 #[tokio::test]
@@ -1990,54 +1911,6 @@ async fn product_collections_update_images() {
         .update_images()
         .id(id)
         .query(serde_json::json!({}))
-        .await;
-}
-
-#[tokio::test]
-async fn product_collections_translations_update() {
-    let Some(client) = make_client() else {
-        return;
-    };
-    let id = "id";
-    let locale = "locale";
-    let _ = client
-        .product_collections()
-        .translations()
-        .update()
-        .id(id)
-        .locale(locale)
-        .body(Default::default())
-        .await;
-}
-
-#[tokio::test]
-async fn product_collections_translations_list() {
-    let Some(client) = make_client() else {
-        return;
-    };
-    let id = "id";
-    let _ = client
-        .product_collections()
-        .translations()
-        .list()
-        .id(id)
-        .query(serde_json::json!({}))
-        .await;
-}
-
-#[tokio::test]
-async fn product_collections_translations_delete() {
-    let Some(client) = make_client() else {
-        return;
-    };
-    let id = "id";
-    let locale = "locale";
-    let _ = client
-        .product_collections()
-        .translations()
-        .delete()
-        .id(id)
-        .locale(locale)
         .await;
 }
 
