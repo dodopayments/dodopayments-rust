@@ -10,6 +10,7 @@ pub struct CheckoutSessionBillingAddress {
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct CheckoutSessionCustomization {
     pub force_language: Option<String>,
+    pub payment_method_layout: Option<String>,
     pub show_on_demand_tag: Option<bool>,
     pub show_order_details: Option<bool>,
     pub theme: Option<String>,
@@ -198,7 +199,6 @@ pub struct CreateNewCustomer {
     pub name: String,
     pub create_new_customer: Option<bool>,
     pub phone_number: Option<String>,
-    pub preferred_locale: Option<Box<crate::models::Locale>>,
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
@@ -780,6 +780,7 @@ pub struct ScheduledPlanChange {
 pub struct Subscription {
     pub addons: Vec<crate::models::AddonCartResponseItem>,
     pub billing: Box<crate::models::BillingAddress>,
+    pub billing_mode: String,
     pub brand_id: String,
     pub cancel_at_next_billing_date: bool,
     pub created_at: String,
@@ -808,6 +809,7 @@ pub struct Subscription {
     pub cancellation_feedback: Option<Box<crate::models::CancellationFeedback>>,
     pub cancelled_at: Option<String>,
     pub cancelled_by: Option<Box<crate::models::SubscriptionCancelledBy>>,
+    pub collection_method: Option<Box<crate::models::CollectionMethod>>,
     pub custom_field_responses: Option<Vec<crate::models::CustomFieldResponse>>,
     pub customer_business_name: Option<String>,
     pub discount_cycles_remaining: Option<i64>,
@@ -816,6 +818,7 @@ pub struct Subscription {
     pub expires_at: Option<String>,
     pub paused_at: Option<String>,
     pub payment_method_id: Option<String>,
+    pub payment_terms_days: Option<i64>,
     pub scheduled_change: Option<Box<crate::models::ScheduledPlanChange>>,
     pub tax_id: Option<String>,
     pub trial_amount: Option<i64>,
@@ -870,9 +873,11 @@ pub struct UpdateSubscriptionPlanReq {
     pub cancel_older_payment_link: Option<bool>,
     pub cancel_scheduled_change_plan: Option<bool>,
     pub collect_via_payment_link: Option<bool>,
+    pub credit: Option<String>,
     pub discount_code: Option<String>,
     pub discount_codes: Option<Vec<String>>,
     pub effective_at: Option<String>,
+    pub invoice: Option<serde_json::Value>,
     pub metadata: Option<Box<crate::models::Metadata>>,
     pub on_payment_failure: Option<String>,
     pub return_url: Option<String>,
@@ -899,6 +904,7 @@ pub struct SubscriptionCreateResponse {
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct SubscriptionListResponse {
     pub billing: Box<crate::models::BillingAddress>,
+    pub billing_mode: String,
     pub cancel_at_next_billing_date: bool,
     pub created_at: String,
     pub currency: Box<crate::models::Currency>,
@@ -922,11 +928,13 @@ pub struct SubscriptionListResponse {
     pub trial_period_days: i64,
     pub cancelled_at: Option<String>,
     pub cancelled_by: Option<Box<crate::models::SubscriptionCancelledBy>>,
+    pub collection_method: Option<Box<crate::models::CollectionMethod>>,
     pub customer_business_name: Option<String>,
     pub discount_cycles_remaining: Option<i64>,
     pub discount_id: Option<String>,
     pub paused_at: Option<String>,
     pub payment_method_id: Option<String>,
+    pub payment_terms_days: Option<i64>,
     pub product_name: Option<String>,
     pub scheduled_change: Option<Box<crate::models::ScheduledPlanChange>>,
     pub tax_id: Option<String>,
@@ -937,8 +945,10 @@ pub struct SubscriptionListResponse {
 pub struct SubscriptionChangePlanResponse {
     pub client_secret: Option<String>,
     pub expires_on: Option<String>,
+    pub invoice_id: Option<String>,
     pub payment_id: Option<String>,
     pub payment_link: Option<String>,
+    pub refund_id: Option<String>,
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
@@ -971,6 +981,130 @@ pub struct SubscriptionUpdatePaymentMethodResponse {
     pub expires_on: Option<String>,
     pub payment_id: Option<String>,
     pub payment_link: Option<String>,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub enum CollectionMethod {
+    #[serde(rename = "auto_charge")]
+    AutoCharge,
+    #[serde(rename = "manual")]
+    Manual,
+    #[serde(other)]
+    Unknown,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub enum DunningState {
+    #[serde(rename = "not_started")]
+    NotStarted,
+    #[serde(rename = "active")]
+    Active,
+    #[serde(rename = "paused")]
+    Paused,
+    #[serde(rename = "exhausted")]
+    Exhausted,
+    #[serde(other)]
+    Unknown,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub struct Invoice {
+    pub allowed_actions: Vec<String>,
+    pub amount_due: i64,
+    pub amount_paid: i64,
+    pub amount_refunded: i64,
+    pub billing_mode: String,
+    pub business_id: String,
+    pub created_at: String,
+    pub credits: i64,
+    pub currency: Box<crate::models::Currency>,
+    pub customer: serde_json::Value,
+    pub discount_ids: Vec<String>,
+    pub editable_fields: Vec<String>,
+    pub frequency: serde_json::Value,
+    pub invoice_id: String,
+    pub metadata: serde_json::Value,
+    pub refund_ids: Vec<String>,
+    pub retry_count: i64,
+    pub row_version: i64,
+    pub status: Box<crate::models::InvoiceStatus>,
+    pub subscription_ids: Vec<String>,
+    pub tags: Vec<String>,
+    pub tax: i64,
+    pub total_amount: i64,
+    pub collection_method: Option<Box<crate::models::CollectionMethod>>,
+    pub due_at: Option<String>,
+    pub dunning_state: Option<Box<crate::models::DunningState>>,
+    pub finalized_at: Option<String>,
+    pub hosted_url: Option<String>,
+    pub lines: Option<Vec<crate::models::InvoiceLine>>,
+    pub memo: Option<String>,
+    pub next_reminder_at: Option<String>,
+    pub next_retry_at: Option<String>,
+    pub payment_terms_days: Option<i64>,
+    pub payments: Option<Vec<serde_json::Value>>,
+    pub pdf_url: Option<String>,
+    pub reminder_settings: Option<serde_json::Value>,
+    pub review_deadline: Option<String>,
+    pub sent_at: Option<String>,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub struct InvoiceEvent {
+    pub actor: String,
+    pub created_at: String,
+    pub event_id: String,
+    pub event_type: String,
+    pub payload: serde_json::Value,
+    pub row_version: i64,
+    pub actor_email: Option<String>,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub struct InvoiceLine {
+    pub amount: i64,
+    pub kind: String,
+    pub quantity: i64,
+    pub tax: i64,
+    pub tax_inclusive: bool,
+    pub unit_amount: i64,
+    pub addon_id: Option<String>,
+    pub description: Option<String>,
+    pub name: Option<String>,
+    pub period_end: Option<String>,
+    pub period_start: Option<String>,
+    pub product_id: Option<String>,
+    pub subscription_id: Option<String>,
+    pub tax_rate: Option<i64>,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub enum InvoiceStatus {
+    #[serde(rename = "open")]
+    Open,
+    #[serde(rename = "paid")]
+    Paid,
+    #[serde(rename = "void")]
+    Void,
+    #[serde(rename = "draft")]
+    Draft,
+    #[serde(rename = "past_due")]
+    PastDue,
+    #[serde(rename = "uncollectable")]
+    Uncollectable,
+    #[serde(other)]
+    Unknown,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub struct InvoiceCreateHostedLinkResponse {
+    pub expires_at: String,
+    pub hosted_url: String,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub struct InvoiceListEventsResponse {
+    pub items: Vec<crate::models::InvoiceEvent>,
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
@@ -1039,7 +1173,6 @@ pub struct Customer {
     pub blocklist_entry_id: Option<String>,
     pub metadata: Option<Box<crate::models::Metadata>>,
     pub phone_number: Option<String>,
-    pub preferred_locale: Option<Box<crate::models::Locale>>,
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
@@ -1236,7 +1369,7 @@ pub struct BlockedCustomerNote {
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct NoteRequest {
-    pub note: String,
+    pub text: String,
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
@@ -1560,19 +1693,6 @@ pub struct ProductListResponse {
 pub struct ProductUpdateFilesResponse {
     pub file_id: String,
     pub url: String,
-}
-
-#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
-pub struct Translation {
-    pub locale: Box<crate::models::Locale>,
-    pub updated_at: String,
-    pub description: Option<String>,
-    pub name: Option<String>,
-}
-
-#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
-pub struct TranslationsListResponse {
-    pub items: Vec<crate::models::Translation>,
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
@@ -2418,63 +2538,6 @@ pub enum Currency {
     Unknown,
 }
 
-#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
-pub enum Locale {
-    #[serde(rename = "ar")]
-    Ar,
-    #[serde(rename = "ca")]
-    Ca,
-    #[serde(rename = "zh")]
-    Zh,
-    #[serde(rename = "nl")]
-    Nl,
-    #[serde(rename = "en")]
-    En,
-    #[serde(rename = "fr")]
-    Fr,
-    #[serde(rename = "de")]
-    De,
-    #[serde(rename = "he")]
-    He,
-    #[serde(rename = "id")]
-    ID,
-    #[serde(rename = "it")]
-    It,
-    #[serde(rename = "ja")]
-    Ja,
-    #[serde(rename = "ka")]
-    Ka,
-    #[serde(rename = "ko")]
-    Ko,
-    #[serde(rename = "ms")]
-    Ms,
-    #[serde(rename = "pl")]
-    Pl,
-    #[serde(rename = "pt")]
-    Pt,
-    #[serde(rename = "ro")]
-    Ro,
-    #[serde(rename = "ru")]
-    Ru,
-    #[serde(rename = "es")]
-    Es,
-    #[serde(rename = "sv")]
-    Sv,
-    #[serde(rename = "th")]
-    Th,
-    #[serde(rename = "tr")]
-    Tr,
-    #[serde(other)]
-    Unknown,
-}
-
-#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
-pub struct LocaleInfo {
-    pub code: Box<crate::models::Locale>,
-    pub name: String,
-    pub native_name: String,
-}
-
 pub type Metadata = std::collections::HashMap<String, serde_json::Value>;
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
@@ -2492,8 +2555,6 @@ pub enum TaxCategory {
     #[serde(other)]
     Unknown,
 }
-
-pub type MiscListLocalesResponse = Vec<crate::models::LocaleInfo>;
 
 pub type MiscListSupportedCountriesResponse = Vec<crate::models::CountryCode>;
 
@@ -2818,6 +2879,70 @@ pub struct EntitlementGrantRevokedWebhookEvent {
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub struct InvoiceFinalizedWebhookEvent {
+    pub business_id: String,
+    pub data: Box<crate::models::Invoice>,
+    pub timestamp: String,
+    pub r#type: String,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub struct InvoiceMarkedUncollectableWebhookEvent {
+    pub business_id: String,
+    pub data: Box<crate::models::Invoice>,
+    pub timestamp: String,
+    pub r#type: String,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub struct InvoicePaidWebhookEvent {
+    pub business_id: String,
+    pub data: Box<crate::models::Invoice>,
+    pub timestamp: String,
+    pub r#type: String,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub struct InvoicePastDueWebhookEvent {
+    pub business_id: String,
+    pub data: Box<crate::models::Invoice>,
+    pub timestamp: String,
+    pub r#type: String,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub struct InvoicePaymentFailedWebhookEvent {
+    pub business_id: String,
+    pub data: Box<crate::models::Invoice>,
+    pub timestamp: String,
+    pub r#type: String,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub struct InvoiceReopenedWebhookEvent {
+    pub business_id: String,
+    pub data: Box<crate::models::Invoice>,
+    pub timestamp: String,
+    pub r#type: String,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub struct InvoiceSentWebhookEvent {
+    pub business_id: String,
+    pub data: Box<crate::models::Invoice>,
+    pub timestamp: String,
+    pub r#type: String,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub struct InvoiceVoidedWebhookEvent {
+    pub business_id: String,
+    pub data: Box<crate::models::Invoice>,
+    pub timestamp: String,
+    pub r#type: String,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct LicenseKeyCreatedWebhookEvent {
     pub business_id: String,
     pub data: Box<crate::models::LicenseKey>,
@@ -3042,6 +3167,16 @@ pub enum UnsafeUnwrapWebhookEvent {
     ),
     EntitlementGrantFailedWebhookEvent(Box<crate::models::EntitlementGrantFailedWebhookEvent>),
     EntitlementGrantRevokedWebhookEvent(Box<crate::models::EntitlementGrantRevokedWebhookEvent>),
+    InvoiceFinalizedWebhookEvent(Box<crate::models::InvoiceFinalizedWebhookEvent>),
+    InvoiceMarkedUncollectableWebhookEvent(
+        Box<crate::models::InvoiceMarkedUncollectableWebhookEvent>,
+    ),
+    InvoicePaidWebhookEvent(Box<crate::models::InvoicePaidWebhookEvent>),
+    InvoicePastDueWebhookEvent(Box<crate::models::InvoicePastDueWebhookEvent>),
+    InvoicePaymentFailedWebhookEvent(Box<crate::models::InvoicePaymentFailedWebhookEvent>),
+    InvoiceReopenedWebhookEvent(Box<crate::models::InvoiceReopenedWebhookEvent>),
+    InvoiceSentWebhookEvent(Box<crate::models::InvoiceSentWebhookEvent>),
+    InvoiceVoidedWebhookEvent(Box<crate::models::InvoiceVoidedWebhookEvent>),
     LicenseKeyCreatedWebhookEvent(Box<crate::models::LicenseKeyCreatedWebhookEvent>),
     PaymentCancelledWebhookEvent(Box<crate::models::PaymentCancelledWebhookEvent>),
     PaymentFailedWebhookEvent(Box<crate::models::PaymentFailedWebhookEvent>),
@@ -3103,6 +3238,16 @@ pub enum UnwrapWebhookEvent {
     ),
     EntitlementGrantFailedWebhookEvent(Box<crate::models::EntitlementGrantFailedWebhookEvent>),
     EntitlementGrantRevokedWebhookEvent(Box<crate::models::EntitlementGrantRevokedWebhookEvent>),
+    InvoiceFinalizedWebhookEvent(Box<crate::models::InvoiceFinalizedWebhookEvent>),
+    InvoiceMarkedUncollectableWebhookEvent(
+        Box<crate::models::InvoiceMarkedUncollectableWebhookEvent>,
+    ),
+    InvoicePaidWebhookEvent(Box<crate::models::InvoicePaidWebhookEvent>),
+    InvoicePastDueWebhookEvent(Box<crate::models::InvoicePastDueWebhookEvent>),
+    InvoicePaymentFailedWebhookEvent(Box<crate::models::InvoicePaymentFailedWebhookEvent>),
+    InvoiceReopenedWebhookEvent(Box<crate::models::InvoiceReopenedWebhookEvent>),
+    InvoiceSentWebhookEvent(Box<crate::models::InvoiceSentWebhookEvent>),
+    InvoiceVoidedWebhookEvent(Box<crate::models::InvoiceVoidedWebhookEvent>),
     LicenseKeyCreatedWebhookEvent(Box<crate::models::LicenseKeyCreatedWebhookEvent>),
     PaymentCancelledWebhookEvent(Box<crate::models::PaymentCancelledWebhookEvent>),
     PaymentFailedWebhookEvent(Box<crate::models::PaymentFailedWebhookEvent>),
@@ -3189,6 +3334,22 @@ pub enum WebhookEventType {
     SubscriptionUpdated,
     #[serde(rename = "subscription.update_payment_method")]
     SubscriptionUpdatePaymentMethod,
+    #[serde(rename = "invoice.finalized")]
+    InvoiceFinalized,
+    #[serde(rename = "invoice.sent")]
+    InvoiceSent,
+    #[serde(rename = "invoice.paid")]
+    InvoicePaid,
+    #[serde(rename = "invoice.payment_failed")]
+    InvoicePaymentFailed,
+    #[serde(rename = "invoice.past_due")]
+    InvoicePastDue,
+    #[serde(rename = "invoice.reopened")]
+    InvoiceReopened,
+    #[serde(rename = "invoice.voided")]
+    InvoiceVoided,
+    #[serde(rename = "invoice.marked_uncollectable")]
+    InvoiceMarkedUncollectable,
     #[serde(rename = "license_key.created")]
     LicenseKeyCreated,
     #[serde(rename = "payout.created")]
@@ -3391,19 +3552,6 @@ pub struct CreditEntitlement {
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
-pub struct CreditEntitlementTranslation {
-    pub locale: Box<crate::models::Locale>,
-    pub updated_at: String,
-    pub name: Option<String>,
-    pub unit: Option<String>,
-}
-
-#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
-pub struct CreditEntitlementTranslationsListResponse {
-    pub items: Vec<crate::models::CreditEntitlementTranslation>,
-}
-
-#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct CreditLedgerEntry {
     pub id: String,
     pub amount: String,
@@ -3578,21 +3726,6 @@ pub enum IntegrationConfigResponse {
     Variant6(serde_json::Value),
     Variant7(serde_json::Value),
     Variant8(serde_json::Value),
-}
-
-#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
-pub struct EntitlementTranslation {
-    pub locale: Box<crate::models::Locale>,
-    pub updated_at: String,
-    pub activation_message: Option<String>,
-    pub description: Option<String>,
-    pub instructions: Option<String>,
-    pub name: Option<String>,
-}
-
-#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
-pub struct EntitlementTranslationsListResponse {
-    pub items: Vec<crate::models::EntitlementTranslation>,
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
@@ -4173,6 +4306,16 @@ pub struct SubscriptionsUpdateParams {
 }
 
 #[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct SubscriptionsChangePlanParamsInvoice {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub collection_method: Option<Box<crate::models::CollectionMethod>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub finalize: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub payment_terms: Option<serde_json::Value>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
 pub struct SubscriptionsChangePlanParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub product_id: Option<String>,
@@ -4191,11 +4334,15 @@ pub struct SubscriptionsChangePlanParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub collect_via_payment_link: Option<bool>,
     #[serde(skip_serializing_if = "Option::is_none")]
+    pub credit: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub discount_code: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub discount_codes: Option<Vec<String>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub effective_at: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub invoice: Option<Box<crate::models::SubscriptionsChangePlanParamsInvoice>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub metadata: Option<Box<crate::models::Metadata>>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -4227,6 +4374,198 @@ pub struct SubscriptionsChargeParams {
     pub product_currency: Option<Box<crate::models::Currency>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub product_description: Option<String>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct InvoicesCreateParamsBillingAddress {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub country: Option<Box<crate::models::CountryCode>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub city: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub state: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub street: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub zipcode: Option<String>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct InvoicesCreateParamsDunning {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub reminders_enabled: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub offsets_days: Option<Vec<i64>>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct InvoicesCreateParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub collection_method: Option<Box<crate::models::CollectionMethod>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub currency: Option<Box<crate::models::Currency>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub customer_id: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub items: Option<Vec<serde_json::Value>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub billing_address: Option<Box<crate::models::InvoicesCreateParamsBillingAddress>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub cc_emails: Option<Vec<String>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub customer_email: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub discount_ids: Option<Vec<String>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub due_at: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub dunning: Option<Box<crate::models::InvoicesCreateParamsDunning>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub memo: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub metadata: Option<Box<crate::models::Metadata>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub payment_terms: Option<serde_json::Value>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub review_required: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub tax_id: Option<String>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct InvoicesUpdateParamsBillingAddress {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub country: Option<Box<crate::models::CountryCode>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub city: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub state: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub street: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub zipcode: Option<String>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct InvoicesUpdateParamsDunning {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub reminders_enabled: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub offsets_days: Option<Vec<i64>>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct InvoicesUpdateParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub billing_address: Option<Box<crate::models::InvoicesUpdateParamsBillingAddress>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub cc_emails: Option<Vec<String>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub collection_method: Option<Box<crate::models::CollectionMethod>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub currency: Option<Box<crate::models::Currency>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub customer_email: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub customer_id: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub discount_ids: Option<Vec<String>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub due_at: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub dunning: Option<Box<crate::models::InvoicesUpdateParamsDunning>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub items: Option<Vec<serde_json::Value>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub memo: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub metadata: Option<Box<crate::models::Metadata>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub payment_terms: Option<serde_json::Value>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub review_required: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub tax_id: Option<String>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct InvoicesAddNoteParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub text: Option<String>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct InvoicesFinalizeParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub cc_emails: Option<Vec<String>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub customer_email: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub send: Option<bool>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct InvoicesPreviewParamsBillingAddress {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub country: Option<Box<crate::models::CountryCode>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub city: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub state: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub street: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub zipcode: Option<String>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct InvoicesPreviewParamsDunning {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub reminders_enabled: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub offsets_days: Option<Vec<i64>>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct InvoicesPreviewParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub collection_method: Option<Box<crate::models::CollectionMethod>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub currency: Option<Box<crate::models::Currency>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub customer_id: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub items: Option<Vec<serde_json::Value>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub billing_address: Option<Box<crate::models::InvoicesPreviewParamsBillingAddress>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub cc_emails: Option<Vec<String>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub customer_email: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub discount_ids: Option<Vec<String>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub due_at: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub dunning: Option<Box<crate::models::InvoicesPreviewParamsDunning>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub memo: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub metadata: Option<Box<crate::models::Metadata>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub payment_terms: Option<serde_json::Value>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub review_required: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub tax_id: Option<String>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct InvoicesUpdateDunningParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub action: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub offsets_days: Option<Vec<i64>>,
 }
 
 #[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
@@ -4293,8 +4632,6 @@ pub struct CustomersCreateParams {
     pub metadata: Option<Box<crate::models::Metadata>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub phone_number: Option<String>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub preferred_locale: Option<Box<crate::models::Locale>>,
 }
 
 #[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
@@ -4307,8 +4644,6 @@ pub struct CustomersUpdateParams {
     pub name: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub phone_number: Option<String>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub preferred_locale: Option<Box<crate::models::Locale>>,
 }
 
 #[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
@@ -4323,12 +4658,6 @@ pub struct CustomersWalletsLedgerEntriesCreateParams {
     pub idempotency_key: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub reason: Option<String>,
-}
-
-#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
-pub struct BlocklistCustomersNotesCreateParams {
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub note: Option<String>,
 }
 
 #[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
@@ -4449,14 +4778,6 @@ pub struct ProductsUpdateParams {
 pub struct ProductsUpdateFilesParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub file_name: Option<String>,
-}
-
-#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
-pub struct ProductsTranslationsUpdateParams {
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub description: Option<String>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub name: Option<String>,
 }
 
 #[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
@@ -4602,14 +4923,6 @@ pub struct AddonsUpdateParams {
 }
 
 #[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
-pub struct AddonsTranslationsUpdateParams {
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub description: Option<String>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub name: Option<String>,
-}
-
-#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
 pub struct BrandsCreateParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
@@ -4720,14 +5033,6 @@ pub struct MetersUpdateParams {
 }
 
 #[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
-pub struct MetersTranslationsUpdateParams {
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub description: Option<String>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub name: Option<String>,
-}
-
-#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
 pub struct CreditEntitlementsCreateParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
@@ -4794,14 +5099,6 @@ pub struct CreditEntitlementsUpdateParams {
 }
 
 #[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
-pub struct CreditEntitlementsTranslationsUpdateParams {
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub name: Option<String>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub unit: Option<String>,
-}
-
-#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
 pub struct CreditEntitlementsBalancesCreateLedgerEntryParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub amount: Option<String>,
@@ -4839,18 +5136,6 @@ pub struct EntitlementsUpdateParams {
     pub integration_config: Option<Box<crate::models::IntegrationConfig>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub metadata: Option<Box<crate::models::Metadata>>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub name: Option<String>,
-}
-
-#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
-pub struct EntitlementsTranslationsUpdateParams {
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub activation_message: Option<String>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub description: Option<String>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub instructions: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
 }
@@ -4909,14 +5194,6 @@ pub struct ProductCollectionsUpdateParams {
     pub proration_billing_mode_on_downgrade: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub proration_billing_mode_on_upgrade: Option<String>,
-}
-
-#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
-pub struct ProductCollectionsTranslationsUpdateParams {
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub description: Option<String>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub name: Option<String>,
 }
 
 #[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
