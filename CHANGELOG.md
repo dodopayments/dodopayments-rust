@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.128.0](https://github.com/dodopayments/dodopayments-rust/compare/v1.127.0...v1.128.0) (2026-11-10)
+
+
+### Features
+
+* **api:** billing invoices and upcoming invoice; sync spec to prod 1.122.7 ([#107](https://github.com/dodopayments/dodopayments-rust/issues/107)) ([e86ac43](https://github.com/dodopayments/dodopayments-rust/commit/e86ac43261e2dc5bdd28cb4727f698225fe7c38a))
+* **api:** regenerate SDK from latest OpenAPI spec ([#100](https://github.com/dodopayments/dodopayments-rust/issues/100)) ([fff0300](https://github.com/dodopayments/dodopayments-rust/commit/fff030037a8304122be20acc11081f591a2e0fc0))
+
 ## [1.127.0](https://github.com/dodopayments/dodopayments-rust/compare/v1.126.0...v1.127.0) (2026-10-28)
 
 
