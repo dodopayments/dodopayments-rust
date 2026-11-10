@@ -51,8 +51,8 @@ Methods:
 - <code title="post /billing/invoices/{invoice_id}/finalize">client.invoices().finalize().invoice_id(invoice_id: impl Into&lt;String&gt;).body(body: InvoicesFinalizeParams) -&gt; Result&lt;Invoice&gt;</code>
 - <code title="get /billing/invoices/{invoice_id}/events">client.invoices().list_events().invoice_id(invoice_id: impl Into&lt;String&gt;) -&gt; Result&lt;InvoiceListEventsResponse&gt;</code>
 - <code title="post /billing/invoices/{invoice_id}/mark-uncollectable">client.invoices().mark_uncollectable().invoice_id(invoice_id: impl Into&lt;String&gt;) -&gt; Result&lt;Invoice&gt;</code>
-- <code title="post /billing/invoices/preview">client.invoices().preview().body(body: InvoicesPreviewParams).query(query: serde_json::Value) -&gt; Result&lt;()&gt;</code>
-- <code title="get /billing/invoices/{invoice_id}/preview">client.invoices().preview_existing().invoice_id(invoice_id: impl Into&lt;String&gt;).query(query: serde_json::Value) -&gt; Result&lt;()&gt;</code>
+- <code title="post /billing/invoices/preview">client.invoices().preview().body(body: InvoicesPreviewParams).query(query: serde_json::Value) -&gt; Result&lt;Vec&lt;u8&gt;&gt;</code>
+- <code title="get /billing/invoices/{invoice_id}/preview">client.invoices().preview_existing().invoice_id(invoice_id: impl Into&lt;String&gt;).query(query: serde_json::Value) -&gt; Result&lt;Vec&lt;u8&gt;&gt;</code>
 - <code title="post /billing/invoices/{invoice_id}/retry">client.invoices().retry().invoice_id(invoice_id: impl Into&lt;String&gt;) -&gt; Result&lt;Invoice&gt;</code>
 - <code title="post /billing/invoices/{invoice_id}/send">client.invoices().send().invoice_id(invoice_id: impl Into&lt;String&gt;) -&gt; Result&lt;Invoice&gt;</code>
 - <code title="post /billing/invoices/{invoice_id}/dunning">client.invoices().update_dunning().invoice_id(invoice_id: impl Into&lt;String&gt;).body(body: InvoicesUpdateDunningParams) -&gt; Result&lt;Invoice&gt;</code>

@@ -2212,7 +2212,7 @@ impl InvoicesPreviewBuilder {
         self
     }
 
-    pub async fn send(self) -> crate::error::Result<()> {
+    pub async fn send(self) -> crate::error::Result<Vec<u8>> {
         let client = self.client;
         let body = self.body.ok_or(crate::error::Error::MissingBody {
             operation: "invoices.preview",
@@ -2223,14 +2223,14 @@ impl InvoicesPreviewBuilder {
         if let Some(query) = &query {
             request = request.query(query);
         }
-        client.handle_empty(request).await
+        client.handle_bytes(request).await
     }
 }
 
 impl std::future::IntoFuture for InvoicesPreviewBuilder {
-    type Output = crate::error::Result<()>;
+    type Output = crate::error::Result<Vec<u8>>;
     type IntoFuture = std::pin::Pin<
-        Box<dyn std::future::Future<Output = crate::error::Result<()>> + Send + 'static>,
+        Box<dyn std::future::Future<Output = crate::error::Result<Vec<u8>>> + Send + 'static>,
     >;
 
     fn into_future(self) -> Self::IntoFuture {
@@ -2259,7 +2259,7 @@ impl InvoicesPreviewExistingBuilder {
         self
     }
 
-    pub async fn send(self) -> crate::error::Result<()> {
+    pub async fn send(self) -> crate::error::Result<Vec<u8>> {
         let client = self.client;
         let invoice_id = self
             .invoice_id
@@ -2276,14 +2276,14 @@ impl InvoicesPreviewExistingBuilder {
         if let Some(query) = &query {
             request = request.query(query);
         }
-        client.handle_empty(request).await
+        client.handle_bytes(request).await
     }
 }
 
 impl std::future::IntoFuture for InvoicesPreviewExistingBuilder {
-    type Output = crate::error::Result<()>;
+    type Output = crate::error::Result<Vec<u8>>;
     type IntoFuture = std::pin::Pin<
-        Box<dyn std::future::Future<Output = crate::error::Result<()>> + Send + 'static>,
+        Box<dyn std::future::Future<Output = crate::error::Result<Vec<u8>>> + Send + 'static>,
     >;
 
     fn into_future(self) -> Self::IntoFuture {
