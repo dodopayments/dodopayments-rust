@@ -976,6 +976,13 @@ pub struct SubscriptionRetrieveUsageHistoryResponse {
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub struct SubscriptionStartTrialResponse {
+    pub invoice_id: String,
+    pub subscription_id: String,
+    pub trial_ends_at: String,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct SubscriptionUpdatePaymentMethodResponse {
     pub client_secret: Option<String>,
     pub expires_on: Option<String>,
@@ -1026,6 +1033,7 @@ pub struct Invoice {
     pub metadata: serde_json::Value,
     pub refund_ids: Vec<String>,
     pub retry_count: i64,
+    pub review_required: bool,
     pub row_version: i64,
     pub status: Box<crate::models::InvoiceStatus>,
     pub subscription_ids: Vec<String>,
@@ -1041,6 +1049,7 @@ pub struct Invoice {
     pub memo: Option<String>,
     pub next_reminder_at: Option<String>,
     pub next_retry_at: Option<String>,
+    pub payment_method_id: Option<String>,
     pub payment_terms_days: Option<i64>,
     pub payments: Option<Vec<serde_json::Value>>,
     pub pdf_url: Option<String>,
@@ -3979,6 +3988,19 @@ pub struct ModerationScreenResponse {
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub struct AppInstallationRetrieveSettingsResponse {
+    pub action_needed: bool,
+    pub app_id: String,
+    pub installation_id: String,
+    pub invalid_keys: Vec<String>,
+    pub secrets: serde_json::Value,
+    pub values: serde_json::Value,
+    pub live_manifest_version: Option<i64>,
+    pub manifest_version: Option<i64>,
+    pub updated_at: Option<String>,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct DefaultPageNumberPagination<T> {
     pub items: Vec<T>,
     #[serde(flatten)]
@@ -4377,6 +4399,46 @@ pub struct SubscriptionsChargeParams {
 }
 
 #[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct SubscriptionsStartTrialParamsBillingAddress {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub country: Option<Box<crate::models::CountryCode>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub city: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub state: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub street: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub zipcode: Option<String>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct SubscriptionsStartTrialParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub collection_method: Option<Box<crate::models::CollectionMethod>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub currency: Option<Box<crate::models::Currency>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub customer_id: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub product_id: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub billing_address: Option<Box<crate::models::SubscriptionsStartTrialParamsBillingAddress>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub payment_method_id: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub payment_terms: Option<serde_json::Value>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub quantity: Option<i64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub review_required: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub tax_id: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub trial_period_days: Option<i64>,
+}
+
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
 pub struct InvoicesCreateParamsBillingAddress {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub country: Option<Box<crate::models::CountryCode>>,
@@ -4424,6 +4486,8 @@ pub struct InvoicesCreateParams {
     pub memo: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub metadata: Option<Box<crate::models::Metadata>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub payment_method_id: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub payment_terms: Option<serde_json::Value>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -4480,6 +4544,8 @@ pub struct InvoicesUpdateParams {
     pub memo: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub metadata: Option<Box<crate::models::Metadata>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub payment_method_id: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub payment_terms: Option<serde_json::Value>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -4552,6 +4618,8 @@ pub struct InvoicesPreviewParams {
     pub memo: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub metadata: Option<Box<crate::models::Metadata>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub payment_method_id: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub payment_terms: Option<serde_json::Value>,
     #[serde(skip_serializing_if = "Option::is_none")]
