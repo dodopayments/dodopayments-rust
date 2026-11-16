@@ -246,6 +246,18 @@ async fn subscriptions_retrieve_usage_history() {
 }
 
 #[tokio::test]
+async fn subscriptions_start_trial() {
+    let Some(client) = make_client() else {
+        return;
+    };
+    let _ = client
+        .subscriptions()
+        .start_trial()
+        .body(Default::default())
+        .await;
+}
+
+#[tokio::test]
 async fn subscriptions_update_payment_method() {
     let Some(client) = make_client() else {
         return;
@@ -706,6 +718,7 @@ async fn customers_retrieve_payment_methods() {
         .customers()
         .retrieve_payment_methods()
         .customer_id(customer_id)
+        .query(serde_json::json!({}))
         .await;
 }
 
@@ -2033,4 +2046,12 @@ async fn moderation_screen() {
         return;
     };
     let _ = client.moderation().screen().body(Default::default()).await;
+}
+
+#[tokio::test]
+async fn app_installation_retrieve_settings() {
+    let Some(client) = make_client() else {
+        return;
+    };
+    let _ = client.app_installation().retrieve_settings().await;
 }
