@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.129.0](https://github.com/dodopayments/dodopayments-rust/compare/v1.128.0...v1.129.0) (2026-11-16)
+
+
+### Features
+
+* **api:** trial subscriptions and app installation settings; sync spec to prod 1.124.0 ([8ffc34f](https://github.com/dodopayments/dodopayments-rust/commit/8ffc34fb5599b18b3ec65eac21435251035f33c0))
+* **api:** trial subscriptions and app installation settings; sync spec to prod 1.124.0 ([f4993f6](https://github.com/dodopayments/dodopayments-rust/commit/f4993f6e4fafaea09fb762aa7b056e97de394cab))
+
 ## [1.128.0](https://github.com/dodopayments/dodopayments-rust/compare/v1.127.0...v1.128.0) (2026-11-10)
 
 
