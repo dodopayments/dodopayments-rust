@@ -34,6 +34,7 @@ Methods:
 - <code title="get /subscriptions/{subscription_id}/credit-usage">client.subscriptions().retrieve_credit_usage().subscription_id(subscription_id: impl Into&lt;String&gt;) -&gt; Result&lt;SubscriptionRetrieveCreditUsageResponse&gt;</code>
 - <code title="get /subscriptions/{subscription_id}/upcoming-invoice">client.subscriptions().retrieve_upcoming_invoice().subscription_id(subscription_id: impl Into&lt;String&gt;) -&gt; Result&lt;Invoice&gt;</code>
 - <code title="get /subscriptions/{subscription_id}/usage-history">client.subscriptions().retrieve_usage_history().subscription_id(subscription_id: impl Into&lt;String&gt;).query(query: serde_json::Value) -&gt; Result&lt;DefaultPageNumberPagination&lt;SubscriptionRetrieveUsageHistoryResponse&gt;&gt;</code>
+- <code title="post /billing/subscriptions">client.subscriptions().start_trial().body(body: SubscriptionsStartTrialParams) -&gt; Result&lt;SubscriptionStartTrialResponse&gt;</code>
 - <code title="post /subscriptions/{subscription_id}/update-payment-method">client.subscriptions().update_payment_method().subscription_id(subscription_id: impl Into&lt;String&gt;).body(body: serde_json::Value) -&gt; Result&lt;SubscriptionUpdatePaymentMethodResponse&gt;</code>
 
 # Invoices
@@ -103,7 +104,7 @@ Methods:
 - <code title="get /customers/{customer_id}/credit-entitlements">client.customers().list_credit_entitlements().customer_id(customer_id: impl Into&lt;String&gt;) -&gt; Result&lt;CustomerListCreditEntitlementsResponse&gt;</code>
 - <code title="get /customers/{customer_id}/entitlement-grants">client.customers().list_entitlement_grants().customer_id(customer_id: impl Into&lt;String&gt;).query(query: serde_json::Value) -&gt; Result&lt;DefaultPageNumberPagination&lt;EntitlementGrant&gt;&gt;</code>
 - <code title="get /customers/{customer_id}/entitlements">client.customers().list_entitlements().customer_id(customer_id: impl Into&lt;String&gt;) -&gt; Result&lt;CustomerListEntitlementsResponse&gt;</code>
-- <code title="get /customers/{customer_id}/payment-methods">client.customers().retrieve_payment_methods().customer_id(customer_id: impl Into&lt;String&gt;) -&gt; Result&lt;CustomerRetrievePaymentMethodsResponse&gt;</code>
+- <code title="get /customers/{customer_id}/payment-methods">client.customers().retrieve_payment_methods().customer_id(customer_id: impl Into&lt;String&gt;).query(query: serde_json::Value) -&gt; Result&lt;CustomerRetrievePaymentMethodsResponse&gt;</code>
 
 ## CustomerPortal
 
@@ -381,3 +382,9 @@ Methods:
 
 - <code title="get /moderation/usage">client.moderation().retrieve_usage() -&gt; Result&lt;ModerationRetrieveUsageResponse&gt;</code>
 - <code title="post /moderation/screen">client.moderation().screen().body(body: ModerationScreenParams) -&gt; Result&lt;ModerationScreenResponse&gt;</code>
+
+# AppInstallation
+
+Methods:
+
+- <code title="get /app-installation/settings">client.app_installation().retrieve_settings() -&gt; Result&lt;AppInstallationRetrieveSettingsResponse&gt;</code>
