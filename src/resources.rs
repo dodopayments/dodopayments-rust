@@ -212,6 +212,13 @@ impl crate::Client {
             client: self.clone(),
         }
     }
+
+    #[must_use = "resource accessors do nothing unless chained to a request"]
+    pub fn app_installation(&self) -> AppInstallationResource {
+        AppInstallationResource {
+            client: self.clone(),
+        }
+    }
 }
 
 #[derive(Clone, Debug)]
@@ -823,6 +830,14 @@ impl SubscriptionsResource {
     }
 
     #[must_use = "request builders do nothing until you send or await them"]
+    pub fn start_trial(&self) -> SubscriptionsStartTrialBuilder {
+        SubscriptionsStartTrialBuilder {
+            client: self.client.clone(),
+            body: None,
+        }
+    }
+
+    #[must_use = "request builders do nothing until you send or await them"]
     pub fn update_payment_method(&self) -> SubscriptionsUpdatePaymentMethodBuilder {
         SubscriptionsUpdatePaymentMethodBuilder {
             client: self.client.clone(),
@@ -1421,6 +1436,47 @@ impl std::future::IntoFuture for SubscriptionsRetrieveUsageHistoryBuilder {
                             crate::models::SubscriptionRetrieveUsageHistoryResponse,
                         >,
                     >,
+                > + Send
+                + 'static,
+        >,
+    >;
+
+    fn into_future(self) -> Self::IntoFuture {
+        Box::pin(self.send())
+    }
+}
+
+#[must_use = "request builders do nothing until you send or await them"]
+#[derive(Clone, Debug)]
+pub struct SubscriptionsStartTrialBuilder {
+    client: crate::Client,
+    body: Option<crate::models::SubscriptionsStartTrialParams>,
+}
+
+impl SubscriptionsStartTrialBuilder {
+    #[must_use = "setters return an updated request builder"]
+    pub fn body(mut self, body: crate::models::SubscriptionsStartTrialParams) -> Self {
+        self.body = Some(body);
+        self
+    }
+
+    pub async fn send(self) -> crate::error::Result<crate::models::SubscriptionStartTrialResponse> {
+        let client = self.client;
+        let body = self.body.ok_or(crate::error::Error::MissingBody {
+            operation: "subscriptions.start_trial",
+        })?;
+        let path = "/billing/subscriptions".to_string();
+        let request = client.request(reqwest::Method::POST, &path).json(&body);
+        client.handle_response(request).await
+    }
+}
+
+impl std::future::IntoFuture for SubscriptionsStartTrialBuilder {
+    type Output = crate::error::Result<crate::models::SubscriptionStartTrialResponse>;
+    type IntoFuture = std::pin::Pin<
+        Box<
+            dyn std::future::Future<
+                    Output = crate::error::Result<crate::models::SubscriptionStartTrialResponse>,
                 > + Send
                 + 'static,
         >,
@@ -3338,6 +3394,7 @@ impl CustomersResource {
         CustomersRetrievePaymentMethodsBuilder {
             client: self.client.clone(),
             customer_id: None,
+            query: None,
         }
     }
 }
@@ -3779,12 +3836,19 @@ impl std::future::IntoFuture for CustomersListEntitlementsBuilder {
 pub struct CustomersRetrievePaymentMethodsBuilder {
     client: crate::Client,
     customer_id: Option<String>,
+    query: Option<serde_json::Value>,
 }
 
 impl CustomersRetrievePaymentMethodsBuilder {
     #[must_use = "setters return an updated request builder"]
     pub fn customer_id(mut self, customer_id: impl Into<String>) -> Self {
         self.customer_id = Some(customer_id.into());
+        self
+    }
+
+    #[must_use = "setters return an updated request builder"]
+    pub fn query(mut self, query: serde_json::Value) -> Self {
+        self.query = Some(query);
         self
     }
 
@@ -3798,11 +3862,15 @@ impl CustomersRetrievePaymentMethodsBuilder {
                 operation: "customers.retrieve_payment_methods",
                 param: "customer_id",
             })?;
+        let query = self.query;
         let path = build_path(
             "/customers/{customer_id}/payment-methods",
             &[("customer_id", customer_id.as_str())],
         );
-        let request = client.request(reqwest::Method::GET, &path);
+        let mut request = client.request(reqwest::Method::GET, &path);
+        if let Some(query) = &query {
+            request = request.query(query);
+        }
         client.handle_response(request).await
     }
 }
@@ -10668,6 +10736,55 @@ impl std::future::IntoFuture for ModerationScreenBuilder {
         Box<
             dyn std::future::Future<
                     Output = crate::error::Result<crate::models::ModerationScreenResponse>,
+                > + Send
+                + 'static,
+        >,
+    >;
+
+    fn into_future(self) -> Self::IntoFuture {
+        Box::pin(self.send())
+    }
+}
+
+#[derive(Clone, Debug)]
+pub struct AppInstallationResource {
+    client: crate::Client,
+}
+
+impl AppInstallationResource {
+    #[must_use = "request builders do nothing until you send or await them"]
+    pub fn retrieve_settings(&self) -> AppInstallationRetrieveSettingsBuilder {
+        AppInstallationRetrieveSettingsBuilder {
+            client: self.client.clone(),
+        }
+    }
+}
+
+#[must_use = "request builders do nothing until you send or await them"]
+#[derive(Clone, Debug)]
+pub struct AppInstallationRetrieveSettingsBuilder {
+    client: crate::Client,
+}
+
+impl AppInstallationRetrieveSettingsBuilder {
+    pub async fn send(
+        self,
+    ) -> crate::error::Result<crate::models::AppInstallationRetrieveSettingsResponse> {
+        let client = self.client;
+        let path = "/app-installation/settings".to_string();
+        let request = client.request(reqwest::Method::GET, &path);
+        client.handle_response(request).await
+    }
+}
+
+impl std::future::IntoFuture for AppInstallationRetrieveSettingsBuilder {
+    type Output = crate::error::Result<crate::models::AppInstallationRetrieveSettingsResponse>;
+    type IntoFuture = std::pin::Pin<
+        Box<
+            dyn std::future::Future<
+                    Output = crate::error::Result<
+                        crate::models::AppInstallationRetrieveSettingsResponse,
+                    >,
                 > + Send
                 + 'static,
         >,
